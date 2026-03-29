@@ -244,8 +244,28 @@ body{background:var(--dark);color:var(--white);font-family:'Tajawal',sans-serif;
 @keyframes jakSpin{to{transform:rotate(360deg)}}
 .jak-paddle-frame{width:100%;min-height:0;overflow:hidden;transition:min-height .3s}
 .jak-paddle-frame iframe{border:none;width:100%;display:block;border-radius:8px}
-/* Paddle overlay darkens whole page — boost z-index */
 .paddle-frame-overlay{z-index:999999!important}
+
+/* ══ RECOVERY MODAL ══ */
+#jak-rec-modal{display:none;position:fixed;inset:0;z-index:99998;align-items:center;justify-content:center;padding:20px}
+#jak-rec-modal.jak-open{display:flex}
+#jak-rec-bg{position:absolute;inset:0;background:rgba(8,8,14,.88);backdrop-filter:blur(8px)}
+#jak-rec-box{position:relative;z-index:1;background:#16161e;border:1px solid #28283a;border-radius:20px;padding:28px;width:100%;max-width:400px;animation:jakUp .3s cubic-bezier(.22,1,.36,1)}
+#jak-rec-close{position:absolute;top:14px;left:16px;background:transparent;border:none;color:#7a7a96;font-size:18px;cursor:pointer}
+#jak-rec-close:hover{color:#f4f2ed}
+.jak-rec-title{font-family:'DM Sans',sans-serif;font-size:18px;font-weight:700;color:#f4f2ed;margin-bottom:6px;text-align:center}
+.jak-rec-sub{font-size:13px;color:#7a7a96;text-align:center;margin-bottom:20px}
+.jak-rec-tabs{display:flex;gap:8px;margin-bottom:20px}
+.jak-rec-tab{flex:1;background:transparent;border:1px solid #28283a;color:#7a7a96;border-radius:8px;padding:8px;font-size:13px;font-weight:700;cursor:pointer;transition:all .15s;font-family:'Cairo',sans-serif}
+.jak-rec-tab.on{background:var(--gold3);border-color:var(--gold);color:var(--gold)}
+.jak-rec-pn{display:none}.jak-rec-pn.on{display:block}
+.jak-rec-code{display:flex;justify-content:center;gap:8px;margin:16px 0}
+.jak-rec-code input{width:44px;height:52px;text-align:center;font-size:22px;font-weight:700;font-family:'DM Sans',sans-serif;background:#1e1e28;border:1px solid #28283a;border-radius:8px;color:#f4f2ed;outline:none}
+.jak-rec-code input:focus{border-color:var(--gold)}
+#jak-saved-code{font-size:42px;font-weight:900;font-family:'DM Sans',sans-serif;color:var(--gold);text-align:center;letter-spacing:8px;padding:16px 0;background:#1e1e28;border-radius:12px;margin:16px 0;border:1px solid rgba(201,169,77,.25)}
+.jak-rec-btn{width:100%;background:linear-gradient(135deg,#c9a94d,#e8c96a);color:#0c0c10;border:none;border-radius:10px;padding:13px;font-size:14px;font-weight:900;cursor:pointer;font-family:'Cairo',sans-serif;margin-top:4px}
+.jak-rec-btn:hover{opacity:.9}
+.jak-rec-note{font-size:11px;color:#7a7a96;text-align:center;margin-top:10px}
 
 
 /* ── HOME PRICING ── */
@@ -447,6 +467,7 @@ body{background:var(--dark);color:var(--white);font-family:'Tajawal',sans-serif;
       <button class="cvbtn" id="cv-tpl" style="border-color:rgba(201,169,77,.3);color:var(--gold)">🎨 تصميم</button>
       <button class="cvbtn-ats" id="cv-ats">📊 ATS</button>
       <button class="cvbtn" id="cv-share" style="border-color:rgba(201,169,77,.3);color:var(--gold)" title="شارك الموقع">🔗 شارك</button>
+      <button class="cvbtn" id="cv-save-btn" style="border-color:rgba(54,176,126,.3);color:#36b07e" title="احفظ السيرة الذاتية">💾 احفظ</button>
       <button class="cvbtn-pdf" id="cv-pdf">⬇ PDF</button>
     </div>
   </div>
@@ -476,6 +497,49 @@ body{background:var(--dark);color:var(--white);font-family:'Tajawal',sans-serif;
       </div>
     </div>
     <div class="prev-frame-wrap"><iframe id="prev-iframe" scrolling="auto" sandbox="allow-same-origin" style="height:600px"></iframe></div>
+  </div>
+</div>
+
+<!-- ══ RECOVERY MODAL ══ -->
+<div id="jak-rec-modal">
+  <div id="jak-rec-bg"></div>
+  <div id="jak-rec-box">
+    <button id="jak-rec-close">✕</button>
+    <div class="jak-rec-title" id="rec-title">حفظ واسترجاع السيرة</div>
+    <div class="jak-rec-sub" id="rec-sub">احفظ سيرتك وارجع لها في أي وقت</div>
+    <div class="jak-rec-tabs">
+      <button class="jak-rec-tab on" id="rec-tab-save" onclick="recTab('save')">💾 احفظ</button>
+      <button class="jak-rec-tab" id="rec-tab-get" onclick="recTab('get')">🔍 استرجع</button>
+    </div>
+
+    <!-- حفظ -->
+    <div class="jak-rec-pn on" id="rec-pn-save">
+      <div id="rec-before-save">
+        <p style="font-size:13px;color:#7a7a96;margin-bottom:16px;text-align:center" id="rec-save-desc">اضغط لحفظ سيرتك والحصول على كود استرجاع مكوّن من ٦ أرقام</p>
+        <button class="jak-rec-btn" id="rec-do-save">احفظ سيرتي ← </button>
+      </div>
+      <div id="rec-after-save" style="display:none">
+        <p style="font-size:13px;color:#36b07e;text-align:center;margin-bottom:8px" id="rec-success-txt">✓ تم الحفظ! كودك هو:</p>
+        <div id="jak-saved-code">——————</div>
+        <p class="jak-rec-note" id="rec-expire-note">احتفظ بهذا الكود · صالح لمدة ٣٠ يوم</p>
+        <button class="jak-rec-btn" style="margin-top:12px" id="rec-copy-btn">نسخ الكود</button>
+      </div>
+    </div>
+
+    <!-- استرجاع -->
+    <div class="jak-rec-pn" id="rec-pn-get">
+      <p style="font-size:13px;color:#7a7a96;text-align:center;margin-bottom:4px" id="rec-get-desc">أدخل كود الاسترجاع المكوّن من ٦ أرقام</p>
+      <div class="jak-rec-code">
+        <input type="text" maxlength="1" class="rec-digit" inputmode="numeric" pattern="[0-9]">
+        <input type="text" maxlength="1" class="rec-digit" inputmode="numeric" pattern="[0-9]">
+        <input type="text" maxlength="1" class="rec-digit" inputmode="numeric" pattern="[0-9]">
+        <input type="text" maxlength="1" class="rec-digit" inputmode="numeric" pattern="[0-9]">
+        <input type="text" maxlength="1" class="rec-digit" inputmode="numeric" pattern="[0-9]">
+        <input type="text" maxlength="1" class="rec-digit" inputmode="numeric" pattern="[0-9]">
+      </div>
+      <button class="jak-rec-btn" id="rec-do-get">استرجع سيرتي →</button>
+      <p class="jak-rec-note" id="rec-get-err" style="color:var(--red);display:none">كود غير صحيح أو منتهي الصلاحية</p>
+    </div>
   </div>
 </div>
 
@@ -538,6 +602,7 @@ var TPLS={
   en:[{id:'en1',name:'Mohammed Al-Dossari',free:true},{id:'en2',name:'ATS Minimal',free:false},{id:'en3',name:'Ryan Peterson',free:false},{id:'en4',name:'Charles Bloomberg',free:false}]
 };
 var FREE_TPLS=['ar1','en1'];
+window.FREE_TPLS=FREE_TPLS;
 
 var T={
   ar:{d:'rtl',nr:'منشئ السيرة الذاتية',bh:'مرحباً في <span style="color:var(--gold)">JAK CV</span>',bs:'أدخل بياناتك خطوة بخطوة',tpH:'اختر تصميم سيرتك الذاتية',tpP:'٤ تصاميم مختلفة',tpB:'← رجوع',cl:'🌐 تغيير اللغة',ct:'🎨 تغيير التصميم',ab:'التصميم المحدد',ac:'تغيير',steps:['البيانات','التعليم','المهارات','الخبرة','الدورات'],ph:['المعلومات الشخصية','التعليم','المهارات','الخبرة العملية','الدورات التدريبية'],pp:['أدخل بياناتك الأساسية','من الأحدث للأقدم','اكتب وأضف','يمكن تركها فارغة','اكتب وأضف'],lNm:'الاسم الكامل *',lRl:'المسمى الوظيفي',lPh:'الجوال *',lEm:'البريد *',lCi:'المدينة',lLi:'LinkedIn',lSu:'الملخص *',pNm:'سارة أحمد الغامدي',pRl:'مصممة جرافيك',pPh:'+966 55 000 0000',pSu:'نبذة مختصرة عنك...',ae:'+ إضافة مؤهل',ax:'+ إضافة خبرة',ab2:'إضافة',gen:'✦ أنشئ السيرة الذاتية',pSk:'مهارة...',pCr:'دورة...',nx:'التالي ←',pv:'→ السابق',cvMsg:'سيرتك الذاتية جاهزة!',edit:'← تعديل',pdf:'⬇ تحميل PDF',ats:'📊 ATS',eL:['اسم المؤسسة *','الدرجة','التخصص','المدينة','التاريخ','المعدل'],eP:['جامعة الملك عبدالعزيز','بكالوريوس','علوم الحاسب','جدة','2025','3.9'],xL:['المسمى الوظيفي *','اسم الجهة','من','إلى','وصف المهام'],xP:['مصمم جرافيك أول','استوديو الإبداع','يناير 2022','حتى الآن','وصف ما قمت به...'],rm:'حذف',v:['يرجى إدخال الاسم','يرجى إدخال الجوال','يرجى إدخال البريد','يرجى كتابة الملخص'],a1:'تحليل تلقائي',a2:'مقارنة بوظيفة',jdL:'الصق وصف الوظيفة',jdP:'مثال: نبحث عن مطور...',jdB:'🔍 تحليل',pill:'عربي',tbtn:'اختر هذا التصميم',prev:'معاينة'},
@@ -621,16 +686,21 @@ function buildGrid(){
 
 var _pendingTpl=null;
 function pickTpl(id){
-  /* تحقق إذا القالب مدفوع وما في توكن */
-  if(FREE_TPLS.indexOf(id)===-1 && !localStorage.getItem('jak_cv_token')){
-    _pendingTpl=id;
-    window.JAKPay && window.JAKPay.open();
-    return;
+  if(FREE_TPLS.indexOf(id)===-1){
+    /* تحقق إذا التوكن يخص هذا القالب تحديداً */
+    var tok=localStorage.getItem('jak_cv_token');
+    var paid=tok && tok.indexOf(':'+id)>-1;
+    if(!paid){
+      _pendingTpl=id;
+      window._pendingTpl=id;
+      window.JAKPay && window.JAKPay.open();
+      return;
+    }
   }
   _doPick(id);
 }
 function _doPick(id){
-  TPL=id;document.querySelectorAll('.tcard').forEach(function(c){c.classList.remove('sel');});
+  TPL=id;window.TPL=id;document.querySelectorAll('.tcard').forEach(function(c){c.classList.remove('sel');});
   var card=G('tc-'+id);if(card)card.classList.add('sel');
   var info=TPLS[LANG].find(function(x){return x.id===id;});if(info)G('atbar-nm').textContent=info.name;
   G('atpl-if').srcdoc=renderCV(id,dummyData(id),true);
@@ -835,10 +905,33 @@ window.addEventListener('DOMContentLoaded',function(){
   G('cv-tpl').addEventListener('click',function(){buildGrid();show('s-tpl');});
   G('cv-ats').addEventListener('click',toggleATS);
   G('cv-pdf').addEventListener('click',function(){
-    G('print-tip').style.display='block';
-    var btn=G('cv-pdf');btn.textContent='⏳ ...';btn.disabled=true;
-    var ifrm=G('cv-iframe');
-    setTimeout(function(){if(ifrm&&ifrm.contentWindow){ifrm.contentWindow.focus();ifrm.contentWindow.print();}else{window.print();}btn.textContent=T[LANG].pdf;btn.disabled=false;},800);
+    var TOKEN_KEY='jak_cv_token';
+    var tok=localStorage.getItem(TOKEN_KEY);
+    /* القالب الحالي مجاني؟ اسمح بالتحميل مباشرة */
+    if(window.FREE_TPLS && window.FREE_TPLS.indexOf(window.TPL||'ar1')>-1){
+      G('print-tip').style.display='block';
+      var btn=G('cv-pdf');btn.textContent='⏳ ...';btn.disabled=true;
+      var ifrm=G('cv-iframe');
+      setTimeout(function(){if(ifrm&&ifrm.contentWindow){ifrm.contentWindow.focus();ifrm.contentWindow.print();}else{window.print();}btn.textContent=T[LANG].pdf;btn.disabled=false;},800);
+      return;
+    }
+    /* قالب مدفوع — تحقق من التوكن لهذا القالب تحديداً */
+    var currentTpl=window.TPL||'ar1';
+    if(tok && tok.indexOf(':'+currentTpl)>-1){
+      G('print-tip').style.display='block';
+      var btn2=G('cv-pdf');btn2.textContent='⏳ ...';btn2.disabled=true;
+      var ifrm2=G('cv-iframe');
+      setTimeout(function(){
+        if(ifrm2&&ifrm2.contentWindow){ifrm2.contentWindow.focus();ifrm2.contentWindow.print();}else{window.print();}
+        btn2.textContent=T[LANG].pdf;btn2.disabled=false;
+        /* امسح التوكن — القالب يقفل بعد التحميل */
+        localStorage.removeItem(TOKEN_KEY);
+      },800);
+      return;
+    }
+    /* لا توكن — اعرض رسالة */
+    var ar=LANG==='ar';
+    alert(ar?'هذا القالب مدفوع. اختره من صفحة القوالب للدفع وفتحه.':'This is a paid template. Select it from the templates page to unlock.');
   });
   G('tip-close').addEventListener('click',function(){G('print-tip').style.display='none';});
   G('at1').addEventListener('click',function(){atsTab(1);});G('at2').addEventListener('click',function(){atsTab(2);});
@@ -1122,13 +1215,28 @@ window.addEventListener('beforeunload',function(e){
     document.body.style.overflow='';
   }
 
-  /* ── بعد الدفع: افتح القالب المعلّق ── */
+  /* ── بعد الدفع: افتح القالب المعلّق فقط ── */
   function afterPayment(){
-    localStorage.setItem(TOKEN_KEY,Date.now()+':paid');
-    closeModal();
     var id=window._pendingTpl;
     window._pendingTpl=null;
-    if(id && window._doPick)window._doPick(id);
+    if(!id)return;
+    /* احفظ القالب المحدد فقط — مو كل القوالب */
+    localStorage.setItem(TOKEN_KEY, Date.now()+':'+id);
+    closeModal();
+    if(window._doPick)window._doPick(id);
+  }
+
+  /* ── تشغيل الطباعة ومسح التوكن بعدها ── */
+  function doPrint(){
+    var tip=document.getElementById('print-tip');
+    if(tip)tip.style.display='block';
+    var ifrm=document.getElementById('cv-iframe');
+    setTimeout(function(){
+      if(ifrm&&ifrm.contentWindow)ifrm.contentWindow.print();
+      else window.print();
+      /* امسح التوكن — القالب يقفل مجدداً بعد التحميل */
+      localStorage.removeItem(TOKEN_KEY);
+    },700);
   }
 
   /* ════════════════════════════════════════
@@ -1229,6 +1337,207 @@ window.addEventListener('beforeunload',function(e){
   document.addEventListener('keydown', function(e){ if(e.key === 'Escape') closeModal(); });
   window.JAKPay = { open: openModal, close: closeModal };
 })();
+
+/* ══════════════════════════════════════
+   JAK CV — نظام الحفظ والاسترجاع
+   بدّل WORKER_URL بعد نشر الـ Worker
+   ══════════════════════════════════════ */
+(function(){
+  var WORKER_URL = 'https://jak-cv-worker.dhomeyaz111.workers.dev';
+
+  /* ── جمع بيانات الـ CV الحالية ── */
+  function collectCV(){
+    var edus=[];
+    document.querySelectorAll('#edu-list .rb').forEach(function(b){
+      edus.push({
+        n:  b.querySelector('.e-nm')  ? b.querySelector('.e-nm').value  : '',
+        dg: b.querySelector('.e-dg')  ? b.querySelector('.e-dg').value  : '',
+        fi: b.querySelector('.e-fi')  ? b.querySelector('.e-fi').value  : '',
+        ci: b.querySelector('.e-ci')  ? b.querySelector('.e-ci').value  : '',
+        dt: b.querySelector('.e-dt')  ? b.querySelector('.e-dt').value  : '',
+        gp: b.querySelector('.e-gp') ? b.querySelector('.e-gp').value : ''
+      });
+    });
+    var exps=[];
+    document.querySelectorAll('#exp-list .rb').forEach(function(b){
+      exps.push({
+        t:  b.querySelector('.x-tt') ? b.querySelector('.x-tt').value : '',
+        o:  b.querySelector('.x-or') ? b.querySelector('.x-or').value : '',
+        fr: b.querySelector('.x-fr') ? b.querySelector('.x-fr').value : '',
+        to: b.querySelector('.x-to') ? b.querySelector('.x-to').value : '',
+        d:  b.querySelector('.x-ds') ? b.querySelector('.x-ds').value : ''
+      });
+    });
+    return {
+      lang:    LANG, tpl: TPL,
+      name:    G('v-name')     ? G('v-name').value     : '',
+      role:    G('v-role')     ? G('v-role').value     : '',
+      phone:   G('v-phone')    ? G('v-phone').value    : '',
+      email:   G('v-email')    ? G('v-email').value    : '',
+      city:    G('v-city')     ? G('v-city').value     : '',
+      linkedin:G('v-linkedin') ? G('v-linkedin').value : '',
+      summary: G('v-summary')  ? G('v-summary').value  : '',
+      skills:  skills.slice(),
+      courses: courses.slice(),
+      edus: edus, exps: exps
+    };
+  }
+
+  /* ── استعادة البيانات في الـ form ── */
+  function restoreCV(d){
+    if(d.lang) pickLang(d.lang);
+    if(d.tpl)  { TPL=d.tpl; window.TPL=d.tpl; }
+    var map={'v-name':d.name,'v-role':d.role,'v-phone':d.phone,
+             'v-email':d.email,'v-city':d.city,'v-linkedin':d.linkedin,'v-summary':d.summary};
+    Object.keys(map).forEach(function(id){var el=G(id);if(el&&map[id])el.value=map[id];});
+    if(d.skills&&d.skills.length){skills=d.skills.slice();rPool('sk-pool',skills,'s');}
+    if(d.courses&&d.courses.length){courses=d.courses.slice();rPool('cr-pool',courses,'c');}
+    G('edu-list').innerHTML=''; eduIdx=0;
+    G('exp-list').innerHTML=''; expIdx=0;
+    (d.edus||[]).forEach(function(){
+      addEdu();
+      var b=G('edu-list').lastElementChild;
+      var fields=['e-nm','e-dg','e-fi','e-ci','e-dt','e-gp'];
+      var keys=['n','dg','fi','ci','dt','gp'];
+      var entry=d.edus[eduIdx-1]||{};
+      fields.forEach(function(cls,i){var el=b.querySelector('.'+cls);if(el&&entry[keys[i]])el.value=entry[keys[i]];});
+    });
+    (d.exps||[]).forEach(function(){
+      addExp();
+      var b=G('exp-list').lastElementChild;
+      var entry=d.exps[expIdx-1]||{};
+      ['x-tt','x-or','x-fr','x-to','x-ds'].forEach(function(cls,i){
+        var el=b.querySelector('.'+cls);
+        var val=[entry.t,entry.o,entry.fr,entry.to,entry.d][i];
+        if(el&&val)el.value=val;
+      });
+    });
+    show('s-build'); step(1);
+    closeRecModal();
+    var ar=LANG==='ar';
+    alert(ar?'✓ تم استرجاع سيرتك بنجاح!':'✓ CV restored successfully!');
+  }
+
+  /* ── فتح / إغلاق ── */
+  function openRecModal(){
+    var m=G('jak-rec-modal');
+    if(!m)return;
+    recTab('save');
+    G('rec-before-save').style.display='block';
+    G('rec-after-save').style.display='none';
+    G('rec-get-err').style.display='none';
+    document.querySelectorAll('.rec-digit').forEach(function(i){i.value='';});
+    m.classList.add('jak-open');
+    document.body.style.overflow='hidden';
+  }
+  function closeRecModal(){
+    var m=G('jak-rec-modal');
+    if(m)m.classList.remove('jak-open');
+    document.body.style.overflow='';
+  }
+  window.recTab=function(tab){
+    ['save','get'].forEach(function(t){
+      G('rec-tab-'+t).classList.toggle('on',t===tab);
+      G('rec-pn-'+t).classList.toggle('on',t===tab);
+    });
+  };
+
+  /* ── حفظ ── */
+  async function doSave(){
+    var btn=G('rec-do-save');
+    var ar=LANG==='ar';
+    btn.textContent=ar?'⏳ جاري الحفظ...':'⏳ Saving...';
+    btn.disabled=true;
+    var cvData=collectCV();
+    if(!cvData.name){
+      alert(ar?'أكمل بياناتك أولاً':'Please fill your info first');
+      btn.textContent=ar?'احفظ سيرتي ←':'Save my CV ←';
+      btn.disabled=false; return;
+    }
+    try{
+      var res=await fetch(WORKER_URL+'/save',{
+        method:'POST',
+        headers:{'Content-Type':'application/json'},
+        body:JSON.stringify(cvData)
+      });
+      var d=await res.json();
+      if(d.ok){
+        G('rec-before-save').style.display='none';
+        G('rec-after-save').style.display='block';
+        G('jak-saved-code').textContent=d.code;
+      } else {
+        alert(ar?'حدث خطأ، حاول مرة ثانية':'Error, please try again');
+      }
+    }catch(e){
+      alert(ar?'تعذر الاتصال بالخادم':'Could not connect to server');
+    }
+    btn.textContent=ar?'احفظ سيرتي ←':'Save my CV ←';
+    btn.disabled=false;
+  }
+
+  /* ── استرجاع ── */
+  async function doGet(){
+    var digits=document.querySelectorAll('.rec-digit');
+    var code=Array.from(digits).map(function(i){return i.value;}).join('');
+    var ar=LANG==='ar';
+    G('rec-get-err').style.display='none';
+    if(code.length!==6||!/^\d{6}$/.test(code)){
+      G('rec-get-err').style.display='block';return;
+    }
+    var btn=G('rec-do-get');
+    btn.textContent=ar?'⏳ جاري البحث...':'⏳ Searching...';
+    btn.disabled=true;
+    try{
+      var res=await fetch(WORKER_URL+'/retrieve?code='+code);
+      var d=await res.json();
+      if(d.ok && d.data){
+        restoreCV(d.data);
+      } else {
+        G('rec-get-err').style.display='block';
+      }
+    }catch(e){
+      G('rec-get-err').style.display='block';
+    }
+    btn.textContent=ar?'استرجع سيرتي →':'Retrieve my CV →';
+    btn.disabled=false;
+  }
+
+  /* ── ربط الأحداث ── */
+  window.addEventListener('DOMContentLoaded',function(){
+    /* زر الحفظ في شريط الـ CV */
+    var saveBtn=G('cv-save-btn');
+    if(saveBtn)saveBtn.onclick=openRecModal;
+
+    G('jak-rec-close').onclick=closeRecModal;
+    G('jak-rec-bg').onclick=closeRecModal;
+    G('rec-do-save').onclick=doSave;
+    G('rec-do-get').onclick=doGet;
+
+    /* نسخ الكود */
+    G('rec-copy-btn').onclick=function(){
+      var code=G('jak-saved-code').textContent;
+      navigator.clipboard.writeText(code).then(function(){
+        G('rec-copy-btn').textContent=LANG==='ar'?'✓ تم النسخ!':'✓ Copied!';
+        setTimeout(function(){G('rec-copy-btn').textContent=LANG==='ar'?'نسخ الكود':'Copy Code';},2000);
+      });
+    };
+
+    /* تنقل بين خانات الكود تلقائياً */
+    document.querySelectorAll('.rec-digit').forEach(function(inp,idx,all){
+      inp.addEventListener('input',function(){
+        inp.value=inp.value.replace(/\D/g,'').slice(-1);
+        if(inp.value&&idx<all.length-1)all[idx+1].focus();
+      });
+      inp.addEventListener('keydown',function(e){
+        if(e.key==='Backspace'&&!inp.value&&idx>0)all[idx-1].focus();
+      });
+      inp.addEventListener('paste',function(e){
+        var txt=(e.clipboardData||window.clipboardData).getData('text').replace(/\D/g,'').slice(0,6);
+        all.forEach(function(f,i){f.value=txt[i]||'';});
+        e.preventDefault();
+      });
+    });
+  });
 </script>
 </body>
 </html>
