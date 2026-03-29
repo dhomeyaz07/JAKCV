@@ -1144,6 +1144,8 @@ window.addEventListener('beforeunload',function(e){
   function initPaddle(){
     if(typeof Paddle === 'undefined' || paddleReady) return;
     try {
+      /* وضع الاختبار — احذف هذا السطر لما تنتقل للإنتاج الحقيقي */
+      Paddle.Environment.set('sandbox');
       Paddle.Initialize({
         token: PADDLE_TOKEN,
         eventCallback: function(ev){
