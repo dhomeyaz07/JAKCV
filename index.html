@@ -10,17 +10,18 @@
 <meta http-equiv="Referrer-Policy" content="no-referrer">
 <meta name="robots" content="index,follow">
 <link rel="sitemap" type="application/xml" href="/sitemap.xml">
-<meta name="description" content="أنشئ سيرتك الذاتية الاحترافية مجاناً بالعربي والإنجليزي — 8 تصاميم جاهزة وتحليل ATS. Build your professional CV free in Arabic & English.">
+<meta name="description" content="موقع إنشاء CV بنظام ATS — تم إنشاؤه بواسطة شاب سعودي. مجاناً لفترة محدودة!">
 <meta name="keywords" content="سيرة ذاتية، CV، resume, منشئ سيرة ذاتية، JAK CV، professional resume builder">
 <meta name="author" content="Abdulrahman Alzahrani">
 <meta property="og:title" content="JAK CV — منشئ السيرة الذاتية الاحترافي">
-<meta property="og:description" content="أنشئ سيرتك الذاتية مجاناً بتصاميم احترافية بالعربي والإنجليزي">
+<meta property="og:description" content="موقع إنشاء CV بنظام ATS — تم إنشاؤه بواسطة شاب سعودي. مجاناً لفترة محدودة!">
 <meta property="og:type" content="website">
 <meta property="og:locale" content="ar_SA">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="JAK CV">
-<meta name="twitter:description" content="منشئ سيرة ذاتية مجاني واحترافي بالعربي والإنجليزي">
+<meta name="twitter:description" content="موقع إنشاء CV بنظام ATS — تم إنشاؤه بواسطة شاب سعودي. مجاناً لفترة محدودة!">
 <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&family=Tajawal:wght@400;500;700&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdn.paddle.com/paddle/v2/paddle.js"></script>
 <style>
 :root{--dark:#0c0c10;--card:#16161e;--card2:#1e1e28;--border:#28283a;--gold:#c9a94d;--gold2:#e8c96a;--gold3:rgba(201,169,77,.1);--white:#f4f2ed;--muted:#7a7a96;--green:#36b07e;--red:#d95555}
 *{box-sizing:border-box;margin:0;padding:0}
@@ -209,7 +210,62 @@ body{background:var(--dark);color:var(--white);font-family:'Tajawal',sans-serif;
 #cv-out iframe{width:100%;border:none;display:block}
 .ft{text-align:center;padding:22px 16px 36px;border-top:1px solid var(--border);position:relative;z-index:1}
 
-/* ── PREVIEW MODAL ── */
+/* ══ JAK PAY MODAL ══ */
+#jak-pay-modal{display:none;position:fixed;inset:0;z-index:99999;align-items:center;justify-content:center;padding:20px}
+#jak-pay-modal.jak-open{display:flex}
+#jak-pay-bg{position:absolute;inset:0;background:rgba(8,8,14,.9);backdrop-filter:blur(10px)}
+#jak-pay-box{position:relative;z-index:1;background:#16161e;border:1px solid #28283a;border-radius:20px;padding:32px 28px 24px;width:100%;max-width:440px;animation:jakUp .32s cubic-bezier(.22,1,.36,1)}
+@keyframes jakUp{from{opacity:0;transform:translateY(28px)}to{opacity:1;transform:translateY(0)}}
+#jak-pay-close{position:absolute;top:14px;left:16px;background:transparent;border:none;color:#7a7a96;font-size:18px;cursor:pointer;padding:4px;line-height:1}
+#jak-pay-close:hover{color:#f4f2ed}
+.jak-badge-pay{display:inline-block;background:rgba(201,169,77,.12);border:1px solid rgba(201,169,77,.25);color:#c9a94d;font-size:11px;font-weight:700;letter-spacing:2px;padding:4px 14px;border-radius:50px;margin-bottom:12px}
+#jak-pay-head{text-align:center;margin-bottom:20px}
+#jak-pay-title{font-family:'DM Sans',sans-serif;font-size:21px;font-weight:700;color:#f4f2ed;margin-bottom:5px}
+#jak-pay-sub{font-size:13px;color:#7a7a96}
+#jak-price-row{background:#1e1e28;border:1px solid #28283a;border-radius:12px;padding:14px 18px;display:flex;align-items:baseline;justify-content:space-between;margin-bottom:18px}
+#jak-price-main{font-family:'DM Sans',sans-serif;font-size:32px;font-weight:700;color:#c9a94d;transition:all .2s}
+#jak-price-note{font-size:11px;color:#7a7a96;text-align:left}
+#jak-currency-label{font-size:11px;font-weight:700;color:#7a7a96;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:8px}
+#jak-currency-grid{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:18px}
+.jak-cur-btn{background:#1e1e28;border:1px solid #28283a;color:#7a7a96;border-radius:8px;padding:6px 10px;font-size:12px;font-weight:700;cursor:pointer;display:flex;align-items:center;gap:5px;transition:border-color .15s,color .15s,background .15s}
+.jak-cur-btn:hover{border-color:#c9a94d;color:#f4f2ed}
+.jak-cur-btn.jak-cur-sel{border-color:#c9a94d;background:rgba(201,169,77,.12);color:#c9a94d}
+.jak-cur-flag{font-size:14px}
+.jak-cur-code{font-family:'DM Sans',sans-serif}
+#jak-features{list-style:none;display:grid;grid-template-columns:1fr 1fr;gap:6px 8px;margin-bottom:20px}
+#jak-features li{font-size:12px;color:#7a7a96;display:flex;align-items:center;gap:6px}
+.jf-ic{color:#36b07e;font-weight:900;font-size:13px}
+#jak-pay-btn{width:100%;background:linear-gradient(135deg,#c9a94d,#e8c96a);color:#0c0c10;border:none;border-radius:10px;padding:15px;font-size:15px;font-weight:900;cursor:pointer;letter-spacing:.5px;transition:opacity .2s,transform .1s;font-family:'Cairo',sans-serif}
+#jak-pay-btn:hover{opacity:.9}
+#jak-pay-btn:active{transform:scale(.98)}
+#jak-pay-secure{text-align:center;font-size:11px;color:#7a7a96;margin-top:10px}
+#jak-verifying{display:none;position:relative;z-index:1;flex-direction:column;align-items:center;justify-content:center;gap:16px;color:#f4f2ed;font-size:14px;background:#16161e;border:1px solid #28283a;border-radius:20px;padding:52px 32px;min-width:260px;animation:jakUp .32s cubic-bezier(.22,1,.36,1)}
+.jak-spinner{width:36px;height:36px;border:3px solid rgba(201,169,77,.2);border-top-color:#c9a94d;border-radius:50%;animation:jakSpin .7s linear infinite}
+@keyframes jakSpin{to{transform:rotate(360deg)}}
+.jak-paddle-frame{width:100%;min-height:0;overflow:hidden;transition:min-height .3s}
+.jak-paddle-frame iframe{border:none;width:100%;display:block;border-radius:8px}
+/* Paddle overlay darkens whole page — boost z-index */
+.paddle-frame-overlay{z-index:999999!important}
+
+
+/* ── HOME PRICING ── */
+#home-pricing{margin:28px 0 8px;background:var(--card);border:1px solid var(--border);border-radius:16px;padding:20px 22px}
+.hp-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;flex-wrap:wrap;gap:8px}
+.hp-title{font-size:11px;font-weight:700;color:var(--muted);letter-spacing:1.8px;text-transform:uppercase}
+.hp-timer{display:flex;align-items:center;gap:6px;font-size:11px;color:var(--gold);font-weight:700}
+.hp-dot{width:6px;height:6px;border-radius:50%;background:#36b07e;animation:pulse 2s infinite}
+.hp-price-row{display:flex;align-items:baseline;gap:10px;margin-bottom:14px}
+.hp-price-main{font-family:'DM Sans',sans-serif;font-size:38px;font-weight:700;color:var(--gold);line-height:1;transition:all .25s}
+.hp-price-orig{font-size:15px;color:var(--muted);text-decoration:line-through}
+.hp-price-tag{font-size:11px;color:#36b07e;font-weight:700;background:rgba(54,176,126,.12);border:1px solid rgba(54,176,126,.25);padding:3px 9px;border-radius:50px;margin-right:6px}
+.hp-cur-grid{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px}
+.hp-cur-btn{background:var(--card2);border:1px solid var(--border);color:var(--muted);border-radius:8px;padding:5px 9px;font-size:11px;font-weight:700;cursor:pointer;display:flex;align-items:center;gap:4px;transition:border-color .15s,color .15s,background .15s}
+.hp-cur-btn:hover{border-color:var(--gold);color:var(--white)}
+.hp-cur-btn.hp-sel{border-color:var(--gold);background:var(--gold3);color:var(--gold)}
+.hp-feats{display:grid;grid-template-columns:1fr 1fr;gap:5px}
+.hp-feat{font-size:12px;color:var(--muted);display:flex;align-items:center;gap:5px}
+.hp-feat-ic{color:#36b07e;font-weight:900}
+@media(max-width:480px){.hp-feats{grid-template-columns:1fr}}
 #prev-modal{display:none;position:fixed;inset:0;z-index:500;background:rgba(0,0,0,.88);backdrop-filter:blur(8px);align-items:center;justify-content:center;padding:16px}
 #prev-modal.open{display:flex}
 .prev-box{background:var(--card);border:1px solid var(--border);border-radius:14px;width:100%;max-width:680px;max-height:92vh;display:flex;flex-direction:column;overflow:hidden}
@@ -267,16 +323,37 @@ body{background:var(--dark);color:var(--white);font-family:'Tajawal',sans-serif;
 
 <div id="s-lang">
   <div class="lang-wrap">
-    <div class="badge"><span class="bdot"></span>Choose Your Language | اختر لغتك</div>
-    <h1 class="lang-title">Welcome to <b>JAK CV</b></h1>
-    <p class="lang-desc">Build a professional CV in minutes — Arabic or English</p>
+    <div class="badge"><span class="bdot"></span><span id="hp-badge-txt">Choose Your Language | اختر لغتك</span></div>
+    <h1 class="lang-title" id="hp-main-title">Welcome to <b>JAK CV</b></h1>
+    <p class="lang-desc" id="hp-main-desc">Build a professional CV in minutes — Arabic or English</p>
     <div class="stats">
-      <div><div class="stat-n">8</div><div class="stat-l">Templates</div></div>
-      <div><div class="stat-n">2</div><div class="stat-l">Languages</div></div>
+      <div><div class="stat-n">8</div><div class="stat-l" id="hp-stat-tpl">Templates</div></div>
+      <div><div class="stat-n">2</div><div class="stat-l" id="hp-stat-lang">Languages</div></div>
       <div><div class="stat-n">100%</div><div class="stat-l">ATS Ready</div></div>
-      <div><div class="stat-n">Free</div><div class="stat-l">Temporarily</div></div>
+      <div><div class="stat-n" id="hp-stat-price">18.99 ﷼</div><div class="stat-l" id="hp-stat-label">فترة محدودة</div></div>
     </div>
-    <div class="lang-cards">
+
+    <!-- ── قسم السعر والعملات ── -->
+    <div id="home-pricing">
+      <div class="hp-top">
+        <div class="hp-title" id="hp-section-title">القوالب المميّزة</div>
+        <div class="hp-timer"><span class="hp-dot"></span> <span id="hp-timer-text">عرض لفترة محدودة</span></div>
+      </div>
+      <div class="hp-price-row">
+        <span class="hp-price-main" id="hp-price-main">18.99 ﷼</span>
+        <span class="hp-price-orig" id="hp-price-orig">49 ﷼</span>
+        <span class="hp-price-tag" id="hp-price-tag">توفير 61%</span>
+      </div>
+      <div class="hp-cur-grid" id="hp-cur-grid"></div>
+      <div class="hp-feats">
+        <div class="hp-feat"><span class="hp-feat-ic">✓</span> <span id="hp-f1">٣ قوالب احترافية مميّزة</span></div>
+        <div class="hp-feat"><span class="hp-feat-ic">✓</span> <span id="hp-f2">PDF بجودة طباعة عالية</span></div>
+        <div class="hp-feat"><span class="hp-feat-ic">✓</span> <span id="hp-f3">بدون علامة مائية</span></div>
+        <div class="hp-feat"><span class="hp-feat-ic">✓</span> <span id="hp-f4">دفعة واحدة · بدون اشتراك</span></div>
+      </div>
+    </div>
+
+    <div class="lang-cards" style="margin-top:16px">
       <div class="lcard" id="btn-ar">
         <span class="lcard-flag">🇸🇦</span>
         <div class="lcard-name" style="font-family:'Cairo',sans-serif">العربية</div>
@@ -400,6 +477,41 @@ body{background:var(--dark);color:var(--white);font-family:'Tajawal',sans-serif;
   </div>
 </div>
 
+<!-- ══ JAK PAY MODAL ══ -->
+<div id="jak-pay-modal">
+  <div id="jak-pay-bg"></div>
+  <div id="jak-pay-box">
+    <button id="jak-pay-close">✕</button>
+    <div id="jak-pay-head">
+      <div class="jak-badge-pay" id="jak-badge-txt">⚡ عرض لفترة محدودة</div>
+      <h2 id="jak-pay-title">قالب احترافي مميّز</h2>
+      <p id="jak-pay-sub">يشمل جميع القوالب المدفوعة — مرة واحدة للأبد</p>
+    </div>
+    <div id="jak-price-row">
+      <div>
+        <div id="jak-price-orig-el" style="font-size:12px;color:#7a7a96;text-decoration:line-through;margin-bottom:2px">49 ﷼</div>
+        <span id="jak-price-main">18.99<small style="font-size:16px"> ﷼</small></span>
+      </div>
+      <span id="jak-price-note">دفعة واحدة<br>بدون اشتراك</span>
+    </div>
+    <div id="jak-currency-label">اختر عملتك</div>
+    <div id="jak-currency-grid"></div>
+    <ul id="jak-features">
+      <li><span class="jf-ic">✓</span> <span id="jak-f1">الوصول لجميع القوالب الـ٣</span></li>
+      <li><span class="jf-ic">✓</span> <span id="jak-f2">PDF بجودة طباعة عالية</span></li>
+      <li><span class="jf-ic">✓</span> <span id="jak-f3">بدون علامة مائية</span></li>
+      <li><span class="jf-ic">✓</span> <span id="jak-f4">متوافق مع أنظمة ATS</span></li>
+    </ul>
+    <button id="jak-pay-btn">افتح القالب الآن →</button>
+    <p id="jak-pay-secure">🔒 الدفع آمن · Moyasar · مدى · Apple Pay · STC Pay</p>
+    <div class="jak-paddle-frame" id="jak-paddle-frame"></div>
+  </div>
+  <div id="jak-verifying">
+    <div class="jak-spinner"></div>
+    <p id="jak-verifying-txt">جاري التحقق من الدفع…</p>
+  </div>
+</div>
+
 <script>
 // ── SPLASH ──
 setTimeout(function(){
@@ -420,9 +532,10 @@ var LANG='ar',TPL='ar1',skills=[],courses=[],eduIdx=0,expIdx=0,atsOpen=false,cac
 var prevIdx=0,prevList=[];
 
 var TPLS={
-  ar:[{id:'ar1',name:'سارة خالد'},{id:'ar2',name:'عبدالعزيز'},{id:'ar3',name:'أليكس بوذام'},{id:'ar4',name:'محمد الدوسري'}],
-  en:[{id:'en1',name:'Mohammed Al-Dossari'},{id:'en2',name:'ATS Minimal'},{id:'en3',name:'Ryan Peterson'},{id:'en4',name:'Charles Bloomberg'}]
+  ar:[{id:'ar1',name:'سارة خالد',free:true},{id:'ar2',name:'عبدالعزيز',free:false},{id:'ar3',name:'أليكس بوذام',free:false},{id:'ar4',name:'محمد الدوسري',free:false}],
+  en:[{id:'en1',name:'Mohammed Al-Dossari',free:true},{id:'en2',name:'ATS Minimal',free:false},{id:'en3',name:'Ryan Peterson',free:false},{id:'en4',name:'Charles Bloomberg',free:false}]
 };
+var FREE_TPLS=['ar1','en1'];
 
 var T={
   ar:{d:'rtl',nr:'منشئ السيرة الذاتية',bh:'مرحباً في <span style="color:var(--gold)">JAK CV</span>',bs:'أدخل بياناتك خطوة بخطوة',tpH:'اختر تصميم سيرتك الذاتية',tpP:'٤ تصاميم مختلفة',tpB:'← رجوع',cl:'🌐 تغيير اللغة',ct:'🎨 تغيير التصميم',ab:'التصميم المحدد',ac:'تغيير',steps:['البيانات','التعليم','المهارات','الخبرة','الدورات'],ph:['المعلومات الشخصية','التعليم','المهارات','الخبرة العملية','الدورات التدريبية'],pp:['أدخل بياناتك الأساسية','من الأحدث للأقدم','اكتب وأضف','يمكن تركها فارغة','اكتب وأضف'],lNm:'الاسم الكامل *',lRl:'المسمى الوظيفي',lPh:'الجوال *',lEm:'البريد *',lCi:'المدينة',lLi:'LinkedIn',lSu:'الملخص *',pNm:'سارة أحمد الغامدي',pRl:'مصممة جرافيك',pPh:'+966 55 000 0000',pSu:'نبذة مختصرة عنك...',ae:'+ إضافة مؤهل',ax:'+ إضافة خبرة',ab2:'إضافة',gen:'✦ أنشئ السيرة الذاتية',pSk:'مهارة...',pCr:'دورة...',nx:'التالي ←',pv:'→ السابق',cvMsg:'سيرتك الذاتية جاهزة!',edit:'← تعديل',pdf:'⬇ تحميل PDF',ats:'📊 ATS',eL:['اسم المؤسسة *','الدرجة','التخصص','المدينة','التاريخ','المعدل'],eP:['جامعة الملك عبدالعزيز','بكالوريوس','علوم الحاسب','جدة','2025','3.9'],xL:['المسمى الوظيفي *','اسم الجهة','من','إلى','وصف المهام'],xP:['مصمم جرافيك أول','استوديو الإبداع','يناير 2022','حتى الآن','وصف ما قمت به...'],rm:'حذف',v:['يرجى إدخال الاسم','يرجى إدخال الجوال','يرجى إدخال البريد','يرجى كتابة الملخص'],a1:'تحليل تلقائي',a2:'مقارنة بوظيفة',jdL:'الصق وصف الوظيفة',jdP:'مثال: نبحث عن مطور...',jdB:'🔍 تحليل',pill:'عربي',tbtn:'اختر هذا التصميم',prev:'معاينة'},
@@ -480,24 +593,41 @@ function applyT(){
   ['v-name','v-role','v-city','v-summary'].forEach(function(id){var e=G(id);if(!e)return;e.style.direction=ltr?'ltr':'rtl';e.style.textAlign=ltr?'left':'right';});
 }
 
-var GF='<meta http-equiv="X-Content-Type-Options" content="nosniff"><meta http-equiv="X-Frame-Options" content="SAMEORIGIN"><meta http-equiv="Referrer-Policy" content="no-referrer"><meta name="robots" content="index,follow"><link rel="sitemap" type="application/xml" href="/sitemap.xml"><meta name="description" content="أنشئ سيرتك الذاتية الاحترافية مجاناً بالعربي والإنجليزي — 8 تصاميم جاهزة وتحليل ATS. Build your professional CV free in Arabic & English."><meta name="keywords" content="سيرة ذاتية، CV، resume, منشئ سيرة ذاتية، JAK CV، professional resume builder"><meta name="author" content="Abdulrahman Alzahrani"><meta property="og:title" content="JAK CV — منشئ السيرة الذاتية الاحترافي"><meta property="og:description" content="أنشئ سيرتك الذاتية مجاناً بتصاميم احترافية بالعربي والإنجليزي"><meta property="og:type" content="website"><meta property="og:locale" content="ar_SA"><meta name="twitter:card" content="summary"><meta name="twitter:title" content="JAK CV"><meta name="twitter:description" content="منشئ سيرة ذاتية مجاني واحترافي بالعربي والإنجليزي"><link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet"><style>@page{size:A4 portrait;margin:12mm 14mm}@media print{body{-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important}}</style>';
+var GF='<meta http-equiv="X-Content-Type-Options" content="nosniff"><meta http-equiv="X-Frame-Options" content="SAMEORIGIN"><meta http-equiv="Referrer-Policy" content="no-referrer"><meta name="robots" content="index,follow"><link rel="sitemap" type="application/xml" href="/sitemap.xml"><meta name="description" content="موقع إنشاء CV بنظام ATS — تم إنشاؤه بواسطة شاب سعودي. مجاناً لفترة محدودة!"><meta name="keywords" content="سيرة ذاتية، CV، resume, منشئ سيرة ذاتية، JAK CV، professional resume builder"><meta name="author" content="Abdulrahman Alzahrani"><meta property="og:title" content="JAK CV — منشئ السيرة الذاتية الاحترافي"><meta property="og:description" content="موقع إنشاء CV بنظام ATS — تم إنشاؤه بواسطة شاب سعودي. مجاناً لفترة محدودة!"><meta property="og:type" content="website"><meta property="og:locale" content="ar_SA"><meta name="twitter:card" content="summary"><meta name="twitter:title" content="JAK CV"><meta name="twitter:description" content="موقع إنشاء CV بنظام ATS — تم إنشاؤه بواسطة شاب سعودي. مجاناً لفترة محدودة!"><link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet"><style>@page{size:A4 portrait;margin:12mm 14mm}@media print{body{-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important}}</style>';
 
 function buildGrid(){
   var grid=G('tpl-grid');grid.innerHTML='';var t=T[LANG];
+  var hp=window._getHP ? window._getHP() : {freePill:'Free',paidLock:'Paid Template',pickBtn:'Select This Template'};
   TPLS[LANG].forEach(function(item){
     var card=document.createElement('div');card.className='tcard'+(TPL===item.id?' sel':'');card.id='tc-'+item.id;
     var html=renderCV(item.id,dummyData(item.id),true);
-    // Safely encode for srcdoc attribute
     var enc=html.replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
     var origin=item.id.startsWith('ar')?'top right':'top left';
-    card.innerHTML='<div class="tcheck">✓</div><div class="tthumb"><iframe srcdoc="'+enc+'" scrolling="no" sandbox="allow-same-origin" style="transform-origin:'+origin+'"></iframe></div><div class="tinfo"><div class="tname">'+item.name+'</div><div class="tpill">'+t.pill+'</div><div class="tbtns"><button class="tprev-btn" data-id="'+item.id+'">👁 '+t.prev+'</button><button class="tsel-btn" data-id="'+item.id+'">'+t.tbtn+'</button></div></div>';
+    var curSym=window._getHP ? window._getHP()===hp : true;
+    /* سعر ورمز العملة الحالية */
+    var payObj=window._selCur||{symbol:'﷼',price:'18.99',orig:'49'};
+    var pillHtml=item.free
+      ? '<div class="tpill" style="background:rgba(54,176,126,.15);color:#36b07e;border:1px solid rgba(54,176,126,.3)">'+hp.freePill+'</div>'
+      : '<div class="tpill" style="display:flex;align-items:center;gap:4px"><span style="color:#c9a94d">🔒</span><span>'+payObj.symbol+payObj.price+'</span><span style="color:#7a7a96;font-size:9px;text-decoration:line-through;margin-right:3px">'+payObj.symbol+payObj.orig+'</span></div>';
+    var lockOverlay=item.free?'':'<div style="position:absolute;inset:0;background:rgba(12,12,16,.55);display:flex;align-items:center;justify-content:center;z-index:3"><div style="background:#1e1e28;border:1px solid rgba(201,169,77,.4);border-radius:10px;padding:10px 16px;text-align:center"><div style="font-size:22px;margin-bottom:4px">🔒</div><div style="font-size:11px;font-weight:700;color:#c9a94d">'+hp.paidLock+'</div></div></div>';
+    card.innerHTML='<div class="tcheck">✓</div><div class="tthumb" style="position:relative">'+lockOverlay+'<iframe srcdoc="'+enc+'" scrolling="no" sandbox="allow-same-origin" style="transform-origin:'+origin+'"></iframe></div><div class="tinfo"><div class="tname">'+item.name+'</div>'+pillHtml+'<div class="tbtns"><button class="tprev-btn" data-id="'+item.id+'">👁 '+t.prev+'</button><button class="tsel-btn" data-id="'+item.id+'">'+(item.free?t.tbtn:'🔓 '+hp.pickBtn)+'</button></div></div>';
     card.querySelector('.tsel-btn').addEventListener('click',function(e){e.stopPropagation();pickTpl(this.getAttribute('data-id'));});
     card.querySelector('.tprev-btn').addEventListener('click',function(e){e.stopPropagation();openPreview(this.getAttribute('data-id'));});
     grid.appendChild(card);
   });
 }
 
+var _pendingTpl=null;
 function pickTpl(id){
+  /* تحقق إذا القالب مدفوع وما في توكن */
+  if(FREE_TPLS.indexOf(id)===-1 && !localStorage.getItem('jak_cv_token')){
+    _pendingTpl=id;
+    window.JAKPay && window.JAKPay.open();
+    return;
+  }
+  _doPick(id);
+}
+function _doPick(id){
   TPL=id;document.querySelectorAll('.tcard').forEach(function(c){c.classList.remove('sel');});
   var card=G('tc-'+id);if(card)card.classList.add('sel');
   var info=TPLS[LANG].find(function(x){return x.id===id;});if(info)G('atbar-nm').textContent=info.name;
@@ -797,6 +927,304 @@ window.addEventListener('beforeunload',function(e){
     e.returnValue='';
   }
 });
+
+// ══════════════════════════════════════
+// JAK PAY — نظام الدفع متعدد العملات
+// ══════════════════════════════════════
+(function(){
+  var CURRENCIES=[
+    {code:'SAR',symbol:'﷼', flag:'🇸🇦',price:'18.99',orig:'49',   raw:1899, note:'دفعة واحدة · بدون اشتراك', timer:'⚡ عرض لفترة محدودة', ar:true},
+    {code:'USD',symbol:'$', flag:'🇺🇸',price:'4.99', orig:'12.99',raw:499,  note:'One-time · No subscription', timer:'⚡ Limited Time Offer', ar:false},
+    {code:'EUR',symbol:'€', flag:'🇪🇺',price:'4.49', orig:'11.99',raw:449,  note:'Paiement unique',            timer:'⚡ Offre limitée',      ar:false},
+    {code:'GBP',symbol:'£', flag:'🇬🇧',price:'3.99', orig:'9.99', raw:399,  note:'One-time payment',           timer:'⚡ Limited Time Offer', ar:false},
+    {code:'JPY',symbol:'¥', flag:'🇯🇵',price:'790',  orig:'1990', raw:79000,note:'一回払い',                   timer:'⚡ 期間限定オファー',    ar:false},
+    {code:'INR',symbol:'₹', flag:'🇮🇳',price:'420',  orig:'1090', raw:42000,note:'एकमुश्त भुगतान',             timer:'⚡ Limited Time Offer', ar:false},
+    {code:'SGD',symbol:'S$',flag:'🇸🇬',price:'6.99', orig:'17.99',raw:699,  note:'One-time payment',           timer:'⚡ Limited Time Offer', ar:false},
+    {code:'BRL',symbol:'R$',flag:'🇧🇷',price:'24.90',orig:'64.90',raw:2490, note:'Pagamento único',            timer:'⚡ Oferta por tempo limitado', ar:false},
+    {code:'CAD',symbol:'C$',flag:'🇨🇦',price:'6.99', orig:'17.99',raw:699,  note:'One-time payment',           timer:'⚡ Limited Time Offer', ar:false},
+    {code:'CNY',symbol:'¥', flag:'🇨🇳',price:'36',   orig:'94',   raw:3600, note:'一次性付款',                 timer:'⚡ 限时优惠',            ar:false},
+  ];
+
+  var COUNTRY_MAP={
+    SA:'SAR',AE:'SAR',KW:'SAR',BH:'SAR',QA:'SAR',OM:'SAR',YE:'SAR',
+    US:'USD',CA:'CAD',GB:'GBP',
+    FR:'EUR',DE:'EUR',NL:'EUR',PT:'EUR',BE:'EUR',LT:'EUR',CH:'EUR',ES:'EUR',IT:'EUR',
+    JP:'JPY',IN:'INR',SG:'SGD',CN:'CNY',HK:'USD',
+    BR:'BRL',CO:'USD',TH:'USD',KR:'USD',
+  };
+
+  var sel=CURRENCIES[0];
+  var TOKEN_KEY='jak_cv_token';
+
+  /* ── حذف أي توكن تجريبي قديم عند التحميل ── */
+  (function(){
+    var t=localStorage.getItem(TOKEN_KEY);
+    if(t&&t.indexOf(':demo')>-1)localStorage.removeItem(TOKEN_KEY);
+  })();
+
+  function detectAndSet(){
+    fetch('https://ipapi.co/json/')
+      .then(function(r){return r.json();})
+      .then(function(d){
+        var code=COUNTRY_MAP[d.country_code]||'USD';
+        var found=CURRENCIES.find(function(c){return c.code===code;});
+        if(found){sel=found;buildHomeGrid();updateHomePrice();}
+      }).catch(function(){});
+  }
+
+  /* ── شبكة نافذة الدفع ── */
+  function buildModalGrid(){
+    var grid=document.getElementById('jak-currency-grid');
+    if(!grid)return;
+    grid.innerHTML='';
+    CURRENCIES.forEach(function(c){
+      var btn=document.createElement('button');
+      btn.className='jak-cur-btn'+(c.code===sel.code?' jak-cur-sel':'');
+      btn.setAttribute('data-code',c.code);
+      btn.innerHTML='<span class="jak-cur-flag">'+c.flag+'</span><span class="jak-cur-code">'+c.code+'</span>';
+      btn.onclick=function(){sel=c;syncAll();buildModalGrid();};
+      grid.appendChild(btn);
+    });
+  }
+
+  /* ── شبكة الصفحة الرئيسية ── */
+  function buildHomeGrid(){
+    var grid=document.getElementById('hp-cur-grid');
+    if(!grid)return;
+    grid.innerHTML='';
+    CURRENCIES.forEach(function(c){
+      var btn=document.createElement('button');
+      btn.className='hp-cur-btn'+(c.code===sel.code?' hp-sel':'');
+      btn.setAttribute('data-code',c.code);
+      btn.innerHTML='<span>'+c.flag+'</span><span>'+c.code+'</span>';
+      btn.onclick=function(){sel=c;syncAll();buildHomeGrid();buildModalGrid();};
+      grid.appendChild(btn);
+    });
+  }
+
+  /* ── قاموس الصفحة الرئيسية ── */
+  var HP_TEXT={
+    ar:{
+      badge:'اختر لغتك',
+      title:'مرحباً في <b>JAK CV</b>',
+      desc:'أنشئ سيرتك الذاتية باحترافية في دقائق — عربي أو إنجليزي',
+      statTpl:'قوالب', statLang:'لغات', statLabel:'فترة محدودة',
+      sectionTitle:'القوالب المميّزة',
+      tag:'توفير 61%',
+      f1:'٣ قوالب احترافية مميّزة', f2:'PDF بجودة طباعة عالية',
+      f3:'بدون علامة مائية',        f4:'دفعة واحدة · بدون اشتراك',
+      freePill:'مجاني', paidLock:'قالب مدفوع', pickBtn:'اختر هذا التصميم',
+      dir:'rtl',
+      /* نافذة الدفع */
+      mBadge:'⚡ عرض لفترة محدودة',
+      mTitle:'قالب احترافي مميّز',
+      mSub:'يشمل جميع القوالب المدفوعة — مرة واحدة للأبد',
+      mCurLabel:'اختر عملتك',
+      mF1:'الوصول لجميع القوالب الـ٣', mF2:'PDF بجودة طباعة عالية',
+      mF3:'بدون علامة مائية',          mF4:'متوافق مع أنظمة ATS',
+      mBtn:'افتح القالب الآن →',
+      mSecure:'🔒 الدفع آمن · Moyasar · مدى · Apple Pay · STC Pay',
+      mVerifying:'جاري التحقق من الدفع…',
+      mProcessing:'⏳ جاري المعالجة...'
+    },
+    en:{
+      badge:'Choose Your Language',
+      title:'Welcome to <b>JAK CV</b>',
+      desc:'Build a professional CV in minutes — Arabic or English',
+      statTpl:'Templates', statLang:'Languages', statLabel:'Limited Time',
+      sectionTitle:'Premium Templates',
+      tag:'Save 61%',
+      f1:'3 premium professional templates', f2:'High-quality print PDF',
+      f3:'No watermark',                     f4:'One-time · No subscription',
+      freePill:'Free', paidLock:'Paid Template', pickBtn:'Select This Template',
+      dir:'ltr',
+      /* payment modal */
+      mBadge:'⚡ Limited Time Offer',
+      mTitle:'Premium Template',
+      mSub:'Includes all paid templates — one-time forever',
+      mCurLabel:'Choose your currency',
+      mF1:'Access to all 3 templates', mF2:'High-quality print PDF',
+      mF3:'No watermark',              mF4:'ATS compatible',
+      mBtn:'Unlock Template Now →',
+      mSecure:'🔒 Secure payment · Moyasar · Apple Pay · STC Pay',
+      mVerifying:'Verifying payment…',
+      mProcessing:'⏳ Processing...'
+    }
+  };
+  function getHP(){ return sel.ar ? HP_TEXT.ar : HP_TEXT.en; }
+  /* expose for buildGrid */
+  window._getHP=getHP;
+
+  /* ── تحديث كل الأسعار والنصوص دفعة واحدة ── */
+  function syncAll(){
+    window._selCur=sel; /* expose current currency to buildGrid */
+    var h=getHP();
+    function set(id,v){var e=document.getElementById(id);if(e)e.innerHTML=v;}
+
+    /* اتجاه الصفحة الرئيسية */
+    var wrap=document.querySelector('#s-lang .lang-wrap');
+    if(wrap)wrap.style.direction=h.dir;
+
+    /* نصوص الصفحة الرئيسية */
+    set('hp-badge-txt',    h.badge);
+    set('hp-main-title',   h.title);
+    set('hp-main-desc',    h.desc);
+    set('hp-stat-tpl',     h.statTpl);
+    set('hp-stat-lang',    h.statLang);
+    set('hp-stat-label',   h.statLabel);
+    set('hp-section-title',h.sectionTitle);
+    set('hp-price-tag',    h.tag);
+    set('hp-timer-text',   sel.timer);
+    set('hp-f1',h.f1); set('hp-f2',h.f2); set('hp-f3',h.f3); set('hp-f4',h.f4);
+    set('hp-price-main', sel.symbol+sel.price);
+    set('hp-price-orig', sel.symbol+sel.orig);
+    set('hp-stat-price', sel.symbol+sel.price);
+
+    /* ── نافذة الدفع ── */
+    var modal=document.getElementById('jak-pay-modal');
+    if(modal){
+      modal.style.direction=h.dir;
+      set('jak-badge-txt',  h.mBadge);
+      set('jak-pay-title',  h.mTitle);
+      set('jak-pay-sub',    h.mSub);
+      set('jak-currency-label', h.mCurLabel);
+      set('jak-f1',h.mF1); set('jak-f2',h.mF2);
+      set('jak-f3',h.mF3); set('jak-f4',h.mF4);
+      set('jak-pay-btn',    h.mBtn);
+      set('jak-pay-secure', h.mSecure);
+      set('jak-verifying-txt', h.mVerifying);
+    }
+
+    /* الأسعار في المودال */
+    var pm=document.getElementById('jak-price-main');
+    var pn=document.getElementById('jak-price-note');
+    var po=document.getElementById('jak-price-orig-el');
+    if(po)po.textContent=sel.symbol+sel.orig;
+    if(pm)pm.innerHTML=sel.symbol+sel.price;
+    if(pn)pn.innerHTML=sel.note;
+  }
+
+  /* ── فتح / إغلاق ── */
+  function openModal(){
+    var m=document.getElementById('jak-pay-modal');
+    if(!m)return;
+    buildModalGrid();
+    syncAll();
+    m.classList.add('jak-open');
+    m.classList.remove('jak-checking');
+    document.body.style.overflow='hidden';
+  }
+  function closeModal(){
+    var m=document.getElementById('jak-pay-modal');
+    if(m)m.classList.remove('jak-open','jak-checking');
+    document.body.style.overflow='';
+  }
+
+  /* ── بعد الدفع: افتح القالب المعلّق ── */
+  function afterPayment(){
+    localStorage.setItem(TOKEN_KEY,Date.now()+':paid');
+    closeModal();
+    var id=window._pendingTpl;
+    window._pendingTpl=null;
+    if(id && window._doPick)window._doPick(id);
+  }
+
+  /* ════════════════════════════════════════
+     PADDLE — ضع قيمتين فقط بعد التسجيل:
+       PADDLE_TOKEN   ← Paddle Dashboard → Developer Tools → Client-side token
+       PADDLE_PRICE   ← Paddle Dashboard → Catalog → Prices → Price ID
+     ════════════════════════════════════════ */
+  var PADDLE_TOKEN = 'test_9359c422d3827ed035a8ebaf985';
+  var PADDLE_PRICE = 'pri_01kmwstmyjm00m5b7svr9m79bj';
+  var paddleReady  = false;
+
+  /* ── تهيئة Paddle ── */
+  function initPaddle(){
+    if(typeof Paddle === 'undefined' || paddleReady) return;
+    try {
+      Paddle.Initialize({
+        token: PADDLE_TOKEN,
+        eventCallback: function(ev){
+          if(ev.name === 'checkout.completed'){
+            afterPayment();
+          }
+          /* أغلق الـ overlay عند إغلاق المستخدم لنافذة Paddle */
+          if(ev.name === 'checkout.closed'){
+            var btn = document.getElementById('jak-pay-btn');
+            var h = getHP();
+            if(btn){ btn.innerHTML = h.mBtn; btn.disabled = false; }
+          }
+        }
+      });
+      paddleReady = true;
+    } catch(e){
+      console.warn('Paddle init error:', e);
+    }
+  }
+
+  function startPayment(){
+    var h   = getHP();
+    var btn = document.getElementById('jak-pay-btn');
+
+    /* ── تحقق أن Paddle محمّل ── */
+    if(typeof Paddle === 'undefined'){
+      alert(sel.ar ? 'خطأ: لم يتم تحميل بوابة الدفع، تأكد من الاتصال بالإنترنت.' : 'Error: Payment gateway not loaded. Check your connection.');
+      return;
+    }
+
+    /* ── تحقق أن المفاتيح تم تحديثها ── */
+    if(PADDLE_TOKEN.indexOf('REPLACE') > -1 || PADDLE_PRICE.indexOf('REPLACE') > -1){
+      /* وضع تجريبي للاختبار فقط */
+      btn.textContent = h.mProcessing;
+      btn.disabled    = true;
+      setTimeout(function(){
+        afterPayment();
+        btn.innerHTML = h.mBtn;
+        btn.disabled  = false;
+      }, 1800);
+      return;
+    }
+
+    btn.textContent = h.mProcessing;
+    btn.disabled    = true;
+
+    initPaddle();
+
+    /* ── فتح Paddle Checkout ── */
+    Paddle.Checkout.open({
+      items: [{ priceId: PADDLE_PRICE, quantity: 1 }],
+      settings: {
+        theme:   'dark',
+        locale:  sel.ar ? 'ar' : 'en',
+        displayMode: 'overlay',
+        frameTarget:  'jak-paddle-frame',
+        frameStyle:   'width:100%;min-width:312px;background:transparent;border:none;',
+        allowedPaymentMethods: ['card','apple_pay','google_pay','paypal'],
+      },
+      customData: { currency: sel.code },
+    });
+  }
+
+  window.addEventListener('DOMContentLoaded', function(){
+    /* تهيئة Paddle مبكراً */
+    if(typeof Paddle !== 'undefined') initPaddle();
+
+    buildHomeGrid();
+    syncAll();
+    detectAndSet();
+
+    var closeBtn = document.getElementById('jak-pay-close');
+    var bg       = document.getElementById('jak-pay-bg');
+    if(closeBtn) closeBtn.onclick = closeModal;
+    if(bg)       bg.onclick       = closeModal;
+
+    var payBtn = document.getElementById('jak-pay-btn');
+    if(payBtn)   payBtn.onclick   = startPayment;
+  });
+
+  document.addEventListener('keydown', function(e){ if(e.key === 'Escape') closeModal(); });
+  window.JAKPay = { open: openModal, close: closeModal };
+})();
 </script>
 </body>
 </html>
