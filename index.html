@@ -268,7 +268,11 @@ body{background:var(--dark);color:var(--white);font-family:'Tajawal',sans-serif;
 .jak-rec-note{font-size:11px;color:#7a7a96;text-align:center;margin-top:10px}
 
 
-/* ── HOME PRICING ── */
+/* ── LANG SELECTOR ── */
+#hp-lang-bar{display:flex;flex-wrap:wrap;justify-content:center;gap:6px;margin-bottom:20px}
+.hp-lang-pill{background:#1e1e28;border:1px solid #28283a;color:#7a7a96;border-radius:50px;padding:5px 12px;font-size:12px;font-weight:700;cursor:pointer;display:flex;align-items:center;gap:5px;transition:all .15s;font-family:'DM Sans',sans-serif}
+.hp-lang-pill:hover{border-color:var(--gold);color:#f4f2ed}
+.hp-lang-pill.hp-lang-on{border-color:var(--gold);background:rgba(201,169,77,.12);color:var(--gold)}
 #home-pricing{margin:28px 0 8px;background:var(--card);border:1px solid var(--border);border-radius:16px;padding:20px 22px}
 .hp-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;flex-wrap:wrap;gap:8px}
 .hp-title{font-size:11px;font-weight:700;color:var(--muted);letter-spacing:1.8px;text-transform:uppercase}
@@ -344,6 +348,18 @@ body{background:var(--dark);color:var(--white);font-family:'Tajawal',sans-serif;
 <div id="s-lang">
   <div class="lang-wrap">
     <div class="badge"><span class="bdot"></span><span id="hp-badge-txt">Choose Your Language | اختر لغتك</span></div>
+
+    <!-- شريط اللغات -->
+    <div id="hp-lang-bar">
+      <button class="hp-lang-pill" onclick="setUILang('ar',true)">🇸🇦 العربية</button>
+      <button class="hp-lang-pill hp-lang-on" onclick="setUILang('en',true)">🇺🇸 English</button>
+      <button class="hp-lang-pill" onclick="setUILang('fr',true)">🇫🇷 Français</button>
+      <button class="hp-lang-pill" onclick="setUILang('ja',true)">🇯🇵 日本語</button>
+      <button class="hp-lang-pill" onclick="setUILang('de',true)">🇩🇪 Deutsch</button>
+      <button class="hp-lang-pill" onclick="setUILang('pt',true)">🇧🇷 Português</button>
+      <button class="hp-lang-pill" onclick="setUILang('hi',true)">🇮🇳 हिन्दी</button>
+      <button class="hp-lang-pill" onclick="setUILang('nl',true)">🇳🇱 Nederlands</button>
+    </div>
     <h1 class="lang-title" id="hp-main-title">Welcome to <b>JAK CV</b></h1>
     <p class="lang-desc" id="hp-main-desc">Build a professional CV in minutes — Arabic or English</p>
     <div class="stats">
@@ -353,23 +369,22 @@ body{background:var(--dark);color:var(--white);font-family:'Tajawal',sans-serif;
       <div><div class="stat-n" id="hp-stat-price">18.99 ﷼</div><div class="stat-l" id="hp-stat-label">فترة محدودة</div></div>
     </div>
 
-    <!-- ── قسم السعر والعملات ── -->
+    <!-- ── قسم السعر ── -->
     <div id="home-pricing">
       <div class="hp-top">
         <div class="hp-title" id="hp-section-title">القوالب المميّزة</div>
         <div class="hp-timer"><span class="hp-dot"></span> <span id="hp-timer-text">عرض لفترة محدودة</span></div>
       </div>
       <div class="hp-price-row">
-        <span class="hp-price-main" id="hp-price-main">18.99 ﷼</span>
-        <span class="hp-price-orig" id="hp-price-orig">49 ﷼</span>
-        <span class="hp-price-tag" id="hp-price-tag">توفير 61%</span>
+        <span class="hp-price-main" id="hp-price-main">$4.99</span>
+        <span class="hp-price-orig" id="hp-price-orig">$12.99</span>
+        <span class="hp-price-tag" id="hp-price-tag">Save 61%</span>
       </div>
-      <div class="hp-cur-grid" id="hp-cur-grid"></div>
       <div class="hp-feats">
-        <div class="hp-feat"><span class="hp-feat-ic">✓</span> <span id="hp-f1">٣ قوالب احترافية مميّزة</span></div>
-        <div class="hp-feat"><span class="hp-feat-ic">✓</span> <span id="hp-f2">PDF بجودة طباعة عالية</span></div>
-        <div class="hp-feat"><span class="hp-feat-ic">✓</span> <span id="hp-f3">بدون علامة مائية</span></div>
-        <div class="hp-feat"><span class="hp-feat-ic">↩</span> <span id="hp-f4">ضمان استرداد 7 أيام</span></div>
+        <div class="hp-feat"><span class="hp-feat-ic">✓</span> <span id="hp-f1">3 premium templates</span></div>
+        <div class="hp-feat"><span class="hp-feat-ic">✓</span> <span id="hp-f2">High-quality PDF</span></div>
+        <div class="hp-feat"><span class="hp-feat-ic">✓</span> <span id="hp-f3">No watermark</span></div>
+        <div class="hp-feat"><span class="hp-feat-ic">↩</span> <span id="hp-f4">7-day guarantee</span></div>
       </div>
     </div>
 
@@ -466,6 +481,7 @@ body{background:var(--dark);color:var(--white);font-family:'Tajawal',sans-serif;
       <button class="cvbtn-ats" id="cv-ats">📊 ATS</button>
       <button class="cvbtn" id="cv-share" style="border-color:rgba(201,169,77,.3);color:var(--gold)" title="شارك الموقع">🔗 شارك</button>
       <button class="cvbtn" id="cv-save-btn" style="border-color:rgba(54,176,126,.3);color:#36b07e" title="احفظ السيرة الذاتية">💾 احفظ</button>
+      <div id="cv-wm-notice" style="display:none;font-size:11px;color:#f59e0b;background:rgba(245,158,11,.1);border:1px solid rgba(245,158,11,.3);border-radius:6px;padding:4px 10px;cursor:pointer" onclick="window.JAKPay&&window.JAKPay.open()" title="اضغط لإزالة العلامة المائية">⚠ علامة مائية · <u>أزلها</u></div>
       <button class="cvbtn-pdf" id="cv-pdf">⬇ PDF</button>
     </div>
   </div>
@@ -810,7 +826,26 @@ function buildCV(){
   var wrap=G('cv-out');wrap.innerHTML='<iframe id="cv-iframe" scrolling="no" sandbox="allow-same-origin allow-modals" style="width:100%;border:none;display:block;min-height:600px"></iframe>';
   var ifrm=G('cv-iframe');ifrm.srcdoc=renderCV(TPL,d,false);
   ifrm.onload=function(){try{var h=ifrm.contentDocument.body.scrollHeight;ifrm.style.height=(h+20)+'px';}catch(e){ifrm.style.height='900px';}};
-  G('ats-box').style.display='none';atsOpen=false;show('s-cv');
+  G('ats-box').style.display='none';atsOpen=false;
+  /* أظهر إشعار العلامة المائية للقوالب المجانية */
+  var wmNotice=G('cv-wm-notice');
+  if(wmNotice){
+    var isFreeNow=FREE_TPLS.indexOf(TPL)>-1;
+    var hasPaidNow=localStorage.getItem('jak_cv_token')&&localStorage.getItem('jak_cv_token').indexOf(':'+TPL)>-1;
+    wmNotice.style.display=(isFreeNow&&!hasPaidNow)?'flex':'none';
+    /* أظهر قفل على زر ATS */
+    var atsBtn=G('cv-ats');
+    if(atsBtn){
+      if(isFreeNow&&!hasPaidNow){
+        atsBtn.textContent='📊 ATS 🔒';
+        atsBtn.style.opacity='0.6';
+      } else {
+        atsBtn.textContent='📊 ATS';
+        atsBtn.style.opacity='1';
+      }
+    }
+  }
+  show('s-cv');
 }
 
 function dummyData(id){
@@ -830,18 +865,39 @@ function buls(text,left){return text?text.split(/[.،\n]+/).filter(function(s){r
 function expBlock(exps,rtl){return exps.map(function(e){var dt=[e.fr,e.to].filter(Boolean).join(' — ');return'<div style="margin-bottom:13px;overflow:hidden"><div style="font-size:14px;font-weight:700">'+e.t+'</div>'+(e.o?'<div style="font-size:12.5px;color:#666;'+(rtl?'':'font-style:italic;')+'margin-bottom:2px">'+e.o+'</div>':'')+'<div style="font-size:12px;color:#666;'+(rtl?'float:left;direction:ltr':'float:right')+';margin-top:-18px">'+dt+'</div><div style="clear:both">'+buls(e.d,!rtl)+'</div></div>';}).join('');}
 
 function renderCV(id,d,isPreview){
-  if(id==='ar1'){var cP=d.contact.split(' | ');return'<!DOCTYPE html><html dir="rtl"><head><meta charset="UTF-8">'+GF+'<style>*{box-sizing:border-box;margin:0;padding:0}body{background:#fff;color:#111;font-family:\'Cairo\',sans-serif;direction:rtl;padding:28px 36px}</style></head><body><div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:20px;padding-bottom:14px"><div style="display:flex;flex-direction:column;gap:4px;font-size:12px;color:#333;direction:ltr;text-align:left;margin-top:8px">'+cP.map(function(x){return'<span>'+x+'</span>';}).join('')+'</div><div style="text-align:right"><div style="font-size:48px;font-weight:900;line-height:1;letter-spacing:-1px">'+d.name+'</div>'+(d.role?'<div style="font-size:17px;font-weight:700;color:#444;margin-top:4px">'+d.role+'</div>':'')+'</div></div>'+(d.summary?'<div style="font-size:15px;font-weight:900;margin-top:14px;margin-bottom:5px">نبذة عني</div><hr style="border:none;border-top:1.5px solid #111;margin-bottom:9px"><div style="font-size:13px;line-height:1.9;color:#222;margin-bottom:8px">'+d.summary+'</div>':'')+(d.exp.length?'<div style="font-size:15px;font-weight:900;margin-top:14px;margin-bottom:5px">الخبرات المهنية</div><hr style="border:none;border-top:1.5px solid #111;margin-bottom:9px">'+expBlock(d.exp,true):'')+(d.edu.length?'<div style="font-size:15px;font-weight:900;margin-top:14px;margin-bottom:5px">التعليم</div><hr style="border:none;border-top:1.5px solid #111;margin-bottom:9px">'+d.edu.map(function(e){return'<div style="margin-bottom:8px;overflow:hidden"><span style="font-size:14px;font-weight:700">'+e.n+'</span><span style="float:left;font-size:12px;color:#333;direction:ltr">'+e.dt+'</span><div style="font-size:12px;color:#555;clear:both">'+eduDet(e)+'</div></div>';}).join(''):'')+(d.skls.length?'<div style="font-size:15px;font-weight:900;margin-top:14px;margin-bottom:5px">المهارات</div><hr style="border:none;border-top:1.5px solid #111;margin-bottom:9px"><div style="display:grid;grid-template-columns:1fr 1fr;gap:0 20px">'+d.skls.map(function(x){return bul(esc(x),false);}).join('')+'</div>':'')+(d.crss.length?'<div style="font-size:15px;font-weight:900;margin-top:14px;margin-bottom:5px">الدورات</div><hr style="border:none;border-top:1.5px solid #111;margin-bottom:9px"><div style="display:grid;grid-template-columns:1fr 1fr;gap:0 20px">'+d.crss.map(function(x){return bul(esc(x),false);}).join('')+'</div>':'')+'</body></html>';}
+  /* علامة مائية للقوالب المجانية عند التحميل الفعلي */
+  var isFree = FREE_TPLS.indexOf(id) > -1;
+  var tok = localStorage.getItem('jak_cv_token');
+  var hasPaid = tok && tok.indexOf(':'+id) > -1;
+  var showWatermark = !isPreview && isFree && !hasPaid;
+  var watermark = showWatermark
+    ? '<div style="position:fixed;inset:0;pointer-events:none;z-index:9999;display:flex;align-items:center;justify-content:center;transform:rotate(-35deg)"><div style="font-size:52px;font-weight:900;color:rgba(0,0,0,0.08);font-family:DM Sans,sans-serif;letter-spacing:4px;white-space:nowrap">JAK CV · FREE</div></div>'
+    : '';
+  if(id==='ar1'){var cP=d.contact.split(' | ');return'<!DOCTYPE html><html dir="rtl"><head><meta charset="UTF-8">'+GF+'<style>*{box-sizing:border-box;margin:0;padding:0}body{background:#fff;color:#111;font-family:\'Cairo\',sans-serif;direction:rtl;padding:28px 36px}</style></head><body><div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:20px;padding-bottom:14px"><div style="display:flex;flex-direction:column;gap:4px;font-size:12px;color:#333;direction:ltr;text-align:left;margin-top:8px">'+cP.map(function(x){return'<span>'+x+'</span>';}).join('')+'</div><div style="text-align:right"><div style="font-size:48px;font-weight:900;line-height:1;letter-spacing:-1px">'+d.name+'</div>'+(d.role?'<div style="font-size:17px;font-weight:700;color:#444;margin-top:4px">'+d.role+'</div>':'')+'</div></div>'+(d.summary?'<div style="font-size:15px;font-weight:900;margin-top:14px;margin-bottom:5px">نبذة عني</div><hr style="border:none;border-top:1.5px solid #111;margin-bottom:9px"><div style="font-size:13px;line-height:1.9;color:#222;margin-bottom:8px">'+d.summary+'</div>':'')+(d.exp.length?'<div style="font-size:15px;font-weight:900;margin-top:14px;margin-bottom:5px">الخبرات المهنية</div><hr style="border:none;border-top:1.5px solid #111;margin-bottom:9px">'+expBlock(d.exp,true):'')+(d.edu.length?'<div style="font-size:15px;font-weight:900;margin-top:14px;margin-bottom:5px">التعليم</div><hr style="border:none;border-top:1.5px solid #111;margin-bottom:9px">'+d.edu.map(function(e){return'<div style="margin-bottom:8px;overflow:hidden"><span style="font-size:14px;font-weight:700">'+e.n+'</span><span style="float:left;font-size:12px;color:#333;direction:ltr">'+e.dt+'</span><div style="font-size:12px;color:#555;clear:both">'+eduDet(e)+'</div></div>';}).join(''):'')+(d.skls.length?'<div style="font-size:15px;font-weight:900;margin-top:14px;margin-bottom:5px">المهارات</div><hr style="border:none;border-top:1.5px solid #111;margin-bottom:9px"><div style="display:grid;grid-template-columns:1fr 1fr;gap:0 20px">'+d.skls.map(function(x){return bul(esc(x),false);}).join('')+'</div>':'')+(d.crss.length?'<div style="font-size:15px;font-weight:900;margin-top:14px;margin-bottom:5px">الدورات</div><hr style="border:none;border-top:1.5px solid #111;margin-bottom:9px"><div style="display:grid;grid-template-columns:1fr 1fr;gap:0 20px">'+d.crss.map(function(x){return bul(esc(x),false);}).join('')+'</div>':'')+watermark+'</body></html>';}
   if(id==='ar2'){var cP2=d.contact.split(' | ');var eH2=d.exp.map(function(e){var dt=[e.fr,e.to].filter(Boolean).join(' – ');var b=e.d?e.d.split(/[.،]+/).filter(function(s){return s.trim();}).map(function(s){return'<div style="font-size:12px;color:#222;padding-right:14px;position:relative;line-height:1.7;margin-bottom:2px">○ '+s.trim()+'</div>';}).join(''):'';return'<div style="margin-bottom:10px"><div style="font-size:13px;font-weight:700">'+e.t+'</div><div style="font-size:12px;color:#555">'+e.o+'</div><div style="font-size:11px;color:#777;direction:ltr;display:inline-block">'+dt+'</div>'+b+'</div>';}).join('');var edH2=d.edu.map(function(e){return'<div style="margin-bottom:6px"><div style="font-size:12.5px;font-weight:700">'+e.n+'</div><div style="font-size:11.5px;color:#555">'+eduDet(e)+'</div></div>';}).join('');return'<!DOCTYPE html><html dir="rtl"><head><meta charset="UTF-8">'+GF+'<style>*{box-sizing:border-box;margin:0;padding:0}body{background:#fff;color:#111;font-family:\'Cairo\',sans-serif;direction:rtl}.hdr{padding:20px 24px 14px;border-bottom:3px solid #111}.body{display:grid;grid-template-columns:1fr 175px}.main{padding:14px 20px;border-left:1.5px solid #ddd}.side{padding:14px 12px;background:#f7f7f7}.sett{font-size:13px;font-weight:900;margin-bottom:4px;margin-top:10px;padding-bottom:3px;border-bottom:1px solid #bbb}.sett:first-child{margin-top:0}</style></head><body><div class="hdr"><div style="font-size:24px;font-weight:900">'+d.name+'</div>'+(d.role?'<div style="font-size:12.5px;color:#555">'+d.role+'</div>':'')+'</div><div class="body"><div class="main">'+(d.summary?'<div class="sett">الهدف الوظيفي</div><div style="font-size:12.5px;line-height:1.85;color:#222">'+d.summary+'</div>':'')+(d.exp.length?'<div class="sett">الخبرات الوظيفية</div>'+eH2:'')+(d.edu.length?'<div class="sett">التعليم</div>'+edH2:'')+'</div><div class="side">'+(cP2.length?'<div class="sett">معلومات الاتصال</div>'+cP2.map(function(x){return'<div style="font-size:11px;color:#555;margin-bottom:3px;direction:ltr;text-align:left">'+esc(x)+'</div>';}).join(''):'')+(d.skls.length?'<div class="sett">المهارات</div>'+d.skls.map(function(x){return'<div style="font-size:12px;color:#333;padding-right:10px;position:relative;line-height:1.7;margin-bottom:2px">• '+esc(x)+'</div>';}).join(''):'')+(d.crss.length?'<div class="sett">الدورات</div>'+d.crss.map(function(x){return'<div style="font-size:12px;color:#333;padding-right:10px;position:relative;line-height:1.7;margin-bottom:2px">• '+esc(x)+'</div>';}).join(''):'')+'</div></div></body></html>';}
-  if(id==='ar3'){var eH3=d.exp.map(function(e){var dt=[e.fr,e.to].filter(Boolean).join(' – ');var b=e.d?e.d.split(/[.]+/).filter(function(s){return s.trim();}).map(function(s){return'<div style="font-size:12px;color:#333;padding-left:14px;position:relative;line-height:1.7;margin-bottom:2px"><span style="position:absolute;left:3px;color:#aaa">•</span>'+s.trim()+'</div>';}).join(''):'';return'<div style="margin-bottom:12px;overflow:hidden"><div style="font-size:13px;font-weight:700">'+e.t+'</div><div style="font-size:11.5px;color:#888">'+e.o+'</div><div style="font-size:11px;color:#888;float:right;margin-top:-32px;direction:ltr">'+dt+'</div><div style="clear:both">'+b+'</div></div>';}).join('');var edH3=d.edu.map(function(e){return'<div style="margin-bottom:7px;overflow:hidden"><span style="font-size:12.5px;font-weight:700">'+e.n+'</span><span style="float:right;font-size:11.5px;color:#888">'+e.dt+'</span><div style="font-size:11.5px;color:#888;clear:both">'+eduDet(e)+'</div></div>';}).join('');return'<!DOCTYPE html><html><head><meta charset="UTF-8">'+GF+'<style>*{box-sizing:border-box;margin:0;padding:0}body{background:#fff;color:#111;font-family:\'DM Sans\',sans-serif;direction:ltr;padding:28px 36px}.sett{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:2px;color:#888;margin-top:14px;margin-bottom:4px}.hr{border:none;border-top:1px solid #ddd;margin-bottom:9px}</style></head><body><div style="font-size:20px;font-weight:700;margin-bottom:2px">'+d.name+'</div>'+(d.role?'<div style="font-size:12.5px;color:#888;margin-bottom:2px">'+d.role+'</div>':'')+'<div style="font-size:11.5px;color:#888;margin-bottom:14px">'+d.contact+'</div>'+(d.summary?'<div class="sett">Summary</div><hr class="hr"><div style="font-size:12.5px;line-height:1.8;color:#333;text-align:justify;margin-bottom:8px">'+d.summary+'</div>':'')+(d.exp.length?'<div class="sett">Work Experience</div><hr class="hr">'+eH3:'')+(d.edu.length?'<div class="sett">Education</div><hr class="hr">'+edH3:'')+(d.skls.length?'<div class="sett">Skills</div><hr class="hr">'+d.skls.map(function(x){return'<div style="font-size:12px;color:#333;padding-left:14px;position:relative;line-height:1.7"><span style="position:absolute;left:3px;color:#aaa">•</span>'+esc(x)+'</div>';}).join(''):'')+(d.crss.length?'<div class="sett">Certifications</div><hr class="hr">'+d.crss.map(function(x){return'<div style="font-size:12px;color:#333;padding-left:14px;position:relative;line-height:1.7"><span style="position:absolute;left:3px;color:#aaa">•</span>'+esc(x)+'</div>';}).join(''):'')+'</body></html>';}
-  if(id==='ar4'){return'<!DOCTYPE html><html dir="rtl"><head><meta charset="UTF-8">'+GF+'<style>*{box-sizing:border-box;margin:0;padding:0}body{background:#fff;color:#111;font-family:\'Cairo\',sans-serif;direction:rtl;padding:28px 36px}.sett{font-size:13.5px;font-weight:900;text-align:right;border-bottom:1.5px solid #111;padding-bottom:4px;margin-bottom:9px;margin-top:18px}</style></head><body><div style="font-size:28px;font-weight:900;text-align:center;margin-bottom:4px">'+d.name+'</div>'+(d.role?'<div style="font-size:13.5px;color:#777;text-align:center;margin-bottom:4px">'+d.role+'</div>':'')+'<div style="font-size:12px;color:#444;text-align:center;margin-bottom:24px;direction:ltr">'+d.contact+'</div>'+(d.summary?'<div class="sett">الملخص الشخصي</div><div style="font-size:13px;line-height:1.85;color:#222;margin-bottom:8px">'+d.summary+'</div>':'')+(d.exp.length?'<div class="sett">الخبرة العملية</div>'+expBlock(d.exp,true):'')+(d.edu.length?'<div class="sett">التعليم</div>'+d.edu.map(function(e){return'<div style="margin-bottom:8px;overflow:hidden"><div style="font-size:13.5px;font-weight:700">'+e.n+'</div><span style="font-size:11.5px;color:#666;float:left;direction:ltr">'+e.dt+'</span><div style="font-size:12px;color:#555;clear:both">'+eduDet(e)+'</div></div>';}).join(''):'')+(d.skls.length?'<div class="sett">المهارات</div><div style="font-size:12.5px;color:#222">'+d.skls.map(esc).join(' · ')+'</div>':'')+(d.crss.length?'<div class="sett">الدورات</div>'+d.crss.map(function(x){return bul(esc(x),false);}).join(''):'')+'</body></html>';}
-  if(id==='en1'){return'<!DOCTYPE html><html><head><meta charset="UTF-8">'+GF+'<style>*{box-sizing:border-box;margin:0;padding:0}body{background:#fff;color:#111;font-family:\'DM Sans\',sans-serif;direction:ltr;padding:32px 44px}.sett{font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;border-bottom:1.5px solid #111;padding-bottom:4px;margin-bottom:9px;margin-top:18px}</style></head><body><div style="font-size:28px;font-weight:700;text-align:center;margin-bottom:4px">'+d.name+'</div>'+(d.role?'<div style="font-size:13.5px;color:#777;text-align:center;margin-bottom:5px">'+d.role+'</div>':'')+'<div style="font-size:12px;color:#444;text-align:center;margin-bottom:24px">'+d.contact+'</div>'+(d.summary?'<div class="sett">Professional Summary</div><div style="font-size:13px;line-height:1.8;color:#222;text-align:justify;margin-bottom:8px">'+d.summary+'</div>':'')+(d.exp.length?'<div class="sett">Work Experience</div>'+expBlock(d.exp,false):'')+(d.edu.length?'<div class="sett">Education</div>'+d.edu.map(function(e){return'<div style="margin-bottom:8px;overflow:hidden"><div style="font-size:13.5px;font-weight:700">'+e.n+'</div><span style="float:right;font-size:12px;color:#666">'+e.dt+'</span><div style="font-size:12px;color:#555;clear:both">'+eduDet(e)+'</div></div>';}).join(''):'')+(d.skls.length?'<div class="sett">Skills</div><div style="font-size:12.5px;color:#222;padding-left:16px;position:relative;line-height:1.75"><span style="position:absolute;left:3px">•</span>'+d.skls.map(esc).join(', ')+'</div>':'')+(d.crss.length?'<div class="sett">Certifications</div>'+d.crss.map(function(x){return bul(esc(x),true);}).join(''):'')+'</body></html>';}
+  if(id==='ar3'){var eH3=d.exp.map(function(e){var dt=[e.fr,e.to].filter(Boolean).join(' – ');var b=e.d?e.d.split(/[.]+/).filter(function(s){return s.trim();}).map(function(s){return'<div style="font-size:12px;color:#333;padding-left:14px;position:relative;line-height:1.7;margin-bottom:2px"><span style="position:absolute;left:3px;color:#aaa">•</span>'+s.trim()+'</div>';}).join(''):'';return'<div style="margin-bottom:12px;overflow:hidden"><div style="font-size:13px;font-weight:700">'+e.t+'</div><div style="font-size:11.5px;color:#888">'+e.o+'</div><div style="font-size:11px;color:#888;float:right;margin-top:-32px;direction:ltr">'+dt+'</div><div style="clear:both">'+b+'</div></div>';}).join('');var edH3=d.edu.map(function(e){return'<div style="margin-bottom:7px;overflow:hidden"><span style="font-size:12.5px;font-weight:700">'+e.n+'</span><span style="float:right;font-size:11.5px;color:#888">'+e.dt+'</span><div style="font-size:11.5px;color:#888;clear:both">'+eduDet(e)+'</div></div>';}).join('');return'<!DOCTYPE html><html><head><meta charset="UTF-8">'+GF+'<style>*{box-sizing:border-box;margin:0;padding:0}body{background:#fff;color:#111;font-family:\'DM Sans\',sans-serif;direction:ltr;padding:28px 36px}.sett{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:2px;color:#888;margin-top:14px;margin-bottom:4px}.hr{border:none;border-top:1px solid #ddd;margin-bottom:9px}</style></head><body><div style="font-size:20px;font-weight:700;margin-bottom:2px">'+d.name+'</div>'+(d.role?'<div style="font-size:12.5px;color:#888;margin-bottom:2px">'+d.role+'</div>':'')+'<div style="font-size:11.5px;color:#888;margin-bottom:14px">'+d.contact+'</div>'+(d.summary?'<div class="sett">Summary</div><hr class="hr"><div style="font-size:12.5px;line-height:1.8;color:#333;text-align:justify;margin-bottom:8px">'+d.summary+'</div>':'')+(d.exp.length?'<div class="sett">Work Experience</div><hr class="hr">'+eH3:'')+(d.edu.length?'<div class="sett">Education</div><hr class="hr">'+edH3:'')+(d.skls.length?'<div class="sett">Skills</div><hr class="hr">'+d.skls.map(function(x){return'<div style="font-size:12px;color:#333;padding-left:14px;position:relative;line-height:1.7"><span style="position:absolute;left:3px;color:#aaa">•</span>'+esc(x)+'</div>';}).join(''):'')+(d.crss.length?'<div class="sett">Certifications</div><hr class="hr">'+d.crss.map(function(x){return'<div style="font-size:12px;color:#333;padding-left:14px;position:relative;line-height:1.7"><span style="position:absolute;left:3px;color:#aaa">•</span>'+esc(x)+'</div>';}).join(''):'')+watermark+'</body></html>';}
+  if(id==='ar4'){return'<!DOCTYPE html><html dir="rtl"><head><meta charset="UTF-8">'+GF+'<style>*{box-sizing:border-box;margin:0;padding:0}body{background:#fff;color:#111;font-family:\'Cairo\',sans-serif;direction:rtl;padding:28px 36px}.sett{font-size:13.5px;font-weight:900;text-align:right;border-bottom:1.5px solid #111;padding-bottom:4px;margin-bottom:9px;margin-top:18px}</style></head><body><div style="font-size:28px;font-weight:900;text-align:center;margin-bottom:4px">'+d.name+'</div>'+(d.role?'<div style="font-size:13.5px;color:#777;text-align:center;margin-bottom:4px">'+d.role+'</div>':'')+'<div style="font-size:12px;color:#444;text-align:center;margin-bottom:24px;direction:ltr">'+d.contact+'</div>'+(d.summary?'<div class="sett">الملخص الشخصي</div><div style="font-size:13px;line-height:1.85;color:#222;margin-bottom:8px">'+d.summary+'</div>':'')+(d.exp.length?'<div class="sett">الخبرة العملية</div>'+expBlock(d.exp,true):'')+(d.edu.length?'<div class="sett">التعليم</div>'+d.edu.map(function(e){return'<div style="margin-bottom:8px;overflow:hidden"><div style="font-size:13.5px;font-weight:700">'+e.n+'</div><span style="font-size:11.5px;color:#666;float:left;direction:ltr">'+e.dt+'</span><div style="font-size:12px;color:#555;clear:both">'+eduDet(e)+'</div></div>';}).join(''):'')+(d.skls.length?'<div class="sett">المهارات</div><div style="font-size:12.5px;color:#222">'+d.skls.map(esc).join(' · ')+'</div>':'')+(d.crss.length?'<div class="sett">الدورات</div>'+d.crss.map(function(x){return bul(esc(x),false);}).join(''):'')+watermark+'</body></html>';}
+  if(id==='en1'){return'<!DOCTYPE html><html><head><meta charset="UTF-8">'+GF+'<style>*{box-sizing:border-box;margin:0;padding:0}body{background:#fff;color:#111;font-family:\'DM Sans\',sans-serif;direction:ltr;padding:32px 44px}.sett{font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;border-bottom:1.5px solid #111;padding-bottom:4px;margin-bottom:9px;margin-top:18px}</style></head><body><div style="font-size:28px;font-weight:700;text-align:center;margin-bottom:4px">'+d.name+'</div>'+(d.role?'<div style="font-size:13.5px;color:#777;text-align:center;margin-bottom:5px">'+d.role+'</div>':'')+'<div style="font-size:12px;color:#444;text-align:center;margin-bottom:24px">'+d.contact+'</div>'+(d.summary?'<div class="sett">Professional Summary</div><div style="font-size:13px;line-height:1.8;color:#222;text-align:justify;margin-bottom:8px">'+d.summary+'</div>':'')+(d.exp.length?'<div class="sett">Work Experience</div>'+expBlock(d.exp,false):'')+(d.edu.length?'<div class="sett">Education</div>'+d.edu.map(function(e){return'<div style="margin-bottom:8px;overflow:hidden"><div style="font-size:13.5px;font-weight:700">'+e.n+'</div><span style="float:right;font-size:12px;color:#666">'+e.dt+'</span><div style="font-size:12px;color:#555;clear:both">'+eduDet(e)+'</div></div>';}).join(''):'')+(d.skls.length?'<div class="sett">Skills</div><div style="font-size:12.5px;color:#222;padding-left:16px;position:relative;line-height:1.75"><span style="position:absolute;left:3px">•</span>'+d.skls.map(esc).join(', ')+'</div>':'')+(d.crss.length?'<div class="sett">Certifications</div>'+d.crss.map(function(x){return bul(esc(x),true);}).join(''):'')+watermark+'</body></html>';}
   if(id==='en2'){var ny='#1a2e4a';var eH6=d.exp.map(function(e){var dt=[e.fr,e.to].filter(Boolean).join(' – ');var b=e.d?e.d.split(/[.]+/).filter(function(s){return s.trim();}).map(function(s){return'<div style="font-size:12px;color:#333;padding-left:14px;position:relative;line-height:1.7;margin-bottom:2px"><span style="position:absolute;left:3px;color:'+ny+'">•</span>'+s.trim()+'</div>';}).join(''):'';return'<div style="margin-bottom:10px;overflow:hidden"><span style="font-weight:700;font-size:13px">'+e.t+'</span>'+(e.o?' | '+e.o:'')+'<span style="float:right;font-size:11.5px;color:#666;direction:ltr">'+dt+'</span><div style="clear:both">'+b+'</div></div>';}).join('');return'<!DOCTYPE html><html><head><meta charset="UTF-8">'+GF+'<style>*{box-sizing:border-box;margin:0;padding:0}body{background:#e8e8e8;font-family:\'DM Sans\',sans-serif;direction:ltr}.inn{background:#fff;padding:30px 38px;margin:16px}.sett{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:'+ny+';border-bottom:1px solid #ccc;padding-bottom:3px;margin-bottom:7px;margin-top:14px}</style></head><body><div class="inn"><div style="font-size:22px;font-weight:700;text-transform:uppercase;letter-spacing:2px;text-align:center;color:'+ny+';margin-bottom:4px">'+d.name+'</div>'+(d.role?'<div style="font-size:12px;font-weight:600;text-align:center;color:'+ny+';margin-bottom:7px">'+d.role+'</div>':'')+'<div style="font-size:11.5px;color:#555;text-align:center;padding:7px 0 10px;border-top:1px solid '+ny+';border-bottom:1px solid '+ny+';margin-bottom:12px">'+d.contact+'</div>'+(d.summary?'<div class="sett">Professional Summary</div><div style="font-size:12px;line-height:1.8;color:#333;margin-bottom:7px">'+d.summary+'</div>':'')+(d.edu.length?'<div class="sett">Education</div>'+d.edu.map(function(e){return'<div style="font-size:12px;margin-bottom:4px"><b>'+e.n+'</b> | '+eduDet(e)+'</div>';}).join(''):'')+(d.exp.length?'<div class="sett">Experience</div>'+eH6:'')+(d.skls.length?'<div class="sett">Skills</div><div style="font-size:12px;color:#333">Core: '+d.skls.map(esc).join(', ')+'</div>':'')+(d.crss.length?'<div class="sett">Certifications</div>'+d.crss.map(function(x){return'<div style="font-size:12px;color:#333;padding-left:14px;position:relative;line-height:1.7"><span style="position:absolute;left:3px;color:'+ny+'">•</span>'+esc(x)+'</div>';}).join(''):'')+'</div></body></html>';}
-  if(id==='en3'){var cP3=d.contact.split(' | ');var eH7=d.exp.map(function(e){var dt=[e.fr,e.to].filter(Boolean).join(' – ');var b=e.d?e.d.split(/[.]+/).filter(function(s){return s.trim();}).map(function(s){return'<div style="font-size:12px;color:#333;padding-left:14px;position:relative;line-height:1.7;margin-bottom:2px"><span style="position:absolute;left:3px;color:#bbb">•</span>'+s.trim()+'</div>';}).join(''):'';return'<div style="margin-bottom:12px;overflow:hidden"><div style="font-size:13px;font-weight:700">'+e.t+'</div><div style="font-size:11.5px;color:#888">'+e.o+'</div><div style="font-size:11px;color:#888;float:right;margin-top:-30px">'+dt+'</div><div style="clear:both">'+b+'</div></div>';}).join('');var skG=d.skls.length?'<div style="display:grid;grid-template-columns:1fr 1fr;gap:3px 18px">'+d.skls.map(function(x){return'<div style="display:flex;justify-content:space-between;font-size:11.5px;color:#333;padding:2px 0;border-bottom:1px dotted #eee"><span>'+esc(x)+'</span><span style="color:#aaa;font-size:11px">—</span></div>';}).join('')+'</div>':'';return'<!DOCTYPE html><html><head><meta charset="UTF-8">'+GF+'<style>*{box-sizing:border-box;margin:0;padding:0}body{background:#fff;color:#111;font-family:\'DM Sans\',sans-serif;direction:ltr;padding:28px 36px}.sett{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:2px;color:#888;margin-top:14px;margin-bottom:4px}.hr{border:none;border-top:1px dotted #ccc;margin-bottom:9px}</style></head><body><div style="display:flex;justify-content:space-between;align-items:flex-start;padding-bottom:14px;border-bottom:1px solid #ddd;margin-bottom:12px"><div><div style="font-size:20px;font-weight:700;margin-bottom:2px">'+d.name+'</div><div style="font-size:12.5px;color:#888">'+(d.role||'')+'</div></div><div style="text-align:right;font-size:11.5px;color:#555;line-height:2">'+cP3.map(function(x){return'<div>'+esc(x)+'</div>';}).join('')+'</div></div>'+(d.summary?'<div class="sett">Summary</div><hr class="hr"><div style="font-size:12px;color:#333;line-height:1.8;margin-bottom:8px">'+d.summary+'</div>':'')+(d.exp.length?'<div class="sett">Professional Experience</div><hr class="hr">'+eH7:'')+(d.edu.length?'<div class="sett">Education</div><hr class="hr">'+d.edu.map(function(e){return'<div style="margin-bottom:6px;overflow:hidden"><b style="font-size:12.5px">'+e.n+'</b><span style="float:right;font-size:11.5px;color:#888">'+e.dt+'</span><div style="font-size:11.5px;color:#888;clear:both">'+eduDet(e)+'</div></div>';}).join(''):'')+(d.skls.length?'<div class="sett">Skills</div><hr class="hr">'+skG:'')+(d.crss.length?'<div class="sett">Certificates</div><hr class="hr">'+d.crss.map(function(x){return'<div style="font-size:12px;color:#333;padding-left:14px;position:relative;line-height:1.7"><span style="position:absolute;left:3px;color:#bbb">•</span>'+esc(x)+'</div>';}).join(''):'')+'</body></html>';}
+  if(id==='en3'){var cP3=d.contact.split(' | ');var eH7=d.exp.map(function(e){var dt=[e.fr,e.to].filter(Boolean).join(' – ');var b=e.d?e.d.split(/[.]+/).filter(function(s){return s.trim();}).map(function(s){return'<div style="font-size:12px;color:#333;padding-left:14px;position:relative;line-height:1.7;margin-bottom:2px"><span style="position:absolute;left:3px;color:#bbb">•</span>'+s.trim()+'</div>';}).join(''):'';return'<div style="margin-bottom:12px;overflow:hidden"><div style="font-size:13px;font-weight:700">'+e.t+'</div><div style="font-size:11.5px;color:#888">'+e.o+'</div><div style="font-size:11px;color:#888;float:right;margin-top:-30px">'+dt+'</div><div style="clear:both">'+b+'</div></div>';}).join('');var skG=d.skls.length?'<div style="display:grid;grid-template-columns:1fr 1fr;gap:3px 18px">'+d.skls.map(function(x){return'<div style="display:flex;justify-content:space-between;font-size:11.5px;color:#333;padding:2px 0;border-bottom:1px dotted #eee"><span>'+esc(x)+'</span><span style="color:#aaa;font-size:11px">—</span></div>';}).join('')+'</div>':'';return'<!DOCTYPE html><html><head><meta charset="UTF-8">'+GF+'<style>*{box-sizing:border-box;margin:0;padding:0}body{background:#fff;color:#111;font-family:\'DM Sans\',sans-serif;direction:ltr;padding:28px 36px}.sett{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:2px;color:#888;margin-top:14px;margin-bottom:4px}.hr{border:none;border-top:1px dotted #ccc;margin-bottom:9px}</style></head><body><div style="display:flex;justify-content:space-between;align-items:flex-start;padding-bottom:14px;border-bottom:1px solid #ddd;margin-bottom:12px"><div><div style="font-size:20px;font-weight:700;margin-bottom:2px">'+d.name+'</div><div style="font-size:12.5px;color:#888">'+(d.role||'')+'</div></div><div style="text-align:right;font-size:11.5px;color:#555;line-height:2">'+cP3.map(function(x){return'<div>'+esc(x)+'</div>';}).join('')+'</div></div>'+(d.summary?'<div class="sett">Summary</div><hr class="hr"><div style="font-size:12px;color:#333;line-height:1.8;margin-bottom:8px">'+d.summary+'</div>':'')+(d.exp.length?'<div class="sett">Professional Experience</div><hr class="hr">'+eH7:'')+(d.edu.length?'<div class="sett">Education</div><hr class="hr">'+d.edu.map(function(e){return'<div style="margin-bottom:6px;overflow:hidden"><b style="font-size:12.5px">'+e.n+'</b><span style="float:right;font-size:11.5px;color:#888">'+e.dt+'</span><div style="font-size:11.5px;color:#888;clear:both">'+eduDet(e)+'</div></div>';}).join(''):'')+(d.skls.length?'<div class="sett">Skills</div><hr class="hr">'+skG:'')+(d.crss.length?'<div class="sett">Certificates</div><hr class="hr">'+d.crss.map(function(x){return'<div style="font-size:12px;color:#333;padding-left:14px;position:relative;line-height:1.7"><span style="position:absolute;left:3px;color:#bbb">•</span>'+esc(x)+'</div>';}).join(''):'')+watermark+'</body></html>';}
   var eH8=d.exp.map(function(e){var dt=[e.fr,e.to].filter(Boolean).join(' – ');var b=e.d?e.d.split(/[.]+/).filter(function(s){return s.trim();}).map(function(s){return'<div style="font-size:12px;color:#222;padding-left:14px;position:relative;line-height:1.75;margin-bottom:2px;text-align:justify"><span style="position:absolute;left:3px;color:#555">•</span>'+s.trim()+'</div>';}).join(''):'';return'<div style="margin-bottom:13px"><div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:2px"><span style="font-size:13.5px;font-weight:700">'+e.t+'</span><span style="font-size:11.5px;color:#666">'+dt+'</span></div>'+(e.o?'<div style="font-size:12px;color:#666;margin-bottom:3px">'+e.o+'</div>':'')+b+'</div>';}).join('');
-  return'<!DOCTYPE html><html><head><meta charset="UTF-8">'+GF+'<style>*{box-sizing:border-box;margin:0;padding:0}body{background:#fff;color:#111;font-family:\'DM Sans\',sans-serif;direction:ltr;padding:32px 44px}.sett{font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;border-bottom:1.5px solid #111;padding-bottom:4px;margin-bottom:9px;margin-top:18px}</style></head><body><div style="font-size:32px;font-weight:700;text-align:center;margin-bottom:4px;letter-spacing:-.5px">'+d.name+'</div><div style="font-size:12px;color:#444;text-align:center;margin-bottom:16px">'+d.contact+'</div>'+(d.summary?'<div style="font-size:12.5px;line-height:1.85;color:#222;text-align:justify;margin-bottom:8px">'+d.summary+'</div>':'')+(d.exp.length?'<div class="sett">Professional Experience</div>'+eH8:'')+(d.edu.length?'<div class="sett">Education</div>'+d.edu.map(function(e){return'<div style="margin-bottom:7px"><div style="font-size:13px;font-weight:700">'+e.n+'</div><div style="font-size:12px;color:#666">'+eduDet(e)+'</div></div>';}).join(''):'')+(d.skls.length?'<div class="sett">Expert-Level Skills</div><div style="font-size:12.5px;font-weight:700;margin-bottom:2px">Core Skills:</div><div style="font-size:12px;color:#333;margin-bottom:8px">'+d.skls.map(esc).join(', ')+'</div>':'')+(d.crss.length?'<div class="sett">Certifications</div>'+d.crss.map(function(x){return bul(esc(x),true);}).join(''):'')+'</body></html>';
+  return'<!DOCTYPE html><html><head><meta charset="UTF-8">'+GF+'<style>*{box-sizing:border-box;margin:0;padding:0}body{background:#fff;color:#111;font-family:\'DM Sans\',sans-serif;direction:ltr;padding:32px 44px}.sett{font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;border-bottom:1.5px solid #111;padding-bottom:4px;margin-bottom:9px;margin-top:18px}</style></head><body><div style="font-size:32px;font-weight:700;text-align:center;margin-bottom:4px;letter-spacing:-.5px">'+d.name+'</div><div style="font-size:12px;color:#444;text-align:center;margin-bottom:16px">'+d.contact+'</div>'+(d.summary?'<div style="font-size:12.5px;line-height:1.85;color:#222;text-align:justify;margin-bottom:8px">'+d.summary+'</div>':'')+(d.exp.length?'<div class="sett">Professional Experience</div>'+eH8:'')+(d.edu.length?'<div class="sett">Education</div>'+d.edu.map(function(e){return'<div style="margin-bottom:7px"><div style="font-size:13px;font-weight:700">'+e.n+'</div><div style="font-size:12px;color:#666">'+eduDet(e)+'</div></div>';}).join(''):'')+(d.skls.length?'<div class="sett">Expert-Level Skills</div><div style="font-size:12.5px;font-weight:700;margin-bottom:2px">Core Skills:</div><div style="font-size:12px;color:#333;margin-bottom:8px">'+d.skls.map(esc).join(', ')+'</div>':'')+(d.crss.length?'<div class="sett">Certifications</div>'+d.crss.map(function(x){return bul(esc(x),true);}).join(''):'')+watermark+'</body></html>';
 }
 
-function toggleATS(){atsOpen=!atsOpen;G('ats-box').style.display=atsOpen?'block':'none';if(atsOpen)runATS();}
+function toggleATS(){
+  /* تحقق إذا القالب الحالي مجاني */
+  var isFree=FREE_TPLS.indexOf(TPL)>-1;
+  var tok=localStorage.getItem('jak_cv_token');
+  var hasPaid=tok&&tok.indexOf(':'+TPL)>-1;
+  if(isFree&&!hasPaid){
+    var ar=LANG==='ar';
+    /* أظهر رسالة مع زر الدفع */
+    alert(ar?'ميزة ATS متاحة للقوالب المدفوعة فقط.\n\nادفع مرة واحدة واحصل على تحليل ATS كامل!':'ATS analysis is available for paid templates only.\n\nPay once and get full ATS analysis!');
+    window.JAKPay&&window.JAKPay.open();
+    return;
+  }
+  atsOpen=!atsOpen;G('ats-box').style.display=atsOpen?'block':'none';if(atsOpen)runATS();
+}
 function atsTab(n){G('ap1').className='ats-pn'+(n===1?' on':'');G('at1').className='ats-tb'+(n===1?' on':'');G('ap2').className='ats-pn'+(n===2?' on':'');G('at2').className='ats-tb'+(n===2?' on':'');}
 function runATS(){
   var d=cache,ar=LANG==='ar',sc=0,ch=[];
@@ -938,12 +994,28 @@ window.addEventListener('DOMContentLoaded',function(){
   G('cv-pdf').addEventListener('click',function(){
     var TOKEN_KEY='jak_cv_token';
     var tok=localStorage.getItem(TOKEN_KEY);
-    /* القالب الحالي مجاني؟ اسمح بالتحميل مباشرة */
-    if(window.FREE_TPLS && window.FREE_TPLS.indexOf(window.TPL||'ar1')>-1){
+    var currentTpl=window.TPL||'ar3';
+    var ar=LANG==='ar';
+    /* القالب الحالي مجاني؟ حمّل مع علامة مائية */
+    if(window.FREE_TPLS && window.FREE_TPLS.indexOf(currentTpl)>-1){
+      /* أعد رسم الـ CV مع العلامة المائية */
+      var ifrm=G('cv-iframe');
+      if(ifrm&&cache&&cache.nm){
+        var d2={name:cache.nm,role:cache.rl,contact:[cache.ci,cache.em,cache.ph,cache.li].filter(Boolean).join(' | '),summary:cache.su,exp:cache.exps||[],edu:cache.edus||[],skls:cache.skls||[],crss:cache.crss||[]};
+        ifrm.srcdoc=renderCV(currentTpl,d2,false);
+      }
       G('print-tip').style.display='block';
       var btn=G('cv-pdf');btn.textContent='⏳ ...';btn.disabled=true;
-      var ifrm=G('cv-iframe');
-      setTimeout(function(){if(ifrm&&ifrm.contentWindow){ifrm.contentWindow.focus();ifrm.contentWindow.print();}else{window.print();}btn.textContent=T[LANG].pdf;btn.disabled=false;},800);
+      setTimeout(function(){
+        if(ifrm&&ifrm.contentWindow){ifrm.contentWindow.focus();ifrm.contentWindow.print();}
+        else{window.print();}
+        btn.textContent=ar?'⬇ تحميل PDF':'⬇ Download PDF';btn.disabled=false;
+        /* أعد رسم بدون علامة مائية للعرض */
+        if(cache&&cache.nm){
+          var d3={name:cache.nm,role:cache.rl,contact:[cache.ci,cache.em,cache.ph,cache.li].filter(Boolean).join(' | '),summary:cache.su,exp:cache.exps||[],edu:cache.edus||[],skls:cache.skls||[],crss:cache.crss||[]};
+          ifrm.srcdoc=renderCV(currentTpl,d3,true);
+        }
+      },800);
       return;
     }
     /* قالب مدفوع — تحقق من التوكن لهذا القالب تحديداً */
@@ -1189,54 +1261,52 @@ window.addEventListener('beforeunload',function(e){
 
   /* ── تحديث كل الأسعار والنصوص دفعة واحدة ── */
   function syncAll(){
-    window._selCur=sel; /* expose current currency to buildGrid */
-    var h=getHP();
-    function set(id,v){var e=document.getElementById(id);if(e)e.innerHTML=v;}
-
-    /* اتجاه الصفحة الرئيسية */
-    var wrap=document.querySelector('#s-lang .lang-wrap');
-    if(wrap)wrap.style.direction=h.dir;
-
-    /* نصوص الصفحة الرئيسية */
-    set('hp-badge-txt',    h.badge);
-    set('hp-main-title',   h.title);
-    set('hp-main-desc',    h.desc);
-    set('hp-stat-tpl',     h.statTpl);
-    set('hp-stat-lang',    h.statLang);
-    set('hp-stat-label',   h.statLabel);
-    set('hp-section-title',h.sectionTitle);
-    set('hp-price-tag',    h.tag);
-    set('hp-timer-text',   sel.timer);
-    set('hp-f1',h.f1); set('hp-f2',h.f2); set('hp-f3',h.f3); set('hp-f4',h.f4);
-    set('hp-price-main', sel.symbol+sel.price);
-    set('hp-price-orig', sel.symbol+sel.orig);
-    set('hp-stat-price', sel.symbol+sel.price);
-
-    /* ── نافذة الدفع ── */
-    var modal=document.getElementById('jak-pay-modal');
-    if(modal){
-      modal.style.direction=h.dir;
-      set('jak-badge-txt',  h.mBadge);
-      set('jak-pay-title',  h.mTitle);
-      set('jak-pay-sub',    h.mSub);
-      set('jak-currency-label', h.mCurLabel);
-      set('jak-f1',h.mF1); set('jak-f2',h.mF2);
-      set('jak-f3',h.mF3); set('jak-f4',h.mF4);
-      set('jak-pay-btn',    h.mBtn);
-      set('jak-pay-secure', h.mSecure);
-      set('jak-refund-txt', h.mRefund);
-      set('jak-save-tag',   h.mSaveTag);
-      set('jak-pay-methods-label', h.mPayLabel);
-      set('jak-verifying-txt', h.mVerifying);
+    window._selCur=sel;
+    /* إذا المستخدم اختار لغة يدوياً — لا نعيد كتابة نصوص الواجهة */
+    if(!window._userPickedLang){
+      var h=getHP();
+      function set(id,v){var e=document.getElementById(id);if(e)e.innerHTML=v;}
+      var wrap=document.querySelector('#s-lang .lang-wrap');
+      if(wrap)wrap.style.direction=h.dir;
+      set('hp-badge-txt',    h.badge);
+      set('hp-main-title',   h.title);
+      set('hp-main-desc',    h.desc);
+      set('hp-stat-tpl',     h.statTpl);
+      set('hp-stat-lang',    h.statLang);
+      set('hp-stat-label',   h.statLabel);
+      set('hp-section-title',h.sectionTitle);
+      set('hp-price-tag',    h.tag);
+      set('hp-timer-text',   sel.timer);
+      set('hp-f1',h.f1); set('hp-f2',h.f2); set('hp-f3',h.f3); set('hp-f4',h.f4);
     }
-
-    /* الأسعار في المودال */
+    /* الأسعار دائماً تتحدث */
+    var setP=function(id,v){var e=document.getElementById(id);if(e)e.innerHTML=v;};
+    setP('hp-price-main', sel.symbol+sel.price);
+    setP('hp-price-orig', sel.symbol+sel.orig);
+    setP('hp-stat-price', sel.symbol+sel.price);
     var pm=document.getElementById('jak-price-main');
     var pn=document.getElementById('jak-price-note');
     var po=document.getElementById('jak-price-orig-el');
     if(po)po.textContent=sel.symbol+sel.orig;
     if(pm)pm.innerHTML=sel.symbol+sel.price;
     if(pn)pn.innerHTML=sel.note;
+    /* نافذة الدفع */
+    if(!window._userPickedLang){
+      var modal=document.getElementById('jak-pay-modal');
+      if(modal){
+        modal.style.direction=h.dir;
+        var h2=getHP();
+        function set2(id,v){var e=document.getElementById(id);if(e)e.innerHTML=v;}
+        set2('jak-badge-txt',h2.mBadge); set2('jak-pay-title',h2.mTitle);
+        set2('jak-pay-sub',h2.mSub); set2('jak-currency-label',h2.mCurLabel);
+        set2('jak-f1',h2.mF1); set2('jak-f2',h2.mF2);
+        set2('jak-f3',h2.mF3); set2('jak-f4',h2.mF4);
+        set2('jak-pay-btn',h2.mBtn); set2('jak-pay-secure',h2.mSecure);
+        set2('jak-refund-txt',h2.mRefund); set2('jak-save-tag',h2.mSaveTag);
+        set2('jak-pay-methods-label',h2.mPayLabel);
+        set2('jak-verifying-txt',h2.mVerifying);
+      }
+    }
   }
 
   /* ── فتح / إغلاق ── */
@@ -1376,6 +1446,21 @@ window.addEventListener('beforeunload',function(e){
 
   document.addEventListener('keydown', function(e){ if(e.key === 'Escape') closeModal(); });
   window.JAKPay = { open: openModal, close: closeModal };
+  /* expose price-only sync */
+  window.JAKPriceSync = function(){
+    var pm=document.getElementById('jak-price-main');
+    var pn=document.getElementById('jak-price-note');
+    var po=document.getElementById('jak-price-orig-el');
+    if(po)po.textContent=sel.symbol+sel.orig;
+    if(pm)pm.innerHTML=sel.symbol+sel.price;
+    if(pn)pn.innerHTML=sel.note;
+    var hpm=document.getElementById('hp-price-main');
+    var hpo=document.getElementById('hp-price-orig');
+    var hps=document.getElementById('hp-stat-price');
+    if(hpm)hpm.textContent=sel.symbol+sel.price;
+    if(hpo)hpo.textContent=sel.symbol+sel.orig;
+    if(hps)hps.textContent=sel.symbol+sel.price;
+  };
 })();
 
 /* ══════════════════════════════════════
@@ -1579,6 +1664,134 @@ window.addEventListener('beforeunload',function(e){
     });
   });
 })();
+
+/* ══════════════════════════════════════
+   نظام اللغات المتعددة — الموقع كامل
+   ══════════════════════════════════════ */
+var UI_LANGS={
+ar:{dir:'rtl',font:"'Tajawal',sans-serif",badge:'اختر لغتك',title:'مرحباً في <b>JAK CV</b>',desc:'أنشئ سيرتك الذاتية احترافياً في دقائق',statTpl:'قوالب',statLang:'لغات',statLabel:'فترة محدودة',sectionTitle:'القوالب المميّزة',tag:'توفير 61%',timer:'⚡ عرض لفترة محدودة',price:'18.99 ﷼',origPrice:'49 ﷼',f1:'٣ قوالب احترافية',f2:'PDF بجودة عالية',f3:'بدون علامة مائية',f4:'ضمان 7 أيام',cvLang:'ar',btnArSub:'٤ تصاميم احترافية عربية',btnEnSub:'4 English templates',btnEn:'English →',navR:'منشئ السيرة الذاتية',bh:'مرحباً في <span style="color:var(--gold)">JAK CV</span>',bs:'أدخل بياناتك خطوة بخطوة',changeLang:'🌐 تغيير اللغة',changeTpl:'🎨 تغيير التصميم',tplH:'اختر تصميم سيرتك الذاتية',tplP:'٤ تصاميم مختلفة',cvBar:'💾 احفظ',pdfBtn:'⬇ تحميل PDF',payBadge:'⚡ عرض لفترة محدودة',payTitle:'قالب احترافي مميّز',paySub:'دفعة واحدة للأبد',payCur:'اختر عملتك',payF1:'الوصول لجميع القوالب',payF2:'PDF بجودة طباعة عالية',payF3:'بدون علامة مائية',payF4:'متوافق مع أنظمة ATS',payBtn:'افتح القالب الآن →',paySecure:'دفع آمن 100%',payRefund:'ضمان استرداد 7 أيام',paySave:'وفّر 61%',payAccepts:'يقبل:',recTitle:'حفظ واسترجاع السيرة',recSub:'احفظ سيرتك وارجع لها في أي وقت',recSaveTab:'💾 احفظ',recGetTab:'🔍 استرجع',recSaveDesc:'اضغط لحفظ سيرتك والحصول على كود استرجاع',recSaveBtn:'احفظ سيرتي ←',recSuccess:'✓ تم الحفظ! كودك هو:',recExpire:'احتفظ بهذا الكود · صالح لمدة ٣٠ يوم',recCopy:'نسخ الكود',recGetDesc:'أدخل كود الاسترجاع المكوّن من ٦ أرقام',recGetBtn:'استرجع سيرتي →',recErr:'كود غير صحيح أو منتهي الصلاحية'},
+en:{dir:'ltr',font:"'DM Sans',sans-serif",badge:'Choose Your Language',title:'Welcome to <b>JAK CV</b>',desc:'Build a professional CV in minutes',statTpl:'Templates',statLang:'Languages',statLabel:'Limited Time',sectionTitle:'Premium Templates',tag:'Save 61%',timer:'⚡ Limited Time Offer',price:'$4.99',origPrice:'$12.99',f1:'3 premium templates',f2:'High-quality PDF',f3:'No watermark',f4:'7-day guarantee',cvLang:'en',btnArSub:'٤ Arabic templates',btnEnSub:'4 professional templates',btnEn:'Start Now →',navR:'Professional CV Builder',bh:'Welcome to <span style="color:var(--gold)">JAK CV</span>',bs:'Fill in your details step by step',changeLang:'🌐 Change Language',changeTpl:'🎨 Change Template',tplH:'Choose Your CV Template',tplP:'4 unique designs',cvBar:'💾 Save',pdfBtn:'⬇ Download PDF',payBadge:'⚡ Limited Time Offer',payTitle:'Premium Template',paySub:'One-time payment forever',payCur:'Choose your currency',payF1:'Access to all templates',payF2:'High-quality print PDF',payF3:'No watermark',payF4:'ATS compatible',payBtn:'Unlock Template Now →',paySecure:'100% Secure Payment',payRefund:'7-day money back guarantee',paySave:'Save 61%',payAccepts:'Accepts:',recTitle:'Save & Restore CV',recSub:'Save your CV and return anytime',recSaveTab:'💾 Save',recGetTab:'🔍 Restore',recSaveDesc:'Press to save your CV and get a 6-digit code',recSaveBtn:'Save my CV ←',recSuccess:'✓ Saved! Your code is:',recExpire:'Keep this code · Valid for 30 days',recCopy:'Copy Code',recGetDesc:'Enter your 6-digit recovery code',recGetBtn:'Restore my CV →',recErr:'Invalid or expired code'},
+fr:{dir:'ltr',font:"'DM Sans',sans-serif",badge:'Choisissez votre langue',title:'Bienvenue sur <b>JAK CV</b>',desc:'Créez votre CV professionnel en minutes',statTpl:'Modèles',statLang:'Langues',statLabel:'Offre limitée',sectionTitle:'Modèles Premium',tag:'Économisez 61%',timer:'⚡ Offre limitée',price:'€4.49',origPrice:'€11.99',f1:'3 modèles premium',f2:'PDF haute qualité',f3:'Sans filigrane',f4:'Garantie 7 jours',cvLang:'en',btnArSub:'Modèles arabes',btnEnSub:'4 modèles professionnels',btnEn:'Commencer →',navR:'Créateur de CV',bh:'Bienvenue sur <span style="color:var(--gold)">JAK CV</span>',bs:'Remplissez vos informations étape par étape',changeLang:'🌐 Langue',changeTpl:'🎨 Modèle',tplH:'Choisissez votre modèle',tplP:'4 designs uniques',cvBar:'💾 Sauvegarder',pdfBtn:'⬇ Télécharger PDF',payBadge:'⚡ Offre limitée',payTitle:'Modèle Premium',paySub:'Paiement unique',payCur:'Devise',payF1:'Accès à tous les modèles',payF2:'PDF haute qualité',payF3:'Sans filigrane',payF4:'Compatible ATS',payBtn:'Débloquer →',paySecure:'Paiement sécurisé',payRefund:'Garantie 7 jours',paySave:'Économisez 61%',payAccepts:'Accepte:',recTitle:'Sauvegarder & Restaurer',recSub:'Sauvegardez et revenez quand vous voulez',recSaveTab:'💾 Sauvegarder',recGetTab:'🔍 Restaurer',recSaveDesc:'Sauvegarder votre CV',recSaveBtn:'Sauvegarder ←',recSuccess:'✓ Sauvegardé! Code:',recExpire:'Gardez ce code · 30 jours',recCopy:'Copier',recGetDesc:'Entrez votre code à 6 chiffres',recGetBtn:'Restaurer →',recErr:'Code invalide ou expiré'},
+ja:{dir:'ltr',font:"'DM Sans',sans-serif",badge:'言語を選択',title:'<b>JAK CV</b>へようこそ',desc:'数分でプロの履歴書を作成',statTpl:'テンプレート',statLang:'言語',statLabel:'期間限定',sectionTitle:'プレミアム',tag:'61%お得',timer:'⚡ 期間限定',price:'¥790',origPrice:'¥1,990',f1:'3テンプレート',f2:'高品質PDF',f3:'透かしなし',f4:'7日間保証',cvLang:'en',btnArSub:'アラビア語テンプレート',btnEnSub:'4プロテンプレート',btnEn:'今すぐ始める →',navR:'CV作成ツール',bh:'<span style="color:var(--gold)">JAK CV</span>へようこそ',bs:'順番に入力してください',changeLang:'🌐 言語変更',changeTpl:'🎨 テンプレート',tplH:'テンプレートを選択',tplP:'4デザイン',cvBar:'💾 保存',pdfBtn:'⬇ PDFダウンロード',payBadge:'⚡ 期間限定',payTitle:'プレミアム',paySub:'一回払い',payCur:'通貨',payF1:'全テンプレート',payF2:'高品質PDF',payF3:'透かしなし',payF4:'ATS対応',payBtn:'今すぐ解除 →',paySecure:'安全な支払い',payRefund:'7日間返金',paySave:'61%お得',payAccepts:'支払い:',recTitle:'保存・復元',recSub:'CVを保存していつでも戻れます',recSaveTab:'💾 保存',recGetTab:'🔍 復元',recSaveDesc:'保存して6桁コードを取得',recSaveBtn:'保存 ←',recSuccess:'✓ 完了! コード:',recExpire:'保管 · 30日有効',recCopy:'コピー',recGetDesc:'6桁コードを入力',recGetBtn:'復元 →',recErr:'無効なコード'},
+de:{dir:'ltr',font:"'DM Sans',sans-serif",badge:'Sprache wählen',title:'Willkommen bei <b>JAK CV</b>',desc:'Erstellen Sie in Minuten einen Lebenslauf',statTpl:'Vorlagen',statLang:'Sprachen',statLabel:'Begrenzte Zeit',sectionTitle:'Premium-Vorlagen',tag:'61% sparen',timer:'⚡ Zeitlich begrenzt',price:'€4.49',origPrice:'€11.99',f1:'3 Vorlagen',f2:'Hochwertiges PDF',f3:'Kein Wasserzeichen',f4:'7-Tage-Garantie',cvLang:'en',btnArSub:'Arabische Vorlagen',btnEnSub:'4 Vorlagen',btnEn:'Jetzt starten →',navR:'Lebenslauf-Ersteller',bh:'Willkommen bei <span style="color:var(--gold)">JAK CV</span>',bs:'Füllen Sie Ihre Daten aus',changeLang:'🌐 Sprache',changeTpl:'🎨 Vorlage',tplH:'Vorlage wählen',tplP:'4 Designs',cvBar:'💾 Speichern',pdfBtn:'⬇ PDF herunterladen',payBadge:'⚡ Begrenzt',payTitle:'Premium-Vorlage',paySub:'Einmalige Zahlung',payCur:'Währung',payF1:'Alle Vorlagen',payF2:'Hochwertiges PDF',payF3:'Kein Wasserzeichen',payF4:'ATS-kompatibel',payBtn:'Freischalten →',paySecure:'Sichere Zahlung',payRefund:'7-Tage-Garantie',paySave:'61% sparen',payAccepts:'Akzeptiert:',recTitle:'Speichern & Wiederherstellen',recSub:'Lebenslauf speichern',recSaveTab:'💾 Speichern',recGetTab:'🔍 Wiederherstellen',recSaveDesc:'CV speichern',recSaveBtn:'Speichern ←',recSuccess:'✓ Gespeichert! Code:',recExpire:'Code aufbewahren · 30 Tage',recCopy:'Kopieren',recGetDesc:'6-stelligen Code eingeben',recGetBtn:'Wiederherstellen →',recErr:'Ungültiger Code'},
+pt:{dir:'ltr',font:"'DM Sans',sans-serif",badge:'Escolha seu idioma',title:'Bem-vindo ao <b>JAK CV</b>',desc:'Crie seu currículo em minutos',statTpl:'Modelos',statLang:'Idiomas',statLabel:'Tempo limitado',sectionTitle:'Modelos Premium',tag:'Economize 61%',timer:'⚡ Oferta limitada',price:'R$24.90',origPrice:'R$64.90',f1:'3 modelos',f2:'PDF alta qualidade',f3:'Sem marca',f4:'Garantia 7 dias',cvLang:'en',btnArSub:'Modelos árabes',btnEnSub:'4 modelos',btnEn:'Começar →',navR:'Criador de Currículo',bh:'Bem-vindo ao <span style="color:var(--gold)">JAK CV</span>',bs:'Preencha seus dados',changeLang:'🌐 Idioma',changeTpl:'🎨 Modelo',tplH:'Escolha seu modelo',tplP:'4 designs',cvBar:'💾 Salvar',pdfBtn:'⬇ Baixar PDF',payBadge:'⚡ Oferta limitada',payTitle:'Modelo Premium',paySub:'Pagamento único',payCur:'Moeda',payF1:'Todos os modelos',payF2:'PDF alta qualidade',payF3:'Sem marca',payF4:'Compatível ATS',payBtn:'Desbloquear →',paySecure:'Pagamento seguro',payRefund:'Garantia 7 dias',paySave:'61% off',payAccepts:'Aceita:',recTitle:'Salvar & Restaurar',recSub:'Salve e volte quando quiser',recSaveTab:'💾 Salvar',recGetTab:'🔍 Restaurar',recSaveDesc:'Salvar seu CV',recSaveBtn:'Salvar ←',recSuccess:'✓ Salvo! Código:',recExpire:'Guarde · 30 dias',recCopy:'Copiar',recGetDesc:'Digite código de 6 dígitos',recGetBtn:'Restaurar →',recErr:'Código inválido'},
+hi:{dir:'ltr',font:"'DM Sans',sans-serif",badge:'भाषा चुनें',title:'<b>JAK CV</b> में स्वागत है',desc:'मिनटों में CV बनाएं',statTpl:'टेम्पलेट',statLang:'भाषाएं',statLabel:'सीमित समय',sectionTitle:'प्रीमियम',tag:'61% बचाएं',timer:'⚡ सीमित समय',price:'₹420',origPrice:'₹1,090',f1:'3 टेम्पलेट',f2:'उच्च PDF',f3:'वॉटरमार्क नहीं',f4:'7 दिन गारंटी',cvLang:'en',btnArSub:'अरबी टेम्पलेट',btnEnSub:'4 टेम्पलेट',btnEn:'शुरू करें →',navR:'CV बिल्डर',bh:'<span style="color:var(--gold)">JAK CV</span> में स्वागत है',bs:'चरण दर चरण भरें',changeLang:'🌐 भाषा',changeTpl:'🎨 टेम्पलेट',tplH:'टेम्पलेट चुनें',tplP:'4 डिज़ाइन',cvBar:'💾 सेव',pdfBtn:'⬇ PDF',payBadge:'⚡ सीमित',payTitle:'प्रीमियम',paySub:'एकमुश्त',payCur:'मुद्रा',payF1:'सभी टेम्पलेट',payF2:'उच्च PDF',payF3:'वॉटरमार्क नहीं',payF4:'ATS संगत',payBtn:'अनलॉक →',paySecure:'सुरक्षित',payRefund:'7 दिन गारंटी',paySave:'61% बचाएं',payAccepts:'स्वीकार:',recTitle:'सेव और रिस्टोर',recSub:'CV सेव करें',recSaveTab:'💾 सेव',recGetTab:'🔍 रिस्टोर',recSaveDesc:'CV सेव करें',recSaveBtn:'सेव ←',recSuccess:'✓ सेव! कोड:',recExpire:'30 दिन वैध',recCopy:'कॉपी',recGetDesc:'6 अंक कोड',recGetBtn:'रिस्टोर →',recErr:'गलत कोड'},
+nl:{dir:'ltr',font:"'DM Sans',sans-serif",badge:'Kies uw taal',title:'Welkom bij <b>JAK CV</b>',desc:'Maak in minuten een CV',statTpl:'Sjablonen',statLang:'Talen',statLabel:'Beperkte tijd',sectionTitle:'Premium sjablonen',tag:'Bespaar 61%',timer:'⚡ Beperkt',price:'€4.49',origPrice:'€11.99',f1:'3 sjablonen',f2:'Hoge kwaliteit PDF',f3:'Geen watermerk',f4:'7 dagen garantie',cvLang:'en',btnArSub:'Arabische sjablonen',btnEnSub:'4 sjablonen',btnEn:'Nu beginnen →',navR:'CV Bouwer',bh:'Welkom bij <span style="color:var(--gold)">JAK CV</span>',bs:'Vul uw gegevens in',changeLang:'🌐 Taal',changeTpl:'🎨 Sjabloon',tplH:'Kies uw sjabloon',tplP:'4 ontwerpen',cvBar:'💾 Opslaan',pdfBtn:'⬇ PDF downloaden',payBadge:'⚡ Beperkt',payTitle:'Premium sjabloon',paySub:'Eenmalige betaling',payCur:'Valuta',payF1:'Alle sjablonen',payF2:'Hoge kwaliteit PDF',payF3:'Geen watermerk',payF4:'ATS-compatibel',payBtn:'Nu ontgrendelen →',paySecure:'Veilige betaling',payRefund:'7 dagen garantie',paySave:'Bespaar 61%',payAccepts:'Accepteert:',recTitle:'Opslaan & Herstellen',recSub:'CV opslaan en terugkomen',recSaveTab:'💾 Opslaan',recGetTab:'🔍 Herstellen',recSaveDesc:'CV opslaan',recSaveBtn:'Opslaan ←',recSuccess:'✓ Opgeslagen! Code:',recExpire:'Bewaar · 30 dagen',recCopy:'Kopiëren',recGetDesc:'6-cijferige code',recGetBtn:'Herstellen →',recErr:'Ongeldige code'}
+};
+
+var COUNTRY_LANG_MAP={SA:'ar',AE:'ar',KW:'ar',BH:'ar',QA:'ar',OM:'ar',YE:'ar',FR:'fr',BE:'fr',CH:'fr',JP:'ja',DE:'de',AT:'de',BR:'pt',PT:'pt',IN:'hi',NL:'nl',US:'en',CA:'en',GB:'en',AU:'en',SG:'en',HK:'en'};
+var currentUILang='en';
+
+function setUILang(l,userPicked){
+  if(!UI_LANGS[l])l='en';
+  currentUILang=l;
+  if(userPicked)window._userPickedLang=true;
+  var d=UI_LANGS[l];
+  var isAr=l==='ar';
+  function S(id,v){var e=document.getElementById(id);if(e)e.innerHTML=v;}
+
+  /* الصفحة الرئيسية */
+  var wrap=document.querySelector('#s-lang .lang-wrap');
+  if(wrap){wrap.style.direction=d.dir;wrap.style.fontFamily=d.font;}
+  S('hp-badge-txt',d.badge);S('hp-main-title',d.title);S('hp-main-desc',d.desc);
+  S('hp-stat-tpl',d.statTpl);S('hp-stat-lang',d.statLang);S('hp-stat-label',d.statLabel);
+  S('hp-section-title',d.sectionTitle);S('hp-price-tag',d.tag);S('hp-timer-text',d.timer);
+  S('hp-price-main',d.price);S('hp-price-orig',d.origPrice);
+  S('hp-f1',d.f1);S('hp-f2',d.f2);S('hp-f3',d.f3);S('hp-f4',d.f4);
+
+  /* بطاقات اللغة */
+  var bAr=document.getElementById('btn-ar');
+  var bEn=document.getElementById('btn-en');
+  var arNames={ar:'العربية',en:'Arabic',fr:'Arabe',ja:'アラビア語',de:'Arabisch',pt:'Árabe',hi:'अरबी',nl:'Arabisch'};
+  if(bAr){
+    bAr.querySelector('.lcard-name').innerHTML=arNames[l]||'Arabic';
+    bAr.querySelector('.lcard-sub').textContent=d.btnArSub;
+    bAr.querySelector('.lcard-btn').textContent=isAr?'ابدأ الآن ←':'ابدأ الآن ←';
+  }
+  if(bEn){
+    bEn.querySelector('.lcard-name').textContent='English';
+    bEn.querySelector('.lcard-sub').textContent=d.btnEnSub;
+    bEn.querySelector('.lcard-btn').textContent=d.btnEn;
+  }
+
+  /* nav */
+  S('nav-r',d.navR);
+
+  /* صفحة البناء */
+  S('bh',d.bh);S('bs',d.bs);
+  var aL=document.getElementById('act-lang');var aT=document.getElementById('act-tpl');
+  if(aL)aL.textContent=d.changeLang;if(aT)aT.textContent=d.changeTpl;
+  var aB=document.getElementById('atbar-sb');if(aB)aB.textContent=isAr?'التصميم المحدد':'Selected template';
+  var aC=document.getElementById('atbar-ch');if(aC)aC.textContent=isAr?'تغيير':'Change';
+
+  /* صفحة القوالب */
+  S('tpl-h',d.tplH);S('tpl-p',d.tplP);
+  var tb=document.getElementById('tpl-back');if(tb)tb.textContent=isAr?'← رجوع':'← Back';
+
+  /* شريط الـ CV */
+  var sb=document.getElementById('cv-save-btn');var pb=document.getElementById('cv-pdf');
+  if(sb)sb.textContent=d.cvBar;if(pb)pb.textContent=d.pdfBtn;
+  var ce=document.getElementById('cv-edit');var ct=document.getElementById('cv-tpl');
+  if(ce)ce.textContent=isAr?'تعديل':'Edit';if(ct)ct.textContent=isAr?'🎨 تصميم':'🎨 Template';
+
+  /* نافذة الدفع */
+  var modal=document.getElementById('jak-pay-modal');
+  if(modal){
+    modal.style.direction=d.dir;
+    S('jak-badge-txt',d.payBadge);S('jak-pay-title',d.payTitle);S('jak-pay-sub',d.paySub);
+    S('jak-currency-label',d.payCur);S('jak-f1',d.payF1);S('jak-f2',d.payF2);
+    S('jak-f3',d.payF3);S('jak-f4',d.payF4);S('jak-pay-btn',d.payBtn);
+    S('jak-pay-secure',d.paySecure);S('jak-refund-txt',d.payRefund);
+    S('jak-save-tag',d.paySave);S('jak-pay-methods-label',d.payAccepts);
+    var pm=document.getElementById('jak-price-main');
+    var po=document.getElementById('jak-price-orig-el');
+    if(pm)pm.innerHTML=d.price;if(po)po.textContent=d.origPrice;
+  }
+
+  /* نافذة الاسترجاع */
+  var rm=document.getElementById('jak-rec-modal');
+  if(rm)rm.style.direction=d.dir;
+  S('rec-title',d.recTitle);S('rec-sub',d.recSub);
+  var rt1=document.getElementById('rec-tab-save');var rt2=document.getElementById('rec-tab-get');
+  if(rt1)rt1.textContent=d.recSaveTab;if(rt2)rt2.textContent=d.recGetTab;
+  S('rec-save-desc',d.recSaveDesc);
+  var rsb=document.getElementById('rec-do-save');if(rsb)rsb.textContent=d.recSaveBtn;
+  S('rec-success-txt',d.recSuccess);S('rec-expire-note',d.recExpire);
+  var rcb=document.getElementById('rec-copy-btn');if(rcb)rcb.textContent=d.recCopy;
+  S('rec-get-desc',d.recGetDesc);
+  var rgb=document.getElementById('rec-do-get');if(rgb)rgb.textContent=d.recGetBtn;
+  var re=document.getElementById('rec-get-err');if(re)re.textContent=d.recErr;
+
+  /* تحديد الزر النشط */
+  document.querySelectorAll('.hp-lang-pill').forEach(function(b){
+    var m=b.getAttribute('onclick').match(/'(\w+)'/);
+    b.classList.toggle('hp-lang-on',m&&m[1]===l);
+  });
+
+  /* إذا اختار المستخدم لغة — غيّر LANG الداخلية فقط بدون تنقل */
+  if(userPicked){
+    if(typeof pickLang==='function'){
+      LANG=d.cvLang;
+      TPL=(d.cvLang==='ar'?'ar3':'en3');
+      window.TPL=TPL;
+    }
+    if(typeof buildHomeGrid==='function')buildHomeGrid();
+  }
+}
+
+function autoDetectLang(){
+  fetch('https://ipapi.co/json/')
+    .then(function(r){return r.json();})
+    .then(function(d){setUILang(COUNTRY_LANG_MAP[d.country_code]||'en');})
+    .catch(function(){
+      var bl=(navigator.language||navigator.userLanguage||'en').split('-')[0];
+      setUILang({ar:'ar',fr:'fr',ja:'ja',de:'de',pt:'pt',hi:'hi',nl:'nl'}[bl]||'en');
+    });
+}
+
+window.addEventListener('DOMContentLoaded',function(){
+  setTimeout(function(){autoDetectLang();},800);
+});
 </script>
 </body>
 </html>
