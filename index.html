@@ -313,6 +313,8 @@ body{background:var(--dark);color:var(--white);font-family:'Tajawal',sans-serif;
 </style>
 </head>
 <body>
+<div id="jak-maintenance" style="position:fixed;inset:0;background:#0c0c10;z-index:999999;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:16px"><div style="font-size:48px">🔧</div><div style="color:#f4f2ed;font-family:'Cairo',sans-serif;font-size:24px;font-weight:700">قيد التطوير</div><div style="color:#7a7a96;font-size:14px">نعود قريباً · Coming Soon</div></div>
+<script>if(location.search.indexOf('preview=jak')>-1)document.getElementById('jak-maintenance').style.display='none';</script>
 
 <!-- SPLASH -->
 <div id="splash">
@@ -369,7 +371,7 @@ body{background:var(--dark);color:var(--white);font-family:'Tajawal',sans-serif;
         <div class="hp-feat"><span class="hp-feat-ic">✓</span> <span id="hp-f1">٣ قوالب احترافية مميّزة</span></div>
         <div class="hp-feat"><span class="hp-feat-ic">✓</span> <span id="hp-f2">PDF بجودة طباعة عالية</span></div>
         <div class="hp-feat"><span class="hp-feat-ic">✓</span> <span id="hp-f3">بدون علامة مائية</span></div>
-        <div class="hp-feat"><span class="hp-feat-ic">✓</span> <span id="hp-f4">دفعة واحدة · بدون اشتراك</span></div>
+        <div class="hp-feat"><span class="hp-feat-ic">↩</span> <span id="hp-f4">ضمان استرداد 7 أيام</span></div>
       </div>
     </div>
 
@@ -483,8 +485,6 @@ body{background:var(--dark);color:var(--white);font-family:'Tajawal',sans-serif;
     <a href="/terms.html" style="font-size:12px;color:var(--muted);text-decoration:none;font-family:'DM Sans',sans-serif" onmouseover="this.style.color='#c9a94d'" onmouseout="this.style.color='#7a7a96'">Terms of Service</a>
     <span style="color:#28283a">·</span>
     <a href="/refund.html" style="font-size:12px;color:var(--muted);text-decoration:none;font-family:'DM Sans',sans-serif" onmouseover="this.style.color='#c9a94d'" onmouseout="this.style.color='#7a7a96'">Refund Policy</a>
-    <span style="color:#28283a">·</span>
-    <a href="/privacy.html" style="font-size:12px;color:var(--muted);text-decoration:none;font-family:'DM Sans',sans-serif" onmouseover="this.style.color='#c9a94d'" onmouseout="this.style.color='#7a7a96'">Privacy Policy</a>
   </div>
   <div style="font-size:13px;color:var(--muted);letter-spacing:1.5px;font-family:'DM Sans',sans-serif">MADE BY <span style="color:var(--gold);font-weight:700">ABDULRAHMAN ALZAHRANI</span></div>
   <div style="font-size:11px;color:#44445a;margin-top:5px;font-family:'DM Sans',sans-serif">Powered by <span style="color:var(--gold)">JAK CV</span></div>
@@ -553,28 +553,56 @@ body{background:var(--dark);color:var(--white);font-family:'Tajawal',sans-serif;
   <div id="jak-pay-bg"></div>
   <div id="jak-pay-box">
     <button id="jak-pay-close">✕</button>
+
+    <!-- الرأس -->
     <div id="jak-pay-head">
       <div class="jak-badge-pay" id="jak-badge-txt">⚡ عرض لفترة محدودة</div>
       <h2 id="jak-pay-title">قالب احترافي مميّز</h2>
       <p id="jak-pay-sub">يشمل جميع القوالب المدفوعة — مرة واحدة للأبد</p>
     </div>
+
+    <!-- السعر -->
     <div id="jak-price-row">
       <div>
         <div id="jak-price-orig-el" style="font-size:12px;color:#7a7a96;text-decoration:line-through;margin-bottom:2px">49 ﷼</div>
         <span id="jak-price-main">18.99<small style="font-size:16px"> ﷼</small></span>
       </div>
-      <span id="jak-price-note">دفعة واحدة<br>بدون اشتراك</span>
+      <div style="text-align:center">
+        <div style="background:rgba(54,176,126,.15);border:1px solid rgba(54,176,126,.3);color:#36b07e;font-size:11px;font-weight:700;padding:3px 10px;border-radius:50px;margin-bottom:4px" id="jak-save-tag">وفّر 61%</div>
+        <span id="jak-price-note" style="font-size:11px;color:#7a7a96">دفعة واحدة · بدون اشتراك</span>
+      </div>
     </div>
-    <div id="jak-currency-label">اختر عملتك</div>
+
+    <!-- طرق الدفع -->
+    <div style="display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:14px;flex-wrap:wrap">
+      <div style="font-size:10px;color:#7a7a96;margin-left:4px" id="jak-pay-methods-label">يقبل:</div>
+      <div style="background:#fff;border-radius:4px;padding:3px 8px;font-size:11px;font-weight:700;color:#000;display:flex;align-items:center;gap:3px"> Apple Pay</div>
+      <div style="background:#003087;border-radius:4px;padding:3px 8px;font-size:11px;font-weight:700;color:#fff">PayPal</div>
+      <div style="background:#1a1f71;border-radius:4px;padding:3px 8px;font-size:11px;font-weight:700;color:#fff">Visa</div>
+      <div style="background:#eb001b;border-radius:4px;padding:3px 8px;font-size:11px;font-weight:700;color:#fff">MC</div>
+    </div>
+
+    <!-- اختيار العملة -->
+    <div id="jak-currency-label" style="font-size:11px;font-weight:700;color:#7a7a96;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:8px">اختر عملتك</div>
     <div id="jak-currency-grid"></div>
+
+    <!-- الميزات -->
     <ul id="jak-features">
       <li><span class="jf-ic">✓</span> <span id="jak-f1">الوصول لجميع القوالب الـ٣</span></li>
       <li><span class="jf-ic">✓</span> <span id="jak-f2">PDF بجودة طباعة عالية</span></li>
       <li><span class="jf-ic">✓</span> <span id="jak-f3">بدون علامة مائية</span></li>
       <li><span class="jf-ic">✓</span> <span id="jak-f4">متوافق مع أنظمة ATS</span></li>
     </ul>
+
+    <!-- زر الدفع -->
     <button id="jak-pay-btn">افتح القالب الآن →</button>
-    <p id="jak-pay-secure">🔒 الدفع آمن · Moyasar · مدى · Apple Pay · STC Pay</p>
+
+    <!-- ضمان + أمان -->
+    <div style="display:flex;align-items:center;justify-content:center;gap:16px;margin-top:10px;flex-wrap:wrap">
+      <span style="font-size:11px;color:#7a7a96;display:flex;align-items:center;gap:4px">🔒 <span id="jak-pay-secure">دفع آمن 100%</span></span>
+      <span style="font-size:11px;color:#7a7a96;display:flex;align-items:center;gap:4px">↩ <span id="jak-refund-txt">ضمان استرداد 7 أيام</span></span>
+    </div>
+
     <div class="jak-paddle-frame" id="jak-paddle-frame"></div>
   </div>
   <div id="jak-verifying">
@@ -669,14 +697,14 @@ var GF='<meta http-equiv="X-Content-Type-Options" content="nosniff"><meta http-e
 
 function buildGrid(){
   var grid=G('tpl-grid');grid.innerHTML='';var t=T[LANG];
-  var hp=window._getHP ? window._getHP() : {freePill:'Free',paidLock:'Paid Template',pickBtn:'Select This Template'};
+  var hp=LANG==='ar'
+    ? {freePill:'مجاني', paidLock:'قالب مدفوع', pickBtn:'اختر هذا التصميم'}
+    : {freePill:'Free',  paidLock:'Paid Template', pickBtn:'Select This Template'};
   TPLS[LANG].forEach(function(item){
     var card=document.createElement('div');card.className='tcard'+(TPL===item.id?' sel':'');card.id='tc-'+item.id;
     var html=renderCV(item.id,dummyData(item.id),true);
     var enc=html.replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
     var origin=item.id.startsWith('ar')?'top right':'top left';
-    var curSym=window._getHP ? window._getHP()===hp : true;
-    /* سعر ورمز العملة الحالية */
     var payObj=window._selCur||{symbol:'﷼',price:'18.99',orig:'49'};
     var pillHtml=item.free
       ? '<div class="tpill" style="background:rgba(54,176,126,.15);color:#36b07e;border:1px solid rgba(54,176,126,.3)">'+hp.freePill+'</div>'
@@ -1112,7 +1140,7 @@ window.addEventListener('beforeunload',function(e){
       sectionTitle:'القوالب المميّزة',
       tag:'توفير 61%',
       f1:'٣ قوالب احترافية مميّزة', f2:'PDF بجودة طباعة عالية',
-      f3:'بدون علامة مائية',        f4:'دفعة واحدة · بدون اشتراك',
+      f3:'بدون علامة مائية',        f4:'ضمان استرداد 7 أيام',
       freePill:'مجاني', paidLock:'قالب مدفوع', pickBtn:'اختر هذا التصميم',
       dir:'rtl',
       /* نافذة الدفع */
@@ -1123,7 +1151,10 @@ window.addEventListener('beforeunload',function(e){
       mF1:'الوصول لجميع القوالب الـ٣', mF2:'PDF بجودة طباعة عالية',
       mF3:'بدون علامة مائية',          mF4:'متوافق مع أنظمة ATS',
       mBtn:'افتح القالب الآن →',
-      mSecure:'🔒 الدفع آمن · Moyasar · مدى · Apple Pay · STC Pay',
+      mSecure:'دفع آمن 100%',
+      mRefund:'ضمان استرداد 7 أيام',
+      mSaveTag:'وفّر 61%',
+      mPayLabel:'يقبل:',
       mVerifying:'جاري التحقق من الدفع…',
       mProcessing:'⏳ جاري المعالجة...'
     },
@@ -1135,7 +1166,7 @@ window.addEventListener('beforeunload',function(e){
       sectionTitle:'Premium Templates',
       tag:'Save 61%',
       f1:'3 premium professional templates', f2:'High-quality print PDF',
-      f3:'No watermark',                     f4:'One-time · No subscription',
+      f3:'No watermark',                     f4:'7-day money back guarantee',
       freePill:'Free', paidLock:'Paid Template', pickBtn:'Select This Template',
       dir:'ltr',
       /* payment modal */
@@ -1146,7 +1177,10 @@ window.addEventListener('beforeunload',function(e){
       mF1:'Access to all 3 templates', mF2:'High-quality print PDF',
       mF3:'No watermark',              mF4:'ATS compatible',
       mBtn:'Unlock Template Now →',
-      mSecure:'🔒 Secure payment · Moyasar · Apple Pay · STC Pay',
+      mSecure:'100% Secure Payment',
+      mRefund:'7-day money back guarantee',
+      mSaveTag:'Save 61%',
+      mPayLabel:'Accepts:',
       mVerifying:'Verifying payment…',
       mProcessing:'⏳ Processing...'
     }
@@ -1192,6 +1226,9 @@ window.addEventListener('beforeunload',function(e){
       set('jak-f3',h.mF3); set('jak-f4',h.mF4);
       set('jak-pay-btn',    h.mBtn);
       set('jak-pay-secure', h.mSecure);
+      set('jak-refund-txt', h.mRefund);
+      set('jak-save-tag',   h.mSaveTag);
+      set('jak-pay-methods-label', h.mPayLabel);
       set('jak-verifying-txt', h.mVerifying);
     }
 
