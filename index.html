@@ -313,8 +313,6 @@ body{background:var(--dark);color:var(--white);font-family:'Tajawal',sans-serif;
 </style>
 </head>
 <body>
-<div id="jak-maintenance" style="position:fixed;inset:0;background:#0c0c10;z-index:999999;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:16px"><div style="font-size:48px">🔧</div><div style="color:#f4f2ed;font-family:'Cairo',sans-serif;font-size:24px;font-weight:700">قيد التطوير</div><div style="color:#7a7a96;font-size:14px">نعود قريباً · Coming Soon</div></div>
-<script>if(location.search.indexOf('preview=jak')>-1)document.getElementById('jak-maintenance').style.display='none';</script>
 
 <!-- SPLASH -->
 <div id="splash">
@@ -1288,16 +1286,14 @@ window.addEventListener('beforeunload',function(e){
        PADDLE_TOKEN   ← Paddle Dashboard → Developer Tools → Client-side token
        PADDLE_PRICE   ← Paddle Dashboard → Catalog → Prices → Price ID
      ════════════════════════════════════════ */
-  var PADDLE_TOKEN = 'test_9359c422d3827ed035a8ebaf985';
-  var PADDLE_PRICE = 'pri_01kmwstmyjm00m5b7svr9m79bj';
+  var PADDLE_TOKEN = 'live_0bf3d22094b4370c6259d0fbd8f';
+  var PADDLE_PRICE = 'pri_01kmydjzpq0wx03dz3tq06jvyj';
   var paddleReady  = false;
 
   /* ── تهيئة Paddle ── */
   function initPaddle(){
     if(typeof Paddle === 'undefined' || paddleReady) return;
     try {
-      /* وضع الاختبار — احذف هذا السطر لما تنتقل للإنتاج الحقيقي */
-      Paddle.Environment.set('sandbox');
       Paddle.Initialize({
         token: PADDLE_TOKEN,
         eventCallback: function(ev){
