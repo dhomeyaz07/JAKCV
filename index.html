@@ -22,6 +22,7 @@
 <meta name="twitter:description" content="موقع إنشاء CV بنظام ATS — تم إنشاؤه بواسطة شاب سعودي. مجاناً لفترة محدودة!">
 <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&family=Tajawal:wght@400;500;700&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 <script src="https://cdn.paddle.com/paddle/v2/paddle.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 <style>
 :root{--dark:#0c0c10;--card:#16161e;--card2:#1e1e28;--border:#28283a;--gold:#c9a94d;--gold2:#e8c96a;--gold3:rgba(201,169,77,.1);--white:#f4f2ed;--muted:#7a7a96;--green:#36b07e;--red:#d95555}
 *{box-sizing:border-box;margin:0;padding:0}
@@ -210,6 +211,30 @@ body{background:var(--dark);color:var(--white);font-family:'Tajawal',sans-serif;
 #cv-out iframe{width:100%;border:none;display:block}
 .ft{text-align:center;padding:22px 16px 36px;border-top:1px solid var(--border);position:relative;z-index:1}
 
+/* ══ AUTH MODAL ══ */
+#jak-auth-modal{display:none;position:fixed;inset:0;z-index:99997;align-items:center;justify-content:center;padding:20px}
+#jak-auth-modal.open{display:flex}
+#jak-auth-bg{position:absolute;inset:0;background:rgba(8,8,14,.88);backdrop-filter:blur(8px)}
+#jak-auth-box{position:relative;z-index:1;background:#16161e;border:1px solid #28283a;border-radius:20px;padding:28px;width:100%;max-width:380px;animation:jakUp .3s cubic-bezier(.22,1,.36,1)}
+#jak-auth-close{position:absolute;top:14px;left:16px;background:transparent;border:none;color:#7a7a96;font-size:18px;cursor:pointer}
+.auth-logo{font-family:'DM Sans',sans-serif;font-size:22px;font-weight:700;color:var(--white);text-align:center;margin-bottom:4px}
+.auth-logo span{color:var(--gold)}
+.auth-sub{font-size:13px;color:var(--muted);text-align:center;margin-bottom:20px}
+.auth-tabs{display:flex;background:#1e1e28;border-radius:10px;padding:3px;margin-bottom:20px;gap:3px}
+.auth-tab{flex:1;background:transparent;border:none;color:var(--muted);font-size:13px;font-weight:700;padding:8px;border-radius:8px;cursor:pointer;font-family:'Cairo',sans-serif;transition:all .15s}
+.auth-tab.on{background:var(--card2);color:var(--white);border:1px solid var(--border)}
+.auth-field{width:100%;background:#1e1e28;border:1px solid var(--border);border-radius:10px;padding:11px 14px;font-size:14px;color:var(--white);outline:none;font-family:'Tajawal',sans-serif;margin-bottom:10px;direction:ltr}
+.auth-field:focus{border-color:var(--gold)}
+.auth-btn{width:100%;background:linear-gradient(135deg,#c9a94d,#e8c96a);color:#0c0c10;border:none;border-radius:10px;padding:13px;font-size:14px;font-weight:900;cursor:pointer;font-family:'Cairo',sans-serif;margin-top:4px}
+.auth-btn:hover{opacity:.9}
+.auth-btn:disabled{opacity:.5;cursor:not-allowed}
+.auth-err{font-size:12px;color:var(--red);text-align:center;margin-top:8px;min-height:16px}
+.auth-ok{font-size:12px;color:var(--green);text-align:center;margin-top:8px}
+#nav-user-wrap{position:relative}
+#nav-user-menu{display:none;position:absolute;top:52px;left:0;background:#16161e;border:1px solid var(--border);border-radius:12px;padding:8px;min-width:200px;z-index:1000;box-shadow:0 8px 32px rgba(0,0,0,.4)}
+.user-menu-item{display:flex;align-items:center;gap:8px;padding:8px 12px;border-radius:8px;cursor:pointer;font-size:13px;color:var(--muted);transition:all .15s;background:transparent;border:none;width:100%;text-align:right;font-family:'Cairo',sans-serif}
+.user-menu-item:hover{background:var(--card2);color:var(--white)}
+
 /* ══ JAK PAY MODAL ══ */
 #jak-pay-modal{display:none;position:fixed;inset:0;z-index:99999;align-items:center;justify-content:center;padding:20px}
 #jak-pay-modal.jak-open{display:flex}
@@ -339,10 +364,16 @@ body{background:var(--dark);color:var(--white);font-family:'Tajawal',sans-serif;
 <canvas id="laser-canvas" aria-hidden="true"></canvas>
 
 <nav class="nav">
-  <div class="nav-logo">
-    JAK <span>CV</span>
+  <div class="nav-logo">JAK <span>CV</span></div>
+  <div style="display:flex;align-items:center;gap:10px">
+    <div id="nav-r" class="nav-r">Professional CV Builder</div>
+    <div id="nav-user-wrap" style="position:relative">
+      <button id="nav-auth-btn" onclick="openAuthModal()" style="background:transparent;border:1px solid var(--border);color:var(--muted);border-radius:8px;padding:5px 14px;font-size:12px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .15s" onmouseover="this.style.borderColor='var(--gold)';this.style.color='var(--gold)'" onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--muted)'">تسجيل دخول</button>
+      <div id="nav-user-menu" style="display:none;position:absolute;top:40px;left:0;background:#16161e;border:1px solid var(--border);border-radius:12px;padding:8px;min-width:180px;z-index:1000;box-shadow:0 8px 32px rgba(0,0,0,.4)">
+        <button class="user-menu-item" onclick="doSignOut()">🚪 تسجيل خروج</button>
+      </div>
+    </div>
   </div>
-  <div class="nav-r" id="nav-r">Professional CV Builder</div>
 </nav>
 
 <div id="s-lang">
@@ -516,6 +547,33 @@ body{background:var(--dark);color:var(--white);font-family:'Tajawal',sans-serif;
       </div>
     </div>
     <div class="prev-frame-wrap"><iframe id="prev-iframe" scrolling="auto" sandbox="allow-same-origin" style="height:600px"></iframe></div>
+  </div>
+</div>
+
+<!-- ══ AUTH MODAL ══ -->
+<div id="jak-auth-modal">
+  <div id="jak-auth-bg"></div>
+  <div id="jak-auth-box">
+    <button id="jak-auth-close" onclick="closeAuthModal()">✕</button>
+    <div class="auth-logo">JAK <span>CV</span></div>
+    <div class="auth-sub" id="auth-sub-txt">سجّل حساباً لحفظ مشترياتك</div>
+    <div class="auth-tabs">
+      <button class="auth-tab on" id="auth-tab-in" onclick="authTab('in')">تسجيل دخول</button>
+      <button class="auth-tab" id="auth-tab-up" onclick="authTab('up')">حساب جديد</button>
+    </div>
+    <div id="auth-pn-in">
+      <input class="auth-field" id="auth-email-in" type="email" placeholder="البريد الإلكتروني" autocomplete="email">
+      <input class="auth-field" id="auth-pass-in" type="password" placeholder="كلمة المرور" autocomplete="current-password">
+      <button class="auth-btn" id="auth-btn-in" onclick="doSignIn()">دخول →</button>
+      <div class="auth-err" id="auth-err-in"></div>
+    </div>
+    <div id="auth-pn-up" style="display:none">
+      <input class="auth-field" id="auth-email-up" type="email" placeholder="البريد الإلكتروني" autocomplete="email">
+      <input class="auth-field" id="auth-pass-up" type="password" placeholder="كلمة المرور (٦ أحرف على الأقل)" autocomplete="new-password">
+      <button class="auth-btn" id="auth-btn-up" onclick="doSignUp()">إنشاء حساب →</button>
+      <div class="auth-err" id="auth-err-up"></div>
+      <div class="auth-ok" id="auth-ok-up"></div>
+    </div>
   </div>
 </div>
 
@@ -1332,7 +1390,8 @@ window.addEventListener('beforeunload',function(e){
     if(!id)return;
     localStorage.setItem(TOKEN_KEY, Date.now()+':'+id);
     closeModal();
-    /* تأخير بسيط لإغلاق Paddle overlay ثم التنقل للـ CV */
+    /* احفظ الشراء في Supabase إذا المستخدم مسجّل */
+    if(typeof savePurchaseToDB==='function') savePurchaseToDB(id);
     setTimeout(function(){
       if(window._doPick)window._doPick(id);
     }, 800);
@@ -1792,6 +1851,161 @@ function autoDetectLang(){
 window.addEventListener('DOMContentLoaded',function(){
   setTimeout(function(){autoDetectLang();},800);
 });
+
+/* ══════════════════════════════════════
+   نظام الحسابات — Supabase Auth
+   ══════════════════════════════════════ */
+var SUPA_URL='https://rcjpkeufsgrshpbtjbwi.supabase.co';
+var SUPA_KEY='sb_publishable_TxYkPeRqOJKqMZT7xQht9A_YCxc_VHQ';
+var supa=null;
+var currentUser=null;
+
+/* تهيئة Supabase */
+window.addEventListener('DOMContentLoaded',function(){
+  try{
+    supa=window.supabase.createClient(SUPA_URL,SUPA_KEY);
+    supa.auth.getSession().then(function(r){
+      if(r.data&&r.data.session){
+        currentUser=r.data.session.user;
+        onUserLoggedIn(currentUser);
+      }
+    });
+    supa.auth.onAuthStateChange(function(event,session){
+      if(event==='SIGNED_IN'&&session){
+        currentUser=session.user;
+        onUserLoggedIn(currentUser);
+        closeAuthModal();
+      } else if(event==='SIGNED_OUT'){
+        currentUser=null;
+        onUserLoggedOut();
+      }
+    });
+  }catch(e){console.error('Supabase init error',e);}
+});
+
+/* عند تسجيل الدخول */
+async function onUserLoggedIn(user){
+  /* حدّث زر الـ nav */
+  var btn=document.getElementById('nav-auth-btn');
+  if(btn){
+    var email=user.email||'';
+    var name=email.split('@')[0];
+    btn.innerHTML='👤 '+name;
+    btn.onclick=toggleUserMenu;
+  }
+  /* حمّل المشتريات من DB وافتح القوالب */
+  await loadUserPurchases(user.id);
+}
+
+function onUserLoggedOut(){
+  var btn=document.getElementById('nav-auth-btn');
+  if(btn){btn.innerHTML='تسجيل دخول';btn.onclick=openAuthModal;}
+  document.getElementById('nav-user-menu').style.display='none';
+}
+
+/* تحميل مشتريات المستخدم */
+async function loadUserPurchases(userId){
+  if(!supa)return;
+  try{
+    var r=await supa.from('purchases').select('template_id').eq('user_id',userId);
+    if(r.data&&r.data.length>0){
+      r.data.forEach(function(p){
+        /* افتح القالب بدون دفع */
+        localStorage.setItem('jak_cv_token',Date.now()+':'+p.template_id);
+      });
+    }
+  }catch(e){console.error('loadPurchases error',e);}
+}
+
+/* حفظ الشراء في DB بعد الدفع */
+async function savePurchaseToDB(templateId){
+  if(!supa||!currentUser)return;
+  try{
+    await supa.from('purchases').upsert({
+      user_id:currentUser.id,
+      template_id:templateId,
+      paddle_txn_id:'paddle_'+Date.now()
+    },{onConflict:'user_id,template_id'});
+  }catch(e){console.error('savePurchase error',e);}
+}
+
+/* حفظ CV في DB */
+async function saveCVToDB(templateId,cvData){
+  if(!supa||!currentUser)return;
+  try{
+    await supa.from('cvs').upsert({
+      user_id:currentUser.id,
+      template_id:templateId,
+      cv_data:cvData,
+      updated_at:new Date().toISOString()
+    },{onConflict:'user_id,template_id'});
+  }catch(e){console.error('saveCV error',e);}
+}
+
+/* فتح / إغلاق Auth Modal */
+function openAuthModal(){
+  document.getElementById('jak-auth-modal').classList.add('open');
+  document.body.style.overflow='hidden';
+}
+function closeAuthModal(){
+  document.getElementById('jak-auth-modal').classList.remove('open');
+  document.body.style.overflow='';
+}
+function authTab(t){
+  document.getElementById('auth-tab-in').classList.toggle('on',t==='in');
+  document.getElementById('auth-tab-up').classList.toggle('on',t==='up');
+  document.getElementById('auth-pn-in').style.display=t==='in'?'block':'none';
+  document.getElementById('auth-pn-up').style.display=t==='up'?'block':'none';
+}
+
+/* تسجيل الدخول */
+async function doSignIn(){
+  var email=document.getElementById('auth-email-in').value.trim();
+  var pass=document.getElementById('auth-pass-in').value;
+  var err=document.getElementById('auth-err-in');
+  var btn=document.getElementById('auth-btn-in');
+  err.textContent='';
+  if(!email||!pass){err.textContent='يرجى إدخال البريد وكلمة المرور';return;}
+  btn.disabled=true;btn.textContent='⏳ ...';
+  try{
+    var r=await supa.auth.signInWithPassword({email:email,password:pass});
+    if(r.error)err.textContent=r.error.message==='Invalid login credentials'?'بيانات غير صحيحة':r.error.message;
+  }catch(e){err.textContent='حدث خطأ، حاول مرة ثانية';}
+  btn.disabled=false;btn.textContent='دخول →';
+}
+
+/* إنشاء حساب */
+async function doSignUp(){
+  var email=document.getElementById('auth-email-up').value.trim();
+  var pass=document.getElementById('auth-pass-up').value;
+  var err=document.getElementById('auth-err-up');
+  var ok=document.getElementById('auth-ok-up');
+  var btn=document.getElementById('auth-btn-up');
+  err.textContent='';ok.textContent='';
+  if(!email||!pass){err.textContent='يرجى إدخال البريد وكلمة المرور';return;}
+  if(pass.length<6){err.textContent='كلمة المرور ٦ أحرف على الأقل';return;}
+  btn.disabled=true;btn.textContent='⏳ ...';
+  try{
+    var r=await supa.auth.signUp({email:email,password:pass});
+    if(r.error){err.textContent=r.error.message;}
+    else{ok.textContent='✓ تم الإنشاء! تحقق من بريدك للتأكيد';}
+  }catch(e){err.textContent='حدث خطأ، حاول مرة ثانية';}
+  btn.disabled=false;btn.textContent='إنشاء حساب →';
+}
+
+/* قائمة المستخدم */
+function toggleUserMenu(){
+  var m=document.getElementById('nav-user-menu');
+  if(m)m.style.display=m.style.display==='block'?'none':'block';
+}
+async function doSignOut(){
+  if(supa)await supa.auth.signOut();
+  document.getElementById('nav-user-menu').style.display='none';
+}
+
+/* إغلاق Modal بـ ESC أو النقر خارجه */
+document.addEventListener('keydown',function(e){if(e.key==='Escape')closeAuthModal();});
+document.getElementById('jak-auth-bg').onclick=closeAuthModal;
 </script>
 </body>
 </html>
