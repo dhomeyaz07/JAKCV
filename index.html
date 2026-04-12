@@ -1926,6 +1926,7 @@ window.addEventListener('DOMContentLoaded',function(){
 
 /* عند تسجيل الدخول */
 async function onUserLoggedIn(user){
+  console.log('LOGIN EMAIL:', user.email, '| ADMIN_EMAIL:', ADMIN_EMAIL, '| MATCH:', user.email===ADMIN_EMAIL);
   var btn=document.getElementById('nav-auth-btn');
   if(btn){
     var email=user.email||'';
@@ -1945,6 +1946,8 @@ async function onUserLoggedIn(user){
   /* إذا كان أدمن — افتح كل القوالب بدون دفع */
   if(user.email===ADMIN_EMAIL){
     localStorage.setItem('jak_admin_unlock','1');
+    /* أعد بناء شبكة القوالب لتطبيق فتح القفل */
+    setTimeout(function(){if(typeof buildGrid==='function')buildGrid();},200);
   }
 
   await loadUserPurchases(user.id);
