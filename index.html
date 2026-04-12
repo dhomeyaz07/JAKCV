@@ -2126,8 +2126,11 @@ async function doSignOut(){
 document.addEventListener('keydown',function(e){if(e.key==='Escape'){closeAuthModal();closeMyPurchases();if(typeof closeAdminPanel==='function')closeAdminPanel();}});
 document.getElementById('jak-auth-bg').onclick=closeAuthModal;
 document.getElementById('jak-purchases-bg').onclick=closeMyPurchases;
-var _admBg=document.getElementById('jak-admin-bg');
-if(_admBg)_admBg.onclick=function(){if(typeof closeAdminPanel==='function')closeAdminPanel();};
+/* jak-admin-bg يُضاف في نهاية الصفحة — ننتظر DOMContentLoaded */
+document.addEventListener('DOMContentLoaded',function(){
+  var _admBg=document.getElementById('jak-admin-bg');
+  if(_admBg)_admBg.onclick=function(){if(typeof closeAdminPanel==='function')closeAdminPanel();};
+});
 </script>
 
 <!-- ══ ADMIN PANEL MODAL ══ -->
