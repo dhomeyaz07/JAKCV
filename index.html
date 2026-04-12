@@ -821,7 +821,7 @@ function pickTpl(id){
   if(FREE_TPLS.indexOf(id)===-1){
     /* تحقق إذا التوكن يخص هذا القالب تحديداً */
     var tok=localStorage.getItem('jak_cv_token');
-    var paid=tok && tok.indexOf(':'+id)>-1;
+    var paid=localStorage.getItem('jak_admin_unlock')==='1' || (tok && tok.indexOf(':'+id)>-1);
     if(!paid){
       _pendingTpl=id;
       window._pendingTpl=id;
@@ -926,7 +926,7 @@ function buildCV(){
   var wmNotice=G('cv-wm-notice');
   if(wmNotice){
     var isFreeNow=FREE_TPLS.indexOf(TPL)>-1;
-    var hasPaidNow=localStorage.getItem('jak_cv_token')&&localStorage.getItem('jak_cv_token').indexOf(':'+TPL)>-1;
+    var hasPaidNow=localStorage.getItem('jak_admin_unlock')==='1' || (localStorage.getItem('jak_cv_token')&&localStorage.getItem('jak_cv_token').indexOf(':'+TPL)>-1);
     wmNotice.style.display=(isFreeNow&&!hasPaidNow)?'flex':'none';
     /* أظهر قفل على زر ATS */
     var atsBtn=G('cv-ats');
@@ -983,7 +983,7 @@ function toggleATS(){
   /* تحقق إذا القالب الحالي مجاني */
   var isFree=FREE_TPLS.indexOf(TPL)>-1;
   var tok=localStorage.getItem('jak_cv_token');
-  var hasPaid=tok&&tok.indexOf(':'+TPL)>-1;
+  var hasPaid=localStorage.getItem('jak_admin_unlock')==='1' || (tok&&tok.indexOf(':'+TPL)>-1);
   if(isFree&&!hasPaid){
     var ar=LANG==='ar';
     /* أظهر رسالة مع زر الدفع */
@@ -1115,7 +1115,7 @@ window.addEventListener('DOMContentLoaded',function(){
     }
     /* قالب مدفوع — تحقق من التوكن لهذا القالب تحديداً */
     var currentTpl=window.TPL||'ar1';
-    if(tok && tok.indexOf(':'+currentTpl)>-1){
+    if(localStorage.getItem('jak_admin_unlock')==='1' || (tok && tok.indexOf(':'+currentTpl)>-1)){
       G('print-tip').style.display='block';
       var btn2=G('cv-pdf');btn2.textContent='⏳ ...';btn2.disabled=true;
       var ifrm2=G('cv-iframe');
@@ -1898,7 +1898,7 @@ var supa=null;
 var currentUser=null;
 
 /* ══ ADMIN CONFIG — غيّر هذا البريد لبريدك ══ */
-var ADMIN_EMAIL='dhomeyaz111@gmail.com';
+var ADMIN_EMAIL='admin@jakcv.com';
 
 /* تهيئة Supabase */
 window.addEventListener('DOMContentLoaded',function(){
@@ -1943,10 +1943,7 @@ async function onUserLoggedIn(user){
 
   /* إذا كان أدمن — افتح كل القوالب بدون دفع */
   if(user.email===ADMIN_EMAIL){
-    var allTpls=['ar1','ar2','ar3','ar4','en1','en2','en3','en4'];
-    allTpls.forEach(function(id){
-      localStorage.setItem('jak_cv_token',Date.now()+':'+id);
-    });
+    localStorage.setItem('jak_admin_unlock','1');
   }
 
   await loadUserPurchases(user.id);
@@ -2117,6 +2114,7 @@ function closeMyPurchases(){
 }
 async function doSignOut(){
   if(supa)await supa.auth.signOut();
+  localStorage.removeItem('jak_admin_unlock');
   document.getElementById('nav-user-menu').style.display='none';
 }
 
