@@ -2123,10 +2123,10 @@ async function doSignOut(){
 }
 
 /* إغلاق Modal بـ ESC أو النقر خارجه */
-document.addEventListener('keydown',function(e){if(e.key==='Escape'){closeAuthModal();closeMyPurchases();closeAdminPanel();}});
+document.addEventListener('keydown',function(e){if(e.key==='Escape'){closeAuthModal();closeMyPurchases();if(typeof closeAdminPanel==='function')closeAdminPanel();}});
 document.getElementById('jak-auth-bg').onclick=closeAuthModal;
 document.getElementById('jak-purchases-bg').onclick=closeMyPurchases;
-document.getElementById('jak-admin-bg').onclick=closeAdminPanel;
+document.getElementById('jak-admin-bg').onclick=function(){if(typeof closeAdminPanel==='function')closeAdminPanel();};
 </script>
 
 <!-- ══ ADMIN PANEL MODAL ══ -->
