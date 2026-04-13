@@ -696,6 +696,45 @@ body{background:var(--dark);color:var(--white);font-family:'Tajawal',sans-serif;
     <!-- زر الدفع -->
     <button id="jak-pay-btn">افتح القالب الآن →</button>
 
+    <!-- فاصل أو -->
+    <div style="display:flex;align-items:center;gap:10px;margin:14px 0 10px">
+      <div style="flex:1;height:1px;background:#28283a"></div>
+      <span style="font-size:11px;color:#5a5a78;font-weight:700">أو</span>
+      <div style="flex:1;height:1px;background:#28283a"></div>
+    </div>
+
+    <!-- زر التحويل البنكي -->
+    <button id="jak-bank-btn" onclick="toggleBankTransfer()" style="width:100%;background:transparent;border:1px solid rgba(201,169,77,.3);color:#c9a94d;border-radius:10px;padding:11px;font-size:13px;font-weight:700;cursor:pointer;font-family:'Cairo',sans-serif;transition:all .2s" onmouseover="this.style.background='rgba(201,169,77,.08)'" onmouseout="this.style.background='transparent'">🏦 دفع عن طريق التحويل البنكي</button>
+
+    <!-- تفاصيل التحويل البنكي -->
+    <div id="jak-bank-details" style="display:none;background:#1a1a26;border:1px solid #28283a;border-radius:12px;padding:16px;margin-top:10px;text-align:right">
+      <div style="font-size:13px;font-weight:700;color:#c9a94d;margin-bottom:12px;text-align:center">تفاصيل التحويل البنكي</div>
+      <div style="display:flex;flex-direction:column;gap:8px">
+        <div style="display:flex;justify-content:space-between;align-items:center;background:#13131a;border-radius:8px;padding:10px 12px">
+          <span style="font-size:12px;color:#7a7a96">البنك</span>
+          <span style="font-size:13px;font-weight:700;color:#f4f2ed">D360</span>
+        </div>
+        <div style="display:flex;justify-content:space-between;align-items:center;background:#13131a;border-radius:8px;padding:10px 12px">
+          <span style="font-size:12px;color:#7a7a96">اسم صاحب الحساب</span>
+          <span style="font-size:13px;font-weight:700;color:#f4f2ed">Abdulrahman Alzahrani</span>
+        </div>
+        <div style="display:flex;justify-content:space-between;align-items:center;background:#13131a;border-radius:8px;padding:10px 12px;gap:8px">
+          <button onclick="copyIBAN()" style="background:rgba(201,169,77,.1);border:1px solid rgba(201,169,77,.3);color:#c9a94d;border-radius:6px;padding:4px 10px;font-size:11px;font-weight:700;cursor:pointer;white-space:nowrap;font-family:'Cairo',sans-serif">نسخ</button>
+          <span style="font-size:12px;font-weight:700;color:#f4f2ed;direction:ltr;text-align:left;word-break:break-all">SA6536036036091083857044</span>
+          <span style="font-size:11px;color:#7a7a96;white-space:nowrap">رقم IBAN</span>
+        </div>
+        <div style="display:flex;justify-content:space-between;align-items:center;background:#13131a;border-radius:8px;padding:10px 12px">
+          <span style="font-size:12px;color:#7a7a96">المبلغ</span>
+          <span style="font-size:15px;font-weight:900;color:#c9a94d">14.99 ﷼</span>
+        </div>
+      </div>
+      <div style="margin-top:12px;background:rgba(201,169,77,.05);border:1px solid rgba(201,169,77,.15);border-radius:8px;padding:10px 12px;font-size:12px;color:#7a7a96;line-height:1.8;text-align:center">
+        بعد التحويل أرسل صورة الإيصال على الواتساب<br>
+        <a href="https://wa.me/966558784052?text=أرسلت%20التحويل%20البنكي%20لـ%20JAK%20CV" target="_blank" style="color:#25d366;font-weight:700;text-decoration:none">📲 تواصل معنا على الواتساب</a>
+        <br><span style="font-size:11px;color:#44445a">سيتم تفعيل القالب خلال ساعة</span>
+      </div>
+    </div>
+
     <!-- ضمان + أمان -->
     <div style="display:flex;align-items:center;justify-content:center;gap:16px;margin-top:10px;flex-wrap:wrap">
       <span style="font-size:11px;color:#7a7a96;display:flex;align-items:center;gap:4px">🔒 <span id="jak-pay-secure">دفع آمن 100%</span></span>
@@ -980,7 +1019,29 @@ function renderCV(id,d,isPreview){
   return'<!DOCTYPE html><html><head><meta charset="UTF-8">'+GF+'<style>*{box-sizing:border-box;margin:0;padding:0}body{background:#fff;color:#111;font-family:\'DM Sans\',sans-serif;direction:ltr;padding:32px 44px}.sett{font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;border-bottom:1.5px solid #111;padding-bottom:4px;margin-bottom:9px;margin-top:18px}</style></head><body><div style="font-size:32px;font-weight:700;text-align:center;margin-bottom:4px;letter-spacing:-.5px">'+d.name+'</div><div style="font-size:12px;color:#444;text-align:center;margin-bottom:16px">'+d.contact+'</div>'+(d.summary?'<div style="font-size:12.5px;line-height:1.85;color:#222;text-align:justify;margin-bottom:8px">'+d.summary+'</div>':'')+(d.exp.length?'<div class="sett">Professional Experience</div>'+eH8:'')+(d.edu.length?'<div class="sett">Education</div>'+d.edu.map(function(e){return'<div style="margin-bottom:7px"><div style="font-size:13px;font-weight:700">'+e.n+'</div><div style="font-size:12px;color:#666">'+eduDet(e)+'</div></div>';}).join(''):'')+(d.skls.length?'<div class="sett">Expert-Level Skills</div><div style="font-size:12.5px;font-weight:700;margin-bottom:2px">Core Skills:</div><div style="font-size:12px;color:#333;margin-bottom:8px">'+d.skls.map(esc).join(', ')+'</div>':'')+(d.crss.length?'<div class="sett">Certifications</div>'+d.crss.map(function(x){return bul(esc(x),true);}).join(''):'')+watermark+'</body></html>';
 }
 
-function toggleATS(){
+function toggleBankTransfer(){
+  var d=document.getElementById('jak-bank-details');
+  var btn=document.getElementById('jak-bank-btn');
+  if(d.style.display==='none'){
+    d.style.display='block';
+    btn.textContent='🏦 إخفاء تفاصيل التحويل';
+  } else {
+    d.style.display='none';
+    btn.textContent='🏦 دفع عن طريق التحويل البنكي';
+  }
+}
+function copyIBAN(){
+  navigator.clipboard.writeText('SA6536036036091083857044').then(function(){
+    var btn=event.target;
+    btn.textContent='✓ تم';
+    btn.style.color='#36b07e';
+    setTimeout(function(){btn.textContent='نسخ';btn.style.color='#c9a94d';},2000);
+  }).catch(function(){
+    prompt('انسخ الآيبان:','SA6536036036091083857044');
+  });
+}
+window.toggleBankTransfer=toggleBankTransfer;
+window.copyIBAN=copyIBAN;
   /* تحقق إذا القالب الحالي مجاني */
   var isFree=FREE_TPLS.indexOf(TPL)>-1;
   var tok=localStorage.getItem('jak_cv_token');
