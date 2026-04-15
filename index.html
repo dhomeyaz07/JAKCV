@@ -362,9 +362,15 @@ body{background:var(--dark);color:var(--white);font-family:'Tajawal',sans-serif;
 @media(max-width:580px){.nav{padding:0 14px}.cvbar{padding:10px 14px}}
 
 /* ── واتساب عائم ── */
-#jak-wa-btn{position:fixed;bottom:24px;left:24px;z-index:9999;width:52px;height:52px;background:#25d366;border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 20px rgba(37,211,102,.4);cursor:pointer;transition:transform .2s,box-shadow .2s;text-decoration:none}
-#jak-wa-btn:hover{transform:scale(1.1);box-shadow:0 6px 28px rgba(37,211,102,.55)}
-#jak-wa-btn svg{width:28px;height:28px;fill:#fff}
+#jak-wa-btn{position:fixed;bottom:24px;left:16px;z-index:9999;background:#25d366;border-radius:50px;display:flex;align-items:center;gap:0;padding:10px 12px;box-shadow:0 4px 20px rgba(37,211,102,.35);cursor:pointer;transition:transform .2s,box-shadow .2s;text-decoration:none;max-width:300px;opacity:0;pointer-events:none;transform:translateY(30px)}
+#jak-wa-btn.wa-visible{opacity:1;pointer-events:auto;transform:translateY(0);transition:opacity .5s,transform .5s cubic-bezier(.22,1,.36,1),box-shadow .2s;animation:waPulse 2.5s ease-in-out 3s infinite}
+#jak-wa-btn:hover{transform:translateY(-3px) scale(1.03)!important;box-shadow:0 8px 32px rgba(37,211,102,.55)}
+#jak-wa-btn svg{width:24px;height:24px;fill:#fff;flex-shrink:0;opacity:0;transition:opacity .4s .1s;margin-right:6px}
+#jak-wa-btn.wa-icon-show svg{opacity:1}
+#jak-wa-txt{font-family:'Cairo',sans-serif;font-size:12px;font-weight:700;color:#fff;line-height:1.4;white-space:nowrap;overflow:hidden;border-right:2px solid rgba(255,255,255,.8);width:0;transition:none;direction:rtl;text-align:right}
+#jak-wa-btn.wa-visible #jak-wa-txt{animation:waType 1.4s steps(22,end) .3s forwards}
+@keyframes waType{from{width:0}to{width:182px}}
+@keyframes waPulse{0%,100%{box-shadow:0 4px 20px rgba(37,211,102,.35)}50%{box-shadow:0 4px 32px rgba(37,211,102,.7),0 0 0 8px rgba(37,211,102,.1)}}
 
 /* ── لوحة الأدمن ── */
 #jak-admin-modal{display:none;position:fixed;inset:0;z-index:99998;align-items:center;justify-content:center;padding:16px}
@@ -741,12 +747,24 @@ body{background:var(--dark);color:var(--white);font-family:'Tajawal',sans-serif;
     </div>
 
     <!-- تحويل بنكي (SAR فقط) -->
-    <div id="jak-bank-section" style="display:none;margin-top:14px;background:#1a1a26;border:1px solid #28283a;border-radius:12px;padding:14px 16px">
-      <div style="font-size:12px;font-weight:700;color:#c9a94d;margin-bottom:8px;text-align:center">🏦 تحويل بنكي (D360)</div>
-      <div style="font-size:11px;color:#7a7a96;margin-bottom:8px;text-align:center">حوّل المبلغ ثم أرسل لقطة الشاشة على واتساب</div>
-      <div style="display:flex;align-items:center;justify-content:space-between;background:#0f0f18;border:1px solid #28283a;border-radius:8px;padding:10px 12px;gap:8px">
-        <span style="font-family:monospace;font-size:12px;color:#f4f2ed;letter-spacing:.5px">SA1505000068202572680000</span>
-        <button id="jak-copy-iban" style="background:rgba(201,169,77,.15);border:1px solid rgba(201,169,77,.3);color:#c9a94d;border-radius:6px;padding:4px 10px;font-size:11px;font-weight:700;cursor:pointer;white-space:nowrap">نسخ</button>
+    <!-- تحويل بنكي -->
+    <div id="jak-bank-section" style="display:none;margin-top:16px;border:1px solid rgba(201,169,77,.25);border-radius:14px;overflow:hidden">
+      <div style="background:rgba(201,169,77,.08);padding:10px 16px;display:flex;align-items:center;gap:8px;border-bottom:1px solid rgba(201,169,77,.15)">
+        <span style="font-size:16px">🏦</span>
+        <div>
+          <div style="font-size:13px;font-weight:700;color:#c9a94d;font-family:'Cairo',sans-serif">تحويل بنكي — D360</div>
+          <div style="font-size:11px;color:#7a7a96;margin-top:1px">بديل عن الدفع الإلكتروني</div>
+        </div>
+      </div>
+      <div style="padding:12px 16px">
+        <div style="font-size:11px;color:#7a7a96;margin-bottom:8px">حوّل المبلغ على هذا الـ IBAN ثم أرسل لقطة الشاشة على واتساب وسيتم تفعيل قالبك خلال دقائق</div>
+        <div style="display:flex;align-items:center;justify-content:space-between;background:#0f0f18;border:1px solid #28283a;border-radius:8px;padding:11px 14px;gap:10px">
+          <div>
+            <div style="font-size:10px;color:#7a7a96;margin-bottom:3px">IBAN</div>
+            <span id="jak-iban-display" style="font-family:monospace;font-size:13px;color:#f4f2ed;letter-spacing:.8px;font-weight:700">SA1505000068202572680000</span>
+          </div>
+          <button id="jak-copy-iban" style="background:rgba(201,169,77,.15);border:1px solid rgba(201,169,77,.35);color:#c9a94d;border-radius:8px;padding:7px 14px;font-size:12px;font-weight:700;cursor:pointer;white-space:nowrap;font-family:'Cairo',sans-serif;transition:background .15s">نسخ ← </button>
+        </div>
       </div>
     </div>
 
@@ -771,6 +789,20 @@ setTimeout(function(){
 setTimeout(function(){
   var s=document.getElementById('splash');
   if(s){s.classList.add('hide');setTimeout(function(){s.style.display='none';},700);}
+  /* أظهر زر واتساب بعد انتهاء السبلاش */
+  setTimeout(function(){
+    var wa=document.getElementById('jak-wa-btn');
+    if(wa){
+      wa.classList.remove('wa-visible','wa-icon-show');
+      void wa.offsetWidth;
+      wa.classList.add('wa-visible');
+      setTimeout(function(){
+        wa.classList.add('wa-icon-show');
+        var txt=document.getElementById('jak-wa-txt');
+        if(txt)txt.style.borderColor='transparent';
+      },1800);
+    }
+  },800);
 },3200);
 
 // ── MAIN APP ──
@@ -810,6 +842,26 @@ function show(id){
   el.style.display=(id==='s-lang')?'flex':'block';
   G('footer').style.display=(id==='s-cv')?'none':'block';
   window.scrollTo(0,0);
+  /* واتساب — يظهر فقط في الصفحة الرئيسية */
+  var wa=document.getElementById('jak-wa-btn');
+  if(wa){
+    if(id==='s-lang'){
+      wa.classList.remove('wa-visible','wa-icon-show');
+      void wa.offsetWidth;
+      setTimeout(function(){
+        wa.classList.add('wa-visible');
+        /* أيقونة تظهر بعد انتهاء الـ typewriter (1.4s + 0.3s delay = 1.7s) */
+        setTimeout(function(){
+          wa.classList.add('wa-icon-show');
+          /* أوقف المؤشر بعد ظهور الأيقونة */
+          var txt=document.getElementById('jak-wa-txt');
+          if(txt)txt.style.borderColor='transparent';
+        },1800);
+      },600);
+    } else {
+      wa.classList.remove('wa-visible','wa-icon-show');
+    }
+  }
 }
 
 function pickLang(l){
@@ -2171,14 +2223,15 @@ async function doSignOut(){
 }
 
 /* إغلاق Modal بـ ESC أو النقر خارجه */
-document.addEventListener('keydown',function(e){if(e.key==='Escape'){closeAuthModal();closeMyPurchases();closeAdminPanel();}});
+document.addEventListener('keydown',function(e){if(e.key==='Escape'){closeAuthModal();closeMyPurchases();if(typeof closeAdminPanel==='function')closeAdminPanel();}});
 document.getElementById('jak-auth-bg').onclick=closeAuthModal;
 document.getElementById('jak-purchases-bg').onclick=closeMyPurchases;
-document.getElementById('jak-admin-bg').onclick=closeAdminPanel;
+document.getElementById('jak-admin-bg').onclick=function(){if(typeof closeAdminPanel==='function')closeAdminPanel();};
 </script>
 
 <!-- ══ زر واتساب العائم ══ -->
-<a id="jak-wa-btn" href="https://wa.me/966558784052?text=" target="_blank" rel="noopener" title="تواصل معنا على واتساب">
+<a id="jak-wa-btn" href="https://wa.me/966558784052?text=" target="_blank" rel="noopener">
+  <span id="jak-wa-txt">إذا احتجت مساعدة<br>لا تردد بالتواصل معنا</span>
   <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.117.554 4.106 1.523 5.832L.057 23.25l5.565-1.459A11.943 11.943 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.81 9.81 0 01-5.003-1.366l-.359-.213-3.305.867.882-3.222-.234-.371A9.818 9.818 0 012.182 12C2.182 6.58 6.58 2.182 12 2.182c5.42 0 9.818 4.398 9.818 9.818 0 5.42-4.398 9.818-9.818 9.818z"/></svg>
 </a>
 
