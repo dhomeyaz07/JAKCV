@@ -360,6 +360,37 @@ body{background:var(--dark);color:var(--white);font-family:'Tajawal',sans-serif;
   #cv-out{max-width:100%!important;box-shadow:none!important;margin:0!important}
 }
 @media(max-width:580px){.nav{padding:0 14px}.cvbar{padding:10px 14px}}
+
+/* ── واتساب عائم ── */
+#jak-wa-btn{position:fixed;bottom:24px;left:24px;z-index:9999;width:52px;height:52px;background:#25d366;border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 20px rgba(37,211,102,.4);cursor:pointer;transition:transform .2s,box-shadow .2s;text-decoration:none}
+#jak-wa-btn:hover{transform:scale(1.1);box-shadow:0 6px 28px rgba(37,211,102,.55)}
+#jak-wa-btn svg{width:28px;height:28px;fill:#fff}
+
+/* ── لوحة الأدمن ── */
+#jak-admin-modal{display:none;position:fixed;inset:0;z-index:99998;align-items:center;justify-content:center;padding:16px}
+#jak-admin-modal.open{display:flex}
+#jak-admin-bg{position:absolute;inset:0;background:rgba(8,8,14,.92);backdrop-filter:blur(10px)}
+#jak-admin-box{position:relative;z-index:1;background:#16161e;border:1px solid #28283a;border-radius:20px;width:100%;max-width:760px;max-height:88vh;display:flex;flex-direction:column;animation:jakUp .3s cubic-bezier(.22,1,.36,1)}
+#jak-admin-head{display:flex;align-items:center;justify-content:space-between;padding:20px 24px 0;border-bottom:1px solid #28283a;padding-bottom:14px;flex-shrink:0}
+#jak-admin-head h2{font-size:18px;font-weight:700;color:#f4f2ed;font-family:'Cairo',sans-serif;margin:0}
+#jak-admin-close{background:transparent;border:none;color:#7a7a96;font-size:20px;cursor:pointer;padding:2px 6px}
+#jak-admin-tabs{display:flex;gap:4px;padding:14px 24px 0;flex-shrink:0;border-bottom:1px solid #28283a;padding-bottom:0}
+.admin-tab{background:transparent;border:none;border-bottom:2px solid transparent;color:#7a7a96;font-size:13px;font-weight:700;padding:8px 14px;cursor:pointer;font-family:'Cairo',sans-serif;transition:all .15s}
+.admin-tab.on{color:#c9a94d;border-bottom-color:#c9a94d}
+#jak-admin-body{flex:1;overflow-y:auto;padding:20px 24px}
+.admin-pane{display:none}.admin-pane.on{display:block}
+.admin-stat-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;margin-bottom:20px}
+.admin-stat-card{background:#1e1e28;border:1px solid #28283a;border-radius:12px;padding:16px;text-align:center}
+.admin-stat-n{font-size:28px;font-weight:900;color:#c9a94d;font-family:'DM Sans',sans-serif}
+.admin-stat-l{font-size:11px;color:#7a7a96;margin-top:4px}
+.admin-table{width:100%;border-collapse:collapse;font-size:12px}
+.admin-table th{text-align:right;padding:8px 10px;color:#7a7a96;font-weight:700;border-bottom:1px solid #28283a}
+.admin-table td{padding:8px 10px;color:#c8c8d8;border-bottom:1px solid #1e1e28;word-break:break-all}
+.admin-table tr:hover td{background:#1e1e28}
+.admin-tool-btn{background:#1e1e28;border:1px solid #28283a;color:#c9a94d;border-radius:8px;padding:8px 16px;font-size:13px;font-weight:700;cursor:pointer;font-family:'Cairo',sans-serif;transition:all .15s;margin:4px}
+.admin-tool-btn:hover{background:#28283a}
+#admin-search{width:100%;background:#1e1e28;border:1px solid #28283a;border-radius:8px;padding:8px 12px;font-size:13px;color:#f4f2ed;outline:none;margin-bottom:12px;font-family:'Tajawal',sans-serif;direction:ltr}
+#admin-search:focus{border-color:#c9a94d}
 </style>
 </head>
 <body>
@@ -391,6 +422,7 @@ body{background:var(--dark);color:var(--white);font-family:'Tajawal',sans-serif;
     <div id="nav-user-wrap" style="position:relative">
       <button id="nav-auth-btn" onclick="openAuthModal()" style="background:transparent;border:1px solid var(--border);color:var(--muted);border-radius:8px;padding:5px 14px;font-size:12px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .15s" onmouseover="this.style.borderColor='var(--gold)';this.style.color='var(--gold)'" onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--muted)'">تسجيل دخول</button>
       <div id="nav-user-menu" style="display:none;position:absolute;top:40px;left:0;background:#16161e;border:1px solid var(--border);border-radius:12px;padding:8px;min-width:180px;z-index:1000;box-shadow:0 8px 32px rgba(0,0,0,.4)">
+        <button id="nav-admin-btn" class="user-menu-item" onclick="openAdminPanel();document.getElementById('nav-user-menu').style.display='none'" style="display:none;color:#c9a94d">🛡️ لوحة الأدمن</button>
         <button class="user-menu-item" onclick="openMyPurchases()">🧾 مشترياتي</button>
         <button class="user-menu-item" onclick="doSignOut()">🚪 تسجيل خروج</button>
       </div>
@@ -1486,6 +1518,7 @@ window.addEventListener('beforeunload',function(e){
      ════════════════════════════════════════ */
   var PADDLE_TOKEN = 'live_0bf3d22094b4370c6259d0fbd8f';
   var PADDLE_PRICE = 'pri_01kn4ptdge7hsym5p39jdsbt7p';
+  var ADMIN_EMAIL  = 'dhomeyaz111@gmail.com';
   var paddleReady  = false;
 
   /* ── تهيئة Paddle ── */
@@ -1961,6 +1994,9 @@ async function onUserLoggedIn(user){
     btn.innerHTML='👤 '+name;
     btn.onclick=toggleUserMenu;
   }
+  /* إظهار زر الأدمن */
+  var adminBtn=document.getElementById('nav-admin-btn');
+  if(adminBtn) adminBtn.style.display=(user.email===ADMIN_EMAIL)?'block':'none';
   await loadUserPurchases(user.id);
   /* إذا كان ينتظر الدفع — افتح نافذة الدفع تلقائياً */
   if(window._pendingPayAfterLogin && window._pendingTpl){
@@ -1973,6 +2009,8 @@ function onUserLoggedOut(){
   var btn=document.getElementById('nav-auth-btn');
   if(btn){btn.innerHTML='تسجيل دخول';btn.onclick=openAuthModal;}
   document.getElementById('nav-user-menu').style.display='none';
+  var adminBtn=document.getElementById('nav-admin-btn');
+  if(adminBtn)adminBtn.style.display='none';
 }
 
 /* تحميل مشتريات المستخدم */
@@ -2133,9 +2171,216 @@ async function doSignOut(){
 }
 
 /* إغلاق Modal بـ ESC أو النقر خارجه */
-document.addEventListener('keydown',function(e){if(e.key==='Escape'){closeAuthModal();closeMyPurchases();}});
+document.addEventListener('keydown',function(e){if(e.key==='Escape'){closeAuthModal();closeMyPurchases();closeAdminPanel();}});
 document.getElementById('jak-auth-bg').onclick=closeAuthModal;
 document.getElementById('jak-purchases-bg').onclick=closeMyPurchases;
+document.getElementById('jak-admin-bg').onclick=closeAdminPanel;
+</script>
+
+<!-- ══ زر واتساب العائم ══ -->
+<a id="jak-wa-btn" href="https://wa.me/966558784052?text=" target="_blank" rel="noopener" title="تواصل معنا على واتساب">
+  <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.117.554 4.106 1.523 5.832L.057 23.25l5.565-1.459A11.943 11.943 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.81 9.81 0 01-5.003-1.366l-.359-.213-3.305.867.882-3.222-.234-.371A9.818 9.818 0 012.182 12C2.182 6.58 6.58 2.182 12 2.182c5.42 0 9.818 4.398 9.818 9.818 0 5.42-4.398 9.818-9.818 9.818z"/></svg>
+</a>
+
+<!-- ══ لوحة الأدمن ══ -->
+<div id="jak-admin-modal">
+  <div id="jak-admin-bg"></div>
+  <div id="jak-admin-box">
+    <div id="jak-admin-head">
+      <h2>🛡️ لوحة تحكم الأدمن</h2>
+      <button id="jak-admin-close" onclick="closeAdminPanel()">✕</button>
+    </div>
+    <div id="jak-admin-tabs">
+      <button class="admin-tab on" onclick="switchAdminTab('stats')">📊 إحصائيات</button>
+      <button class="admin-tab" onclick="switchAdminTab('purchases')">💳 المشتريات</button>
+      <button class="admin-tab" onclick="switchAdminTab('cvdata')">📄 بيانات CV</button>
+      <button class="admin-tab" onclick="switchAdminTab('tools')">🔧 أدوات</button>
+    </div>
+    <div id="jak-admin-body">
+
+      <!-- إحصائيات -->
+      <div id="admin-pane-stats" class="admin-pane on">
+        <div class="admin-stat-grid">
+          <div class="admin-stat-card"><div class="admin-stat-n" id="astat-users">—</div><div class="admin-stat-l">مستخدم مسجل</div></div>
+          <div class="admin-stat-card"><div class="admin-stat-n" id="astat-purchases">—</div><div class="admin-stat-l">عملية شراء</div></div>
+          <div class="admin-stat-card"><div class="admin-stat-n" id="astat-cvs">—</div><div class="admin-stat-l">سيرة محفوظة</div></div>
+          <div class="admin-stat-card"><div class="admin-stat-n" id="astat-revenue">—</div><div class="admin-stat-l">إيرادات (USD)</div></div>
+        </div>
+        <div id="astat-recent-title" style="font-size:13px;font-weight:700;color:#7a7a96;margin-bottom:10px">آخر 5 مشتريات</div>
+        <table class="admin-table"><thead><tr><th>المستخدم</th><th>القالب</th><th>التاريخ</th></tr></thead><tbody id="astat-recent-body"><tr><td colspan="3" style="text-align:center;color:#7a7a96">جاري التحميل…</td></tr></tbody></table>
+      </div>
+
+      <!-- المشتريات -->
+      <div id="admin-pane-purchases" class="admin-pane">
+        <input id="admin-search" type="text" placeholder="ابحث بالإيميل أو ID…" oninput="filterAdminPurchases(this.value)">
+        <table class="admin-table"><thead><tr><th>المستخدم</th><th>القالب</th><th>Transaction ID</th><th>التاريخ</th></tr></thead><tbody id="admin-purchases-body"><tr><td colspan="4" style="text-align:center;color:#7a7a96">جاري التحميل…</td></tr></tbody></table>
+      </div>
+
+      <!-- بيانات CV -->
+      <div id="admin-pane-cvdata" class="admin-pane">
+        <input id="admin-cv-search" type="text" placeholder="ابحث بالاسم أو الإيميل…" oninput="filterAdminCVs(this.value)" style="width:100%;background:#1e1e28;border:1px solid #28283a;border-radius:8px;padding:8px 12px;font-size:13px;color:#f4f2ed;outline:none;margin-bottom:12px;font-family:'Tajawal',sans-serif;direction:ltr">
+        <div id="admin-cv-body" style="color:#7a7a96;font-size:13px;text-align:center">جاري التحميل…</div>
+      </div>
+
+      <!-- أدوات -->
+      <div id="admin-pane-tools" class="admin-pane">
+        <div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:20px">
+          <button class="admin-tool-btn" onclick="adminRefreshStats()">🔄 تحديث الإحصائيات</button>
+          <button class="admin-tool-btn" onclick="adminExportCSV()">📥 تصدير مشتريات CSV</button>
+          <button class="admin-tool-btn" onclick="adminClearExpiredCVs()">🗑️ حذف CVs منتهية</button>
+          <button class="admin-tool-btn" onclick="adminSendTestEmail()">📧 إيميل تجريبي</button>
+        </div>
+        <div id="admin-tools-log" style="background:#0f0f18;border:1px solid #28283a;border-radius:8px;padding:12px;font-family:monospace;font-size:11px;color:#7a7a96;min-height:80px;max-height:200px;overflow-y:auto">جاهز...</div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script>
+/* ══ واتساب — رسالة حسب اللغة ══ */
+(function(){
+  var msgs={
+    ar:'مرحباً، أحتاج مساعدة في موقع JAK CV 👋',
+    en:'Hello, I need help with JAK CV 👋',
+    fr:'Bonjour, j\'ai besoin d\'aide avec JAK CV 👋',
+    ja:'こんにちは、JAK CVについて助けてください 👋',
+    de:'Hallo, ich brauche Hilfe mit JAK CV 👋',
+    pt:'Olá, preciso de ajuda com o JAK CV 👋',
+    hi:'नमस्ते, मुझे JAK CV में मदद चाहिए 👋',
+    nl:'Hallo, ik heb hulp nodig met JAK CV 👋'
+  };
+  var btn=document.getElementById('jak-wa-btn');
+  if(!btn)return;
+  function updateWaLink(){
+    var lang=(typeof LANG!=='undefined'?LANG:null)||document.documentElement.lang||'ar';
+    var msg=msgs[lang]||msgs['ar'];
+    btn.href='https://wa.me/966558784052?text='+encodeURIComponent(msg);
+  }
+  updateWaLink();
+  document.addEventListener('jak-lang-change',updateWaLink);
+  /* تحديث دوري خفيف */
+  setInterval(updateWaLink,2000);
+})();
+
+/* ══ لوحة الأدمن ══ */
+var _adminPurchasesAll=[];
+var _adminCVsAll=[];
+
+function openAdminPanel(){
+  document.getElementById('jak-admin-modal').classList.add('open');
+  document.body.style.overflow='hidden';
+  switchAdminTab('stats');
+  adminRefreshStats();
+}
+function closeAdminPanel(){
+  document.getElementById('jak-admin-modal').classList.remove('open');
+  document.body.style.overflow='';
+}
+function switchAdminTab(tab){
+  document.querySelectorAll('.admin-tab').forEach(function(b,i){
+    var tabs=['stats','purchases','cvdata','tools'];
+    b.classList.toggle('on',tabs[i]===tab);
+  });
+  document.querySelectorAll('.admin-pane').forEach(function(p){p.classList.remove('on');});
+  var pane=document.getElementById('admin-pane-'+tab);
+  if(pane)pane.classList.add('on');
+  if(tab==='purchases')adminLoadPurchases();
+  if(tab==='cvdata')adminLoadCVs();
+}
+
+function adminLog(msg){
+  var el=document.getElementById('admin-tools-log');
+  if(el)el.innerHTML+='<div>['+new Date().toLocaleTimeString('ar')+'] '+msg+'</div>';
+}
+
+async function adminRefreshStats(){
+  if(!supa)return;
+  try{
+    var [pu,cv]=await Promise.all([
+      supa.from('purchases').select('*',{count:'exact',head:false}),
+      supa.from('cv_saves').select('*',{count:'exact',head:false})
+    ]);
+    var purchases=pu.data||[];
+    document.getElementById('astat-purchases').textContent=purchases.length;
+    document.getElementById('astat-cvs').textContent=(cv.data||[]).length;
+    /* إيرادات تقديرية */
+    var rev=(purchases.length*3.99).toFixed(2);
+    document.getElementById('astat-revenue').textContent='$'+rev;
+    /* آخر 5 مشتريات */
+    var recent=purchases.slice(-5).reverse();
+    var tbody=document.getElementById('astat-recent-body');
+    if(tbody){
+      tbody.innerHTML=recent.map(function(p){
+        return '<tr><td>'+(p.user_id||'—').slice(0,12)+'…</td><td>'+(p.template_id||'—')+'</td><td>'+(p.created_at?new Date(p.created_at).toLocaleDateString('ar-SA'):'—')+'</td></tr>';
+      }).join('')||'<tr><td colspan="3" style="text-align:center;color:#7a7a96">لا توجد بيانات</td></tr>';
+    }
+    adminLog('✅ تم تحديث الإحصائيات');
+  }catch(e){adminLog('❌ خطأ: '+e.message);}
+}
+
+async function adminLoadPurchases(){
+  if(!supa)return;
+  var tbody=document.getElementById('admin-purchases-body');
+  if(tbody)tbody.innerHTML='<tr><td colspan="4" style="text-align:center;color:#7a7a96">جاري التحميل…</td></tr>';
+  try{
+    var r=await supa.from('purchases').select('*').order('created_at',{ascending:false});
+    _adminPurchasesAll=r.data||[];
+    renderAdminPurchases(_adminPurchasesAll);
+  }catch(e){if(tbody)tbody.innerHTML='<tr><td colspan="4" style="color:var(--red);text-align:center">خطأ في التحميل</td></tr>';}
+}
+function renderAdminPurchases(list){
+  var tbody=document.getElementById('admin-purchases-body');
+  if(!tbody)return;
+  tbody.innerHTML=list.map(function(p){
+    return '<tr><td>'+(p.user_id||'—').slice(0,14)+'…</td><td>'+(p.template_id||'—')+'</td><td style="font-size:10px">'+(p.paddle_txn_id||p.txn_id||'—')+'</td><td>'+(p.created_at?new Date(p.created_at).toLocaleDateString('ar-SA'):'—')+'</td></tr>';
+  }).join('')||'<tr><td colspan="4" style="text-align:center;color:#7a7a96">لا توجد بيانات</td></tr>';
+}
+function filterAdminPurchases(q){
+  if(!q)return renderAdminPurchases(_adminPurchasesAll);
+  var f=_adminPurchasesAll.filter(function(p){return JSON.stringify(p).toLowerCase().includes(q.toLowerCase());});
+  renderAdminPurchases(f);
+}
+
+async function adminLoadCVs(){
+  if(!supa)return;
+  var el=document.getElementById('admin-cv-body');
+  if(el)el.textContent='جاري التحميل…';
+  try{
+    var r=await supa.from('cv_saves').select('*').order('created_at',{ascending:false});
+    _adminCVsAll=r.data||[];
+    renderAdminCVs(_adminCVsAll);
+  }catch(e){if(el)el.textContent='خطأ في التحميل';}
+}
+function renderAdminCVs(list){
+  var el=document.getElementById('admin-cv-body');
+  if(!el)return;
+  if(!list.length){el.innerHTML='<div style="text-align:center;color:#7a7a96">لا توجد بيانات</div>';return;}
+  el.innerHTML='<table class="admin-table"><thead><tr><th>الكود</th><th>الاسم</th><th>تاريخ الانتهاء</th></tr></thead><tbody>'+
+    list.map(function(c){
+      var name='—';try{var d=JSON.parse(c.data||'{}');name=d.name||'—';}catch(e){}
+      return '<tr><td style="font-weight:700;color:#c9a94d">'+c.code+'</td><td>'+name+'</td><td>'+(c.expires_at?new Date(c.expires_at).toLocaleDateString('ar-SA'):'—')+'</td></tr>';
+    }).join('')+'</tbody></table>';
+}
+function filterAdminCVs(q){
+  if(!q)return renderAdminCVs(_adminCVsAll);
+  var f=_adminCVsAll.filter(function(c){return JSON.stringify(c).toLowerCase().includes(q.toLowerCase());});
+  renderAdminCVs(f);
+}
+
+function adminExportCSV(){
+  if(!_adminPurchasesAll.length){adminLog('⚠️ لا توجد بيانات للتصدير');return;}
+  var csv='user_id,template_id,txn_id,created_at\n'+_adminPurchasesAll.map(function(p){
+    return [p.user_id,p.template_id,p.paddle_txn_id||p.txn_id||'',p.created_at].join(',');
+  }).join('\n');
+  var a=document.createElement('a');
+  a.href='data:text/csv;charset=utf-8,'+encodeURIComponent(csv);
+  a.download='purchases_'+Date.now()+'.csv';
+  a.click();
+  adminLog('✅ تم تصدير '+_adminPurchasesAll.length+' سجل');
+}
+function adminClearExpiredCVs(){adminLog('⚠️ هذه العملية تحتاج تأكيداً — اتصل بـ Supabase مباشرة');}
+function adminSendTestEmail(){adminLog('📧 إيميل تجريبي — يتطلب Edge Function من Supabase');}
 </script>
 </body>
 </html>
