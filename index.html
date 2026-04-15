@@ -708,6 +708,16 @@ body{background:var(--dark);color:var(--white);font-family:'Tajawal',sans-serif;
       <span style="font-size:11px;color:#7a7a96;display:flex;align-items:center;gap:4px">↩ <span id="jak-refund-txt">ضمان استرداد 7 أيام</span></span>
     </div>
 
+    <!-- تحويل بنكي (SAR فقط) -->
+    <div id="jak-bank-section" style="display:none;margin-top:14px;background:#1a1a26;border:1px solid #28283a;border-radius:12px;padding:14px 16px">
+      <div style="font-size:12px;font-weight:700;color:#c9a94d;margin-bottom:8px;text-align:center">🏦 تحويل بنكي (D360)</div>
+      <div style="font-size:11px;color:#7a7a96;margin-bottom:8px;text-align:center">حوّل المبلغ ثم أرسل لقطة الشاشة على واتساب</div>
+      <div style="display:flex;align-items:center;justify-content:space-between;background:#0f0f18;border:1px solid #28283a;border-radius:8px;padding:10px 12px;gap:8px">
+        <span style="font-family:monospace;font-size:12px;color:#f4f2ed;letter-spacing:.5px">SA1505000068202572680000</span>
+        <button id="jak-copy-iban" style="background:rgba(201,169,77,.15);border:1px solid rgba(201,169,77,.3);color:#c9a94d;border-radius:6px;padding:4px 10px;font-size:11px;font-weight:700;cursor:pointer;white-space:nowrap">نسخ</button>
+      </div>
+    </div>
+
     <div class="jak-paddle-frame" id="jak-paddle-frame"></div>
   </div>
   <div id="jak-verifying">
@@ -1281,10 +1291,26 @@ window.addEventListener('beforeunload',function(e){
       btn.className='jak-cur-btn'+(c.code===sel.code?' jak-cur-sel':'');
       btn.setAttribute('data-code',c.code);
       btn.innerHTML='<span class="jak-cur-flag">'+c.flag+'</span><span class="jak-cur-code">'+c.code+'</span>';
-      btn.onclick=function(){sel=c;syncAll();buildModalGrid();};
+      btn.onclick=function(){sel=c;syncAll();buildModalGrid();toggleBankSection();};
       grid.appendChild(btn);
     });
+    toggleBankSection();
   }
+
+  function toggleBankSection(){
+    var sec=document.getElementById('jak-bank-section');
+    if(!sec)return;
+    sec.style.display=(sel&&sel.code==='SAR')?'block':'none';
+  }
+
+  document.addEventListener('click',function(e){
+    if(e.target&&e.target.id==='jak-copy-iban'){
+      navigator.clipboard.writeText('SA1505000068202572680000').then(function(){
+        e.target.textContent='✓ تم النسخ';
+        setTimeout(function(){e.target.textContent='نسخ';},2000);
+      }).catch(function(){});
+    }
+  });
 
   /* ── شبكة الصفحة الرئيسية ── */
   function buildHomeGrid(){
