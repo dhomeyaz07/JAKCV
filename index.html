@@ -1263,7 +1263,18 @@ window.addEventListener('DOMContentLoaded',function(){
           try{
             var newRemaining=(dlRemaining||1)-1;
             if(newRemaining<=0){
-              /* انتهى الرصيد — احفظ السيرة واحذف السجل */
+              /* انتهى الرصيد — حدّث العداد لـ 0 أولاً (يمنع إعادة الفتح) ثم احذف */
+              if(typeof supa!=='undefined'&&supa&&typeof currentUser!=='undefined'&&currentUser){
+                await supa.from('purchases')
+                  .update({downloads_remaining:0})
+                  .eq('user_id',currentUser.id).eq('template_id',currentTpl);
+                /* ثم احذف السجل */
+                await supa.from('purchases').delete()
+                  .eq('user_id',currentUser.id).eq('template_id',currentTpl);
+              }
+              /* أزل التوكن المحلي فوراً */
+              localStorage.removeItem(TOKEN_KEY);
+              /* احفظ السيرة */
               var cvData=collectCV();
               var saveRes=await fetch(WORKER_URL+'/save',{
                 method:'POST',headers:{'Content-Type':'application/json'},
@@ -1271,13 +1282,9 @@ window.addEventListener('DOMContentLoaded',function(){
               });
               var saved=await saveRes.json();
               var recovCode=saved.ok?saved.code:'—';
-              if(typeof supa!=='undefined'&&supa&&typeof currentUser!=='undefined'&&currentUser){
-                await supa.from('purchases').delete()
-                  .eq('user_id',currentUser.id).eq('template_id',currentTpl);
-              }
-              localStorage.removeItem(TOKEN_KEY);
               if(typeof _doPick==='function')_doPick(currentTpl);
               /* أظهر نافذة الكود */
+              document.getElementById('jak-dl-code').style.fontSize='32px';
               document.getElementById('jak-dl-code').textContent=recovCode;
               document.getElementById('jak-code-modal').style.display='flex';
             } else {
@@ -1287,11 +1294,10 @@ window.addEventListener('DOMContentLoaded',function(){
                   .eq('user_id',currentUser.id).eq('template_id',currentTpl);
               }
               /* أظهر عدد المرات المتبقية */
-              document.getElementById('jak-dl-code').textContent='';
+              document.getElementById('jak-dl-code').style.fontSize='16px';
               var msg=LANG==='ar'
                 ?'تبقى لك '+newRemaining+' تحميل'
                 :newRemaining+' downloads left';
-              document.getElementById('jak-dl-code').style.fontSize='16px';
               document.getElementById('jak-dl-code').textContent=msg;
               document.getElementById('jak-code-modal').style.display='flex';
             }
