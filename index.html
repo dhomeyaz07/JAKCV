@@ -1244,11 +1244,65 @@ window.addEventListener('DOMContentLoaded',function(){
       G('print-tip').style.display='block';
       var btn2=G('cv-pdf');btn2.textContent='⏳ ...';btn2.disabled=true;
       var ifrm2=G('cv-iframe');
-      setTimeout(function(){
+      /* تحقق من downloads_remaining في Supabase */
+      var ptRow=null;
+      if(typeof supa!=='undefined'&&supa&&typeof currentUser!=='undefined'&&currentUser){
+        try{
+          var {data:_pt}=await supa.from('purchases')
+            .select('id,one_time,downloads_remaining')
+            .eq('user_id',currentUser.id)
+            .eq('template_id',currentTpl)
+            .maybeSingle();
+          ptRow=_pt;
+        }catch(e){}
+      }
+      var isOneTime=ptRow&&ptRow.one_time;
+      var dlRemaining=ptRow?((ptRow.downloads_remaining)||1):null;
+      setTimeout(async function(){
         if(ifrm2&&ifrm2.contentWindow){ifrm2.contentWindow.focus();ifrm2.contentWindow.print();}else{window.print();}
         btn2.textContent=T[LANG].pdf;btn2.disabled=false;
-        /* امسح التوكن — القالب يقفل بعد التحميل */
-        localStorage.removeItem(TOKEN_KEY);
+        if(isOneTime&&ptRow){
+          try{
+            var newRemaining=(dlRemaining||1)-1;
+            if(newRemaining<=0){
+              /* انتهى الرصيد — احفظ السيرة واحذف السجل */
+              var cvData=collectCV();
+              var saveRes=await fetch(WORKER_URL+'/save',{
+                method:'POST',headers:{'Content-Type':'application/json'},
+                body:JSON.stringify(cvData)
+              });
+              var saved=await saveRes.json();
+              var recovCode=saved.ok?saved.code:'—';
+              if(typeof supa!=='undefined'&&supa&&typeof currentUser!=='undefined'&&currentUser){
+                await supa.from('purchases').delete()
+                  .eq('user_id',currentUser.id).eq('template_id',currentTpl);
+              }
+              localStorage.removeItem(TOKEN_KEY);
+              if(typeof _doPick==='function')_doPick(currentTpl);
+              /* أظهر نافذة الكود */
+              document.getElementById('jak-dl-code').textContent=recovCode;
+              document.getElementById('jak-code-modal').style.display='flex';
+            } else {
+              /* لا يزال عنده رصيد — نقص العداد فقط */
+              if(typeof supa!=='undefined'&&supa&&typeof currentUser!=='undefined'&&currentUser){
+                await supa.from('purchases').update({downloads_remaining:newRemaining})
+                  .eq('user_id',currentUser.id).eq('template_id',currentTpl);
+              }
+              /* أظهر عدد المرات المتبقية */
+              document.getElementById('jak-dl-code').textContent='';
+              var msg=LANG==='ar'
+                ?'تبقى لك '+newRemaining+' تحميل'
+                :newRemaining+' downloads left';
+              document.getElementById('jak-dl-code').style.fontSize='16px';
+              document.getElementById('jak-dl-code').textContent=msg;
+              document.getElementById('jak-code-modal').style.display='flex';
+            }
+          }catch(e){
+            localStorage.removeItem(TOKEN_KEY);
+          }
+        } else {
+          localStorage.removeItem(TOKEN_KEY);
+        }
       },800);
       return;
     }
@@ -2344,13 +2398,48 @@ document.getElementById('jak-admin-bg').onclick=function(){if(typeof closeAdminP
 
       <!-- أدوات -->
       <div id="admin-pane-tools" class="admin-pane">
-        <div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:20px">
+
+        <!-- ── فك قالب يدوي ── -->
+        <div style="background:#1e1e28;border:1px solid rgba(201,169,77,.25);border-radius:12px;padding:16px;margin-bottom:16px">
+          <div style="font-size:13px;font-weight:700;color:#c9a94d;margin-bottom:12px;display:flex;align-items:center;gap:6px">🔓 فك قالب للعميل (تحويل بنكي)</div>
+          <div style="display:flex;flex-direction:column;gap:8px">
+            <div>
+              <div style="font-size:10px;color:#7a7a96;margin-bottom:4px;letter-spacing:1px">إيميل العميل</div>
+              <input id="unlock-email" type="email" placeholder="example@email.com" style="width:100%;background:#0f0f18;border:1px solid #28283a;border-radius:8px;padding:9px 12px;font-size:13px;color:#f4f2ed;outline:none;font-family:'DM Sans',sans-serif;direction:ltr;box-sizing:border-box">
+            </div>
+            <div>
+              <div style="font-size:10px;color:#7a7a96;margin-bottom:4px;letter-spacing:1px">القالب</div>
+              <select id="unlock-tpl" style="width:100%;background:#0f0f18;border:1px solid #28283a;border-radius:8px;padding:9px 12px;font-size:13px;color:#f4f2ed;outline:none;font-family:'Cairo',sans-serif;box-sizing:border-box;cursor:pointer">
+                <option value="ar1">🇸🇦 Arabic 1 — سارة خالد</option>
+                <option value="ar2">🇸🇦 Arabic 2 — عبدالعزيز</option>
+                <option value="ar4">🇸🇦 Arabic 4 — محمد الدوسري</option>
+                <option value="en1">🇺🇸 English 1 — Mohammed Al-Dossari</option>
+                <option value="en2">🇺🇸 English 2 — ATS Minimal</option>
+                <option value="en4">🇺🇸 English 4 — Charles Bloomberg</option>
+              </select>
+            </div>
+            <div>
+              <div style="font-size:10px;color:#7a7a96;margin-bottom:4px;letter-spacing:1px">عدد مرات التحميل المسموحة</div>
+              <div style="display:flex;align-items:center;gap:8px">
+                <button onclick="changeDownloads(-1)" style="background:#0f0f18;border:1px solid #28283a;color:#f4f2ed;border-radius:8px;width:36px;height:36px;font-size:18px;cursor:pointer;font-weight:700;flex-shrink:0">−</button>
+                <div style="flex:1;background:#0f0f18;border:1px solid #28283a;border-radius:8px;padding:8px;text-align:center">
+                  <span id="unlock-qty" style="font-size:20px;font-weight:900;color:#c9a94d;font-family:'DM Sans',sans-serif">1</span>
+                  <span style="font-size:11px;color:#7a7a96;margin-right:4px"> مرة</span>
+                </div>
+                <button onclick="changeDownloads(1)" style="background:#0f0f18;border:1px solid #28283a;color:#f4f2ed;border-radius:8px;width:36px;height:36px;font-size:18px;cursor:pointer;font-weight:700;flex-shrink:0">+</button>
+              </div>
+            </div>
+            <button onclick="adminUnlockTemplate()" style="background:linear-gradient(135deg,#c9a94d,#e8c96a);border:none;border-radius:8px;padding:11px;font-size:13px;font-weight:900;color:#0c0c10;cursor:pointer;font-family:'Cairo',sans-serif;margin-top:2px">🔓 فك القالب الآن</button>
+            <div id="unlock-result" style="font-size:12px;text-align:center;min-height:16px;margin-top:2px"></div>
+          </div>
+        </div>
+
+        <div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px">
           <button class="admin-tool-btn" onclick="adminRefreshStats()">🔄 تحديث الإحصائيات</button>
           <button class="admin-tool-btn" onclick="adminExportCSV()">📥 تصدير مشتريات CSV</button>
           <button class="admin-tool-btn" onclick="adminClearExpiredCVs()">🗑️ حذف CVs منتهية</button>
-          <button class="admin-tool-btn" onclick="adminSendTestEmail()">📧 إيميل تجريبي</button>
         </div>
-        <div id="admin-tools-log" style="background:#0f0f18;border:1px solid #28283a;border-radius:8px;padding:12px;font-family:monospace;font-size:11px;color:#7a7a96;min-height:80px;max-height:200px;overflow-y:auto">جاهز...</div>
+        <div id="admin-tools-log" style="background:#0f0f18;border:1px solid #28283a;border-radius:8px;padding:12px;font-family:monospace;font-size:11px;color:#7a7a96;min-height:60px;max-height:160px;overflow-y:auto">جاهز...</div>
       </div>
 
     </div>
@@ -2500,7 +2589,91 @@ function adminExportCSV(){
   adminLog('✅ تم تصدير '+_adminPurchasesAll.length+' سجل');
 }
 function adminClearExpiredCVs(){adminLog('⚠️ هذه العملية تحتاج تأكيداً — اتصل بـ Supabase مباشرة');}
-function adminSendTestEmail(){adminLog('📧 إيميل تجريبي — يتطلب Edge Function من Supabase');}
+
+function changeDownloads(delta){
+  var el=document.getElementById('unlock-qty');
+  if(!el)return;
+  var v=parseInt(el.textContent)||1;
+  v=Math.max(1,Math.min(10,v+delta));
+  el.textContent=v;
+}
+
+async function adminUnlockTemplate(){
+  var emailEl=document.getElementById('unlock-email');
+  var tplEl=document.getElementById('unlock-tpl');
+  var qtyEl=document.getElementById('unlock-qty');
+  var resultEl=document.getElementById('unlock-result');
+  var email=(emailEl&&emailEl.value.trim())||'';
+  var tpl=(tplEl&&tplEl.value)||'';
+  var qty=parseInt((qtyEl&&qtyEl.textContent)||'1')||1;
+  if(!email||!tpl){
+    resultEl.innerHTML='<span style="color:#e05c5c">⚠️ أدخل الإيميل واختر القالب</span>';
+    return;
+  }
+  if(!supa){resultEl.innerHTML='<span style="color:#e05c5c">❌ Supabase غير متصل</span>';return;}
+  resultEl.innerHTML='<span style="color:#7a7a96">جاري البحث…</span>';
+  try{
+    var userId=null;
+    var {data:byEmail}=await supa.from('purchases').select('user_id').eq('user_email',email).limit(1);
+    if(byEmail&&byEmail.length>0) userId=byEmail[0].user_id;
+    if(!userId){
+      var {data:prof}=await supa.from('profiles').select('id').eq('email',email).limit(1);
+      if(prof&&prof.length>0) userId=prof[0].id;
+    }
+    if(!userId){
+      resultEl.innerHTML='<span style="color:#e05c5c">❌ المستخدم غير موجود — لازم يكون مسجّل في الموقع أولاً</span>';
+      adminLog('❌ ما وُجد مستخدم بإيميل: '+email);
+      return;
+    }
+    /* إذا يملكه — زد الرصيد */
+    var {data:exist}=await supa.from('purchases').select('id,downloads_remaining').eq('user_id',userId).eq('template_id',tpl).maybeSingle();
+    if(exist){
+      var newQty=(exist.downloads_remaining||0)+qty;
+      await supa.from('purchases').update({downloads_remaining:newQty,one_time:true}).eq('id',exist.id);
+      resultEl.innerHTML='<span style="color:#36b07e">✅ تمت إضافة '+qty+' تحميل — الرصيد الجديد: '+newQty+'</span>';
+      adminLog('✅ إضافة '+qty+' تحميل لـ ['+tpl+'] — '+email+' — الرصيد: '+newQty);
+      emailEl.value='';if(qtyEl)qtyEl.textContent='1';
+      return;
+    }
+    /* سجل جديد */
+    var {error:ie}=await supa.from('purchases').insert({
+      user_id:userId,template_id:tpl,
+      paddle_txn_id:'bank_manual_'+Date.now(),
+      one_time:true,downloads_remaining:qty,
+      created_at:new Date().toISOString()
+    });
+    if(ie)throw ie;
+    resultEl.innerHTML='<span style="color:#36b07e">✅ تم فك القالب لـ '+email+' — '+qty+' تحميل</span>';
+    adminLog('✅ فك قالب ['+tpl+'] — '+qty+' تحميل — '+email);
+    emailEl.value='';if(qtyEl)qtyEl.textContent='1';
+  }catch(e){
+    resultEl.innerHTML='<span style="color:#e05c5c">❌ خطأ: '+e.message+'</span>';
+    adminLog('❌ '+e.message);
+  }
+}
 </script>
-</body>
-</html>
+<!-- ══ نافذة كود الاسترداد بعد التحميل ══ -->
+<div id="jak-code-modal" style="display:none;position:fixed;inset:0;z-index:999999;align-items:center;justify-content:center;padding:20px;background:rgba(8,8,14,.92);backdrop-filter:blur(10px)">
+  <div style="background:#16161e;border:1px solid rgba(201,169,77,.3);border-radius:20px;padding:28px 24px;width:100%;max-width:380px;text-align:center;animation:jakUp .3s cubic-bezier(.22,1,.36,1)">
+    <div style="font-size:36px;margin-bottom:8px">✅</div>
+    <div style="font-size:17px;font-weight:700;color:#f4f2ed;font-family:'Cairo',sans-serif;margin-bottom:6px">تم التحميل بنجاح!</div>
+    <div style="font-size:12px;color:#7a7a96;margin-bottom:20px;line-height:1.6">تم حفظ سيرتك الذاتية تلقائياً.<br>احتفظ بهذا الكود لاسترجاعها في أي وقت</div>
+    <div style="background:#0f0f18;border:1px solid #28283a;border-radius:10px;padding:14px;margin-bottom:16px">
+      <div style="font-size:10px;color:#7a7a96;margin-bottom:6px;letter-spacing:1px">كود الاسترداد</div>
+      <div id="jak-dl-code" style="font-size:32px;font-weight:900;color:#c9a94d;letter-spacing:6px;font-family:'DM Sans',sans-serif">——</div>
+      <div style="font-size:10px;color:#7a7a96;margin-top:4px">صالح لمدة ٣٠ يوم</div>
+    </div>
+    <button id="jak-dl-copy" onclick="copyDlCode()" style="width:100%;background:rgba(201,169,77,.15);border:1px solid rgba(201,169,77,.35);color:#c9a94d;border-radius:10px;padding:10px;font-size:13px;font-weight:700;cursor:pointer;font-family:'Cairo',sans-serif;margin-bottom:10px">📋 نسخ الكود</button>
+    <button onclick="document.getElementById('jak-code-modal').style.display='none'" style="width:100%;background:transparent;border:1px solid #28283a;color:#7a7a96;border-radius:10px;padding:10px;font-size:13px;cursor:pointer;font-family:'Cairo',sans-serif">إغلاق</button>
+  </div>
+</div>
+
+<script>
+function copyDlCode(){
+  var c=document.getElementById('jak-dl-code').textContent;
+  navigator.clipboard.writeText(c).then(function(){
+    document.getElementById('jak-dl-copy').textContent='✓ تم النسخ!';
+    setTimeout(function(){document.getElementById('jak-dl-copy').textContent='📋 نسخ الكود';},2000);
+  });
+}
+</script>
