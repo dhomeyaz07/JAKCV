@@ -2138,8 +2138,13 @@ async function onUserLoggedIn(user){
   /* إظهار زر الأدمن */
   var adminBtn=document.getElementById('nav-admin-btn');
   if(adminBtn) adminBtn.style.display=(user.email===ADMIN_EMAIL)?'block':'none';
+  /* احفظ الإيميل في جدول profiles لكي يقدر الأدمن يبحث بالإيميل */
+  if(supa&&user.id&&user.email){
+    try{
+      await supa.from('profiles').upsert({id:user.id,email:user.email},{onConflict:'id'});
+    }catch(e){}
+  }
   await loadUserPurchases(user.id);
-  /* إذا كان ينتظر الدفع — افتح نافذة الدفع تلقائياً */
   if(window._pendingPayAfterLogin && window._pendingTpl){
     window._pendingPayAfterLogin=false;
     setTimeout(function(){window.JAKPay&&window.JAKPay.open();},400);
