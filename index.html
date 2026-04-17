@@ -832,6 +832,7 @@ setTimeout(function(){
 
 // ── MAIN APP ──
 var LANG='ar',TPL='ar3',skills=[],courses=[],eduIdx=0,expIdx=0,atsOpen=false,cache={};
+var ADMIN_EMAIL='dhomeyaz111@gmail.com';
 var prevIdx=0,prevList=[];
 
 var TPLS={
@@ -945,8 +946,7 @@ var _pendingTpl=null;
 function pickTpl(id){
   if(FREE_TPLS.indexOf(id)===-1){
     /* تحقق إذا التوكن يخص هذا القالب تحديداً */
-    var tok=localStorage.getItem('jak_cv_token');
-    var paid=tok && tok.indexOf(':'+id)>-1;
+    var paid=!!localStorage.getItem('jak_cv_token_'+id);
     if(!paid){
       _pendingTpl=id;
       window._pendingTpl=id;
@@ -1051,7 +1051,7 @@ function buildCV(){
   var wmNotice=G('cv-wm-notice');
   if(wmNotice){
     var isFreeNow=FREE_TPLS.indexOf(TPL)>-1;
-    var hasPaidNow=localStorage.getItem('jak_cv_token')&&localStorage.getItem('jak_cv_token').indexOf(':'+TPL)>-1;
+    var hasPaidNow=!!localStorage.getItem('jak_cv_token_'+TPL);
     wmNotice.style.display=(isFreeNow&&!hasPaidNow)?'flex':'none';
     /* أظهر قفل على زر ATS */
     var atsBtn=G('cv-ats');
@@ -1087,8 +1087,7 @@ function expBlock(exps,rtl){return exps.map(function(e){var dt=[e.fr,e.to].filte
 function renderCV(id,d,isPreview){
   /* علامة مائية للقوالب المجانية عند التحميل الفعلي */
   var isFree = FREE_TPLS.indexOf(id) > -1;
-  var tok = localStorage.getItem('jak_cv_token');
-  var hasPaid = tok && tok.indexOf(':'+id) > -1;
+  var hasPaid = !!localStorage.getItem('jak_cv_token_'+id);
   var showWatermark = !isPreview && isFree && !hasPaid;
   var watermark = showWatermark
     ? '<div style="position:fixed;inset:0;pointer-events:none;z-index:9999;display:flex;align-items:center;justify-content:center;transform:rotate(-35deg)"><div style="font-size:52px;font-weight:900;color:rgba(0,0,0,0.08);font-family:DM Sans,sans-serif;letter-spacing:4px;white-space:nowrap">JAK CV · FREE</div></div>'
@@ -1107,8 +1106,7 @@ function renderCV(id,d,isPreview){
 function toggleATS(){
   /* تحقق إذا القالب الحالي مجاني */
   var isFree=FREE_TPLS.indexOf(TPL)>-1;
-  var tok=localStorage.getItem('jak_cv_token');
-  var hasPaid=tok&&tok.indexOf(':'+TPL)>-1;
+  var hasPaid=!!localStorage.getItem('jak_cv_token_'+TPL);
   if(isFree&&!hasPaid){
     var ar=LANG==='ar';
     /* أظهر رسالة مع زر الدفع */
@@ -1212,9 +1210,9 @@ window.addEventListener('DOMContentLoaded',function(){
   G('cv-tpl').addEventListener('click',function(){buildGrid();show('s-tpl');});
   G('cv-ats').addEventListener('click',toggleATS);
   G('cv-pdf').addEventListener('click',async function(){
-    var TOKEN_KEY='jak_cv_token';
-    var tok=localStorage.getItem(TOKEN_KEY);
     var currentTpl=window.TPL||'ar3';
+    var TOKEN_KEY='jak_cv_token_'+currentTpl;
+    var tok=localStorage.getItem(TOKEN_KEY);
     var ar=LANG==='ar';
     /* القالب الحالي مجاني؟ حمّل مع علامة مائية */
     if(window.FREE_TPLS && window.FREE_TPLS.indexOf(currentTpl)>-1){
@@ -1633,7 +1631,7 @@ window.addEventListener('beforeunload',function(e){
     var id=window._pendingTpl;
     window._pendingTpl=null;
     if(!id)return;
-    localStorage.setItem(TOKEN_KEY, Date.now()+':'+id);
+    localStorage.setItem('jak_cv_token_'+id, Date.now()+':'+id);
     closeModal();
     /* احفظ الشراء في Supabase إذا المستخدم مسجّل */
     if(typeof savePurchaseToDB==='function') savePurchaseToDB(id);
@@ -1662,7 +1660,6 @@ window.addEventListener('beforeunload',function(e){
      ════════════════════════════════════════ */
   var PADDLE_TOKEN = 'live_0bf3d22094b4370c6259d0fbd8f';
   var PADDLE_PRICE = 'pri_01kn4ptdge7hsym5p39jdsbt7p';
-  var ADMIN_EMAIL  = 'dhomeyaz111@gmail.com';
   var paddleReady  = false;
 
   /* ── تهيئة Paddle ── */
@@ -2161,12 +2158,24 @@ function onUserLoggedOut(){
 async function loadUserPurchases(userId){
   if(!supa)return;
   try{
-    var r=await supa.from('purchases').select('template_id').eq('user_id',userId);
+    /* أدمن — افتح كل القوالب مباشرة */
+    if(currentUser&&currentUser.email===ADMIN_EMAIL){
+      var allTpls=['ar1','ar2','ar4','en1','en2','en4'];
+      allTpls.forEach(function(t){
+        localStorage.setItem('jak_cv_token_'+t, Date.now()+':'+t);
+      });
+      /* أعد رسم الشبكة */
+      if(typeof buildGrid==='function')buildGrid();
+      return;
+    }
+    var r=await supa.from('purchases').select('template_id,one_time,downloads_remaining').eq('user_id',userId);
     if(r.data&&r.data.length>0){
       r.data.forEach(function(p){
-        /* افتح القالب بدون دفع */
-        localStorage.setItem('jak_cv_token',Date.now()+':'+p.template_id);
+        /* one_time مع رصيد = مفتوح ، one_time بدون رصيد = مقفل */
+        if(p.one_time && (p.downloads_remaining||0)<=0) return;
+        localStorage.setItem('jak_cv_token_'+p.template_id, Date.now()+':'+p.template_id);
       });
+      if(typeof buildGrid==='function')buildGrid();
     }
   }catch(e){console.error('loadPurchases error',e);}
 }
@@ -2294,7 +2303,7 @@ async function openMyPurchases(){
         '<button class="purchase-open-btn" data-id="'+p.template_id+'">افتح القالب ←</button>';
       card.querySelector('.purchase-open-btn').addEventListener('click',function(){
         var id=this.getAttribute('data-id');
-        localStorage.setItem('jak_cv_token',Date.now()+':'+id);
+        localStorage.setItem('jak_cv_token_'+id, Date.now()+':'+id);
         closeMyPurchases();
         if(typeof _doPick==='function')_doPick(id);
       });
