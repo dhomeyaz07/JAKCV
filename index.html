@@ -1211,7 +1211,7 @@ window.addEventListener('DOMContentLoaded',function(){
   G('cv-edit').addEventListener('click',function(){show('s-build');});
   G('cv-tpl').addEventListener('click',function(){buildGrid();show('s-tpl');});
   G('cv-ats').addEventListener('click',toggleATS);
-  G('cv-pdf').addEventListener('click',function(){
+  G('cv-pdf').addEventListener('click',async function(){
     var TOKEN_KEY='jak_cv_token';
     var tok=localStorage.getItem(TOKEN_KEY);
     var currentTpl=window.TPL||'ar3';
