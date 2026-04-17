@@ -747,23 +747,30 @@ body{background:var(--dark);color:var(--white);font-family:'Tajawal',sans-serif;
     </div>
 
     <!-- تحويل بنكي (SAR فقط) -->
-    <!-- تحويل بنكي -->
-    <div id="jak-bank-section" style="display:none;margin-top:16px;border:1px solid rgba(201,169,77,.25);border-radius:14px;overflow:hidden">
-      <div style="background:rgba(201,169,77,.08);padding:10px 16px;display:flex;align-items:center;gap:8px;border-bottom:1px solid rgba(201,169,77,.15)">
-        <span style="font-size:16px">🏦</span>
-        <div>
-          <div style="font-size:13px;font-weight:700;color:#c9a94d;font-family:'Cairo',sans-serif">تحويل بنكي — D360</div>
-          <div style="font-size:11px;color:#7a7a96;margin-top:1px">بديل عن الدفع الإلكتروني</div>
+    <div id="jak-bank-section" style="display:none;margin-top:14px">
+      <!-- الزر -->
+      <button id="jak-bank-toggle" onclick="toggleBankDetails()" style="width:100%;background:#1a1a26;border:1px solid rgba(201,169,77,.3);border-radius:12px;padding:13px 16px;display:flex;align-items:center;justify-content:space-between;cursor:pointer;transition:background .15s">
+        <div style="display:flex;align-items:center;gap:10px">
+          <span style="font-size:18px">🏦</span>
+          <span style="font-family:'Cairo',sans-serif;font-size:13px;font-weight:700;color:#c9a94d">تحويل بنكي — D360</span>
         </div>
-      </div>
-      <div style="padding:12px 16px">
-        <div style="font-size:11px;color:#7a7a96;margin-bottom:8px">حوّل المبلغ على هذا الـ IBAN ثم أرسل لقطة الشاشة على واتساب وسيتم تفعيل قالبك خلال دقائق</div>
-        <div style="display:flex;align-items:center;justify-content:space-between;background:#0f0f18;border:1px solid #28283a;border-radius:8px;padding:11px 14px;gap:10px">
-          <div>
-            <div style="font-size:10px;color:#7a7a96;margin-bottom:3px">IBAN</div>
-            <span id="jak-iban-display" style="font-family:monospace;font-size:13px;color:#f4f2ed;letter-spacing:.8px;font-weight:700">SA1505000068202572680000</span>
+        <span id="jak-bank-arrow" style="color:#c9a94d;font-size:14px;transition:transform .25s">▼</span>
+      </button>
+      <!-- التفاصيل -->
+      <div id="jak-bank-details" style="display:none;background:#1a1a26;border:1px solid rgba(201,169,77,.2);border-top:none;border-radius:0 0 12px 12px;padding:14px 16px;overflow:hidden">
+        <div style="font-size:11px;color:#7a7a96;margin-bottom:12px;text-align:center">حوّل المبلغ ثم أرسل لقطة الشاشة على واتساب وسيتم تفعيل قالبك خلال دقائق</div>
+        <!-- صف المعلومات -->
+        <div style="display:flex;flex-direction:column;gap:8px">
+          <div style="display:flex;justify-content:space-between;align-items:center;background:#0f0f18;border:1px solid #28283a;border-radius:8px;padding:9px 12px">
+            <div><div style="font-size:10px;color:#7a7a96;margin-bottom:2px">اسم صاحب الحساب</div><div style="font-size:13px;color:#f4f2ed;font-weight:700;font-family:'Cairo',sans-serif">عبدالرحمن الزهراني</div></div>
           </div>
-          <button id="jak-copy-iban" style="background:rgba(201,169,77,.15);border:1px solid rgba(201,169,77,.35);color:#c9a94d;border-radius:8px;padding:7px 14px;font-size:12px;font-weight:700;cursor:pointer;white-space:nowrap;font-family:'Cairo',sans-serif;transition:background .15s">نسخ ← </button>
+          <div style="display:flex;justify-content:space-between;align-items:center;background:#0f0f18;border:1px solid #28283a;border-radius:8px;padding:9px 12px">
+            <div><div style="font-size:10px;color:#7a7a96;margin-bottom:2px">اسم البنك</div><div style="font-size:13px;color:#f4f2ed;font-weight:700;font-family:'Cairo',sans-serif">بنك D360</div></div>
+          </div>
+          <div style="display:flex;justify-content:space-between;align-items:center;background:#0f0f18;border:1px solid #28283a;border-radius:8px;padding:9px 12px">
+            <div><div style="font-size:10px;color:#7a7a96;margin-bottom:2px">IBAN</div><div id="jak-iban-display" style="font-family:monospace;font-size:13px;color:#f4f2ed;letter-spacing:.5px;font-weight:700">SA1505000068202572680000</div></div>
+            <button id="jak-copy-iban" style="background:rgba(201,169,77,.15);border:1px solid rgba(201,169,77,.35);color:#c9a94d;border-radius:8px;padding:6px 12px;font-size:12px;font-weight:700;cursor:pointer;white-space:nowrap;font-family:'Cairo',sans-serif">نسخ</button>
+          </div>
         </div>
       </div>
     </div>
@@ -1384,13 +1391,21 @@ window.addEventListener('beforeunload',function(e){
   function toggleBankSection(){
     var sec=document.getElementById('jak-bank-section');
     if(!sec)return;
-    sec.style.display=(sel&&sel.code==='SAR')?'block':'none';
+    var show=(sel&&sel.code==='SAR');
+    sec.style.display=show?'block':'none';
+    /* أغلق التفاصيل عند تغيير العملة */
+    if(!show){
+      var det=document.getElementById('jak-bank-details');
+      var arrow=document.getElementById('jak-bank-arrow');
+      if(det)det.style.display='none';
+      if(arrow)arrow.style.transform='';
+    }
   }
 
   document.addEventListener('click',function(e){
     if(e.target&&e.target.id==='jak-copy-iban'){
       navigator.clipboard.writeText('SA1505000068202572680000').then(function(){
-        e.target.textContent='✓ تم النسخ';
+        e.target.textContent='✓ تم';
         setTimeout(function(){e.target.textContent='نسخ';},2000);
       }).catch(function(){});
     }
@@ -2216,6 +2231,17 @@ async function openMyPurchases(){
 function closeMyPurchases(){
   document.getElementById('jak-purchases-modal').classList.remove('open');
   document.body.style.overflow='';
+}
+
+function toggleBankDetails(){
+  var det=document.getElementById('jak-bank-details');
+  var toggle=document.getElementById('jak-bank-toggle');
+  var arrow=document.getElementById('jak-bank-arrow');
+  if(!det)return;
+  var open=det.style.display==='block';
+  det.style.display=open?'none':'block';
+  if(arrow)arrow.style.transform=open?'':'rotate(180deg)';
+  if(toggle)toggle.style.borderRadius=open?'12px':'12px 12px 0 0';
 }
 async function doSignOut(){
   if(supa)await supa.auth.signOut();
