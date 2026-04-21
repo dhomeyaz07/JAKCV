@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>تم التوثيق — JAK CV</title>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&family=DM+Sans:wght@400;700&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{--dark:#08080e;--gold:#c9a94d;--green:#36b07e;--white:#f4f2ed;--muted:#7a7a96;--border:#28283a}
+body{background:var(--dark);color:var(--white);font-family:'Cairo',sans-serif;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px;overflow:hidden}
+
+/* خلفية نقاط */
+body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse 80% 60% at 50% 0%,rgba(201,169,77,.07) 0%,transparent 70%);pointer-events:none}
+
+.card{background:#16161e;border:1px solid var(--border);border-radius:24px;padding:48px 36px;width:100%;max-width:420px;text-align:center;position:relative;animation:fadeUp .6s cubic-bezier(.22,1,.36,1) forwards}
+
+/* شعار */
+.logo{display:inline-flex;align-items:center;justify-content:center;margin-bottom:32px;font-family:'DM Sans',sans-serif;font-size:22px;font-weight:700;color:var(--white)}
+.logo span{color:var(--gold)}
+
+/* دائرة الصح */
+.check-wrap{width:80px;height:80px;margin:0 auto 24px;position:relative}
+.check-circle{width:80px;height:80px;border-radius:50%;background:rgba(54,176,126,.12);border:2px solid rgba(54,176,126,.4);display:flex;align-items:center;justify-content:center;animation:popIn .5s .3s cubic-bezier(.22,1,.36,1) both}
+.check-circle svg{width:36px;height:36px;stroke:var(--green);stroke-width:2.5;fill:none;stroke-linecap:round;stroke-linejoin:round}
+.check-circle svg path{stroke-dasharray:50;stroke-dashoffset:50;animation:drawCheck .5s .7s ease forwards}
+.ring{position:absolute;inset:-6px;border-radius:50%;border:1px solid rgba(54,176,126,.2);animation:ringPulse 2s 1s ease-in-out infinite}
+
+.title{font-size:22px;font-weight:900;color:var(--white);margin-bottom:8px}
+.sub{font-size:14px;color:var(--muted);line-height:1.7;margin-bottom:32px}
+.sub strong{color:var(--green)}
+
+.btn{display:block;width:100%;background:linear-gradient(135deg,#c9a94d,#e8c96a);color:#0c0c10;border:none;border-radius:12px;padding:15px;font-size:15px;font-weight:900;cursor:pointer;font-family:'Cairo',sans-serif;text-decoration:none;transition:opacity .2s,transform .1s}
+.btn:hover{opacity:.9}
+.btn:active{transform:scale(.98)}
+
+.footer-note{margin-top:20px;font-size:11px;color:var(--muted)}
+
+@keyframes fadeUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
+@keyframes popIn{from{opacity:0;transform:scale(.6)}to{opacity:1;transform:scale(1)}}
+@keyframes drawCheck{to{stroke-dashoffset:0}}
+@keyframes ringPulse{0%,100%{transform:scale(1);opacity:.4}50%{transform:scale(1.12);opacity:.1}}
+</style>
+</head>
+<body>
+
+<div class="card">
+  <div class="logo">JAK <span>CV</span></div>
+
+  <div class="check-wrap">
+    <div class="check-circle">
+      <svg viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg>
+    </div>
+    <div class="ring"></div>
+  </div>
+
+  <h1 class="title">تم التوثيق بنجاح! ✅</h1>
+  <p class="sub">تم تفعيل حسابك في <strong>JAK CV</strong><br>يمكنك الآن تسجيل الدخول وبناء سيرتك الذاتية</p>
+
+  <a href="https://www.jakcv.com" class="btn">ابدأ الآن ←</a>
+
+  <p class="footer-note">JAK CV — صُنع بأيدٍ سعودية 🇸🇦</p>
+</div>
+
+</body>
+</html>
